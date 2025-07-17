@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RewardsService } from "@/services/rewardsService";
+import { RewardsService } from "@/services/rewards.service";
 
 import { Database } from "@/types/supabase";
 type RewardRow = Database["public"]["Tables"]["rewards"]["Row"];

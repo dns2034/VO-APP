@@ -4,7 +4,7 @@ import Image from "next/image";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { useRewards } from "@/hooks/useRewards"; // adjust path
+import { useRewards } from "@/hooks/useRewards";
 import {
   Card,
   CardContent,

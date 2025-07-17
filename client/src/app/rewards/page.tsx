@@ -23,25 +23,25 @@ const products = [
     name: "Ergonomic Chair",
     description: "Stay comfortable and productive with this ergonomic office chair.",
     price: "25,000 Points",
-    image: "/images/rewards/ergonomic-chair.webp",
+    image: "/placeholder.png",
   },
   {
     name: "Mechanical Keyboard",
     description: "A high-quality mechanical keyboard for a better typing experience.",
     price: "8,000 Points",
-    image: "/images/rewards/mechanical-keyboard.webp",
+    image: "/placeholder.png",
   },
   {
     name: "4K Monitor",
     description: "Upgrade your setup with a stunning 4K monitor.",
     price: "40,000 Points",
-    image: "/images/rewards/4k-monitor.webp",
+    image: "/placeholder.png",
   },
   {
     name: "Noise-Cancelling Headphones",
     description: "Focus on your work with these noise-cancelling headphones.",
     price: "15,000 Points",
-    image: "/images/rewards/headphones.webp",
+    image: "/placeholder.png",
   },
 ];
 
@@ -50,25 +50,25 @@ const rewards = [
     name: "Amazon Gift Card",
     description: "A $50 Amazon gift card for your favorite items.",
     price: "5,000 Points",
-    image: "/images/rewards/gift-card.webp",
+    image: "/placeholder.png",
   },
   {
     name: "Coffee Shop Voucher",
     description: "Enjoy a free coffee on us at your local coffee shop.",
     price: "1,000 Points",
-    image: "/images/rewards/coffee-voucher.webp",
+    image: "/placeholder.png",
   },
   {
     name: "One Day Off",
     description: "Take a well-deserved day off to relax and recharge.",
     price: "20,000 Points",
-    image: "/images/rewards/day-off.webp",
+    image: "/placeholder.png",
   },
   {
     name: "Team Lunch",
     description: "Enjoy a lunch with your team, on the house!",
     price: "10,000 Points",
-    image: "/images/rewards/team-lunch.webp",
+    image: "/placeholder.png",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function RewardsPage() {
               <TabsContent value="products">
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                   {products.map((product) => (
-                    <Card key={product.name}>
+                    <Card key={product.name} className="pt-0">
                       <CardHeader className="p-0">
                         <div className="relative aspect-video">
                           <Image
@@ -142,7 +142,7 @@ export default function RewardsPage() {
               <TabsContent value="rewards">
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                   {rewards.map((reward) => (
-                    <Card key={reward.name}>
+                    <Card key={reward.name} className="pt-0">
                       <CardHeader className="p-0">
                         <div className="relative aspect-video">
                           <Image

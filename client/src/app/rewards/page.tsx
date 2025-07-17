@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { useRewards } from "@/hooks/useRewards"; // adjust path
 import {
   Card,
   CardContent,
@@ -73,6 +76,7 @@ const rewards = [
 ];
 
 export default function RewardsPage() {
+  const { rewards } = useRewards();
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -146,7 +150,7 @@ export default function RewardsPage() {
                       <CardHeader className="p-0">
                         <div className="relative aspect-video">
                           <Image
-                            src={reward.image}
+                            src={reward.image_path || "/placeholder.png"}
                             alt={reward.name}
                             fill
                             className="rounded-t-lg object-cover"

@@ -48,33 +48,6 @@ const products = [
   },
 ];
 
-const rewards = [
-  {
-    name: "Amazon Gift Card",
-    description: "A $50 Amazon gift card for your favorite items.",
-    price: "5,000 Points",
-    image: "/placeholder.png",
-  },
-  {
-    name: "Coffee Shop Voucher",
-    description: "Enjoy a free coffee on us at your local coffee shop.",
-    price: "1,000 Points",
-    image: "/placeholder.png",
-  },
-  {
-    name: "One Day Off",
-    description: "Take a well-deserved day off to relax and recharge.",
-    price: "20,000 Points",
-    image: "/placeholder.png",
-  },
-  {
-    name: "Team Lunch",
-    description: "Enjoy a lunch with your team, on the house!",
-    price: "10,000 Points",
-    image: "/placeholder.png",
-  },
-];
-
 export default function RewardsPage() {
   const { rewards } = useRewards();
   return (

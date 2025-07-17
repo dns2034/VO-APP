@@ -16,7 +16,7 @@ sudo npx supabase db pull --schema public,auth,storage --db-url postgresql://pos
 
 sudo npx supabase db pull --db-url postgresql://postgres:postgres@127.0.0.1:54322/postgres
 
-Reset DB
+Reset DB WARNING!! THIS RESETS THE CURRENT DATABASE CONTAINER
 npx supabase db reset
 
 Generate Types

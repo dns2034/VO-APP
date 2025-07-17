@@ -1,4 +1,4 @@
-import { supabase } from "@/app/services/supabase/client";
+import { supabase } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
 

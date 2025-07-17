@@ -4,7 +4,6 @@ import Image from "next/image";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { useRewards } from "@/hooks/useRewards";
 import {
   Card,
   CardContent,
@@ -21,35 +20,14 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator"
 
-const products = [
-  {
-    name: "Ergonomic Chair",
-    description: "Stay comfortable and productive with this ergonomic office chair.",
-    price: "25,000 Points",
-    image: "/placeholder.png",
-  },
-  {
-    name: "Mechanical Keyboard",
-    description: "A high-quality mechanical keyboard for a better typing experience.",
-    price: "8,000 Points",
-    image: "/placeholder.png",
-  },
-  {
-    name: "4K Monitor",
-    description: "Upgrade your setup with a stunning 4K monitor.",
-    price: "40,000 Points",
-    image: "/placeholder.png",
-  },
-  {
-    name: "Noise-Cancelling Headphones",
-    description: "Focus on your work with these noise-cancelling headphones.",
-    price: "15,000 Points",
-    image: "/placeholder.png",
-  },
-];
+import { useRewards } from "@/hooks/useRewards";
+import { useProducts } from "@/hooks/useProducts";
+
 
 export default function RewardsPage() {
   const { rewards } = useRewards();
+  const { products } = useProducts();
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -95,7 +73,7 @@ export default function RewardsPage() {
                       <CardHeader className="p-0">
                         <div className="relative aspect-video">
                           <Image
-                            src={product.image}
+                            src={product.image_path || "/placeholder.png"}
                             alt={product.name}
                             fill
                             className="rounded-t-lg object-cover"

@@ -2,12 +2,12 @@ import { supabase } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
 
-type ProductRow = Database["public"]["Tables"]["rewards"]["Row"];
-type ProductInsert = Database["public"]["Tables"]["rewards"]["Insert"];
-type ProductUpdate = Database["public"]["Tables"]["rewards"]["Update"];
+type ProductRow = Database["public"]["Tables"]["products"]["Row"];
+type ProductInsert = Database["public"]["Tables"]["products"]["Insert"];
+type ProductUpdate = Database["public"]["Tables"]["products"]["Update"];
 
 
-export class RewardsService {
+export class ProductsService {
   static async getAll(): Promise<ProductRow[]> {
     const { data, error } = await supabase
       .from("products")

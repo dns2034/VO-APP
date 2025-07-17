@@ -198,6 +198,7 @@ export type Database = {
           id: string
           image_path: string
           name: string
+          organization_id: string
           price: number
         }
         Insert: {
@@ -206,6 +207,7 @@ export type Database = {
           id?: string
           image_path: string
           name: string
+          organization_id: string
           price?: number
         }
         Update: {
@@ -214,9 +216,18 @@ export type Database = {
           id?: string
           image_path?: string
           name?: string
+          organization_id?: string
           price?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "products_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {

@@ -101,21 +101,24 @@ export type Database = {
       }
       credits: {
         Row: {
-          balance: number
           created_at: string
+          expires_at: string
           id: string
+          status: Database["public"]["Enums"]["currency_status"]
           user_id: string
         }
         Insert: {
-          balance?: number
           created_at?: string
+          expires_at?: string
           id?: string
+          status?: Database["public"]["Enums"]["currency_status"]
           user_id: string
         }
         Update: {
-          balance?: number
           created_at?: string
+          expires_at?: string
           id?: string
+          status?: Database["public"]["Enums"]["currency_status"]
           user_id?: string
         }
         Relationships: []
@@ -140,45 +143,54 @@ export type Database = {
       }
       points: {
         Row: {
-          balance: number
           created_at: string
-          id: number
+          expires_at: string
+          id: string
+          status: Database["public"]["Enums"]["currency_status"]
           user_id: string
         }
         Insert: {
-          balance?: number
           created_at?: string
-          id?: number
+          expires_at?: string
+          id: string
+          status?: Database["public"]["Enums"]["currency_status"]
           user_id: string
         }
         Update: {
-          balance?: number
           created_at?: string
-          id?: number
+          expires_at?: string
+          id?: string
+          status?: Database["public"]["Enums"]["currency_status"]
           user_id?: string
         }
         Relationships: []
       }
       product_vouchers: {
         Row: {
-          code: string
+          code: string | null
           created_at: string
+          expiring_at: string | null
           id: string
           product_id: string
+          status: Database["public"]["Enums"]["currency_status"] | null
           user_id: string
         }
         Insert: {
-          code: string
+          code?: string | null
           created_at?: string
+          expiring_at?: string | null
           id?: string
           product_id: string
-          user_id: string
+          status?: Database["public"]["Enums"]["currency_status"] | null
+          user_id?: string
         }
         Update: {
-          code?: string
+          code?: string | null
           created_at?: string
+          expiring_at?: string | null
           id?: string
           product_id?: string
+          status?: Database["public"]["Enums"]["currency_status"] | null
           user_id?: string
         }
         Relationships: [
@@ -234,21 +246,32 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           id: string
+          organization_id: string
           role: Database["public"]["Enums"]["roles"]
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           id: string
+          organization_id: string
           role?: Database["public"]["Enums"]["roles"]
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           id?: string
+          organization_id?: string
           role?: Database["public"]["Enums"]["roles"]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       referrals: {
         Row: {
@@ -275,30 +298,36 @@ export type Database = {
         Row: {
           code: string
           created_at: string
+          expiring_at: string
           id: string
-          product_id: string
+          reward_id: string
+          status: Database["public"]["Enums"]["voucher_status"]
           user_id: string
         }
         Insert: {
           code: string
           created_at?: string
+          expiring_at?: string
           id?: string
-          product_id: string
+          reward_id: string
+          status?: Database["public"]["Enums"]["voucher_status"]
           user_id: string
         }
         Update: {
           code?: string
           created_at?: string
+          expiring_at?: string
           id?: string
-          product_id?: string
+          reward_id?: string
+          status?: Database["public"]["Enums"]["voucher_status"]
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "reward_vouchers_product_id_fkey"
-            columns: ["product_id"]
+            foreignKeyName: "reward_vouchers_reward_id_fkey"
+            columns: ["reward_id"]
             isOneToOne: false
-            referencedRelation: "products"
+            referencedRelation: "rewards"
             referencedColumns: ["id"]
           },
         ]
@@ -408,38 +437,22 @@ export type Database = {
           },
         ]
       }
-      vouchers: {
-        Row: {
-          code: string
-          created_at: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          code: string
-          created_at?: string
-          id?: string
-          user_id: string
-        }
-        Update: {
-          code?: string
-          created_at?: string
-          id?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_voucher_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       booking_status: "booked" | "cancelled" | "pending"
+      currency_status: "active" | "used" | "expired"
       reward_types: "credit" | "point"
       roles: "manager" | "client" | "superadmin"
+      voucher_status: "used" | "active" | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -571,8 +584,10 @@ export const Constants = {
   public: {
     Enums: {
       booking_status: ["booked", "cancelled", "pending"],
+      currency_status: ["active", "used", "expired"],
       reward_types: ["credit", "point"],
       roles: ["manager", "client", "superadmin"],
+      voucher_status: ["used", "active", "expired"],
     },
   },
 } as const

@@ -24,11 +24,9 @@ alter table "public"."points" add column "expires_at" timestamp with time zone n
 
 alter table "public"."points" add column "status" currency_status not null default 'active'::currency_status;
 
-alter table "public"."points" alter column "id" set default gen_random_uuid();
+ALTER TABLE "public"."points" DROP COLUMN "id";
 
-alter table "public"."points" alter column "id" drop identity;
-
-alter table "public"."points" alter column "id" set data type uuid using "id"::uuid;
+ALTER TABLE "public"."points" ADD COLUMN "id" UUID PRIMARY KEY DEFAULT gen_random_uuid();
 
 alter table "public"."profiles" add column "organization_id" uuid not null;
 

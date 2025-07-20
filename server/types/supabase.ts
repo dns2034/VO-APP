@@ -34,6 +34,18 @@ export type Database = {
   }
   public: {
     Tables: {
+      available_points: {
+        Row: {
+          count: number | null
+        }
+        Insert: {
+          count?: number | null
+        }
+        Update: {
+          count?: number | null
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           booked_by: string
@@ -152,9 +164,9 @@ export type Database = {
         Insert: {
           created_at?: string
           expires_at?: string
-          id: string
+          id?: string
           status?: Database["public"]["Enums"]["currency_status"]
-          user_id: string
+          user_id?: string
         }
         Update: {
           created_at?: string
@@ -296,31 +308,31 @@ export type Database = {
       }
       reward_vouchers: {
         Row: {
-          code: string
+          code: string | null
           created_at: string
           expiring_at: string
           id: string
           reward_id: string
           status: Database["public"]["Enums"]["voucher_status"]
-          user_id: string
+          user_id: string | null
         }
         Insert: {
-          code: string
+          code?: string | null
           created_at?: string
           expiring_at?: string
           id?: string
           reward_id: string
           status?: Database["public"]["Enums"]["voucher_status"]
-          user_id: string
+          user_id?: string | null
         }
         Update: {
-          code?: string
+          code?: string | null
           created_at?: string
           expiring_at?: string
           id?: string
           reward_id?: string
           status?: Database["public"]["Enums"]["voucher_status"]
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {

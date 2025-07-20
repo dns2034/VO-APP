@@ -1,4 +1,4 @@
-import { supabase } from "@/services/supabase/client";
+import { supabaseClient } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
 
@@ -8,7 +8,7 @@ type RewardUpdate = Database["public"]["Tables"]["reward_vouchers"]["Update"];
 
 export class RewardVoucherService {
   static async getAll(): Promise<RewardRow[]> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("reward_vouchers")
       .select("*")
       .eq("status", "active")
@@ -19,7 +19,7 @@ export class RewardVoucherService {
   }
 
   static async getById(id: string): Promise<RewardRow | null> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("reward_vouchers")
       .select("*")
       .eq("status", "active")
@@ -31,7 +31,7 @@ export class RewardVoucherService {
   }
 
   static async create(voucher: RewardInsert): Promise<RewardRow> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("reward_vouchers")
       .insert([voucher])
       .select()
@@ -42,7 +42,7 @@ export class RewardVoucherService {
   }
 
   static async update(id: string, updates: RewardUpdate): Promise<RewardRow> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("reward_vouchers")
       .update(updates)
       .eq("id", id)
@@ -54,7 +54,7 @@ export class RewardVoucherService {
   }
 
   static async delete(id: string): Promise<void> {
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from("reward_vouchers")
       .delete()
       .eq("id", id);

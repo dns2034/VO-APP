@@ -1,6 +1,7 @@
-import { supabase } from "@/services/supabase/client";
+import { supabaseClient } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 type ProductRow = Database["public"]["Tables"]["product_vouchers"]["Row"];
 type ProductInsert = Database["public"]["Tables"]["product_vouchers"]["Insert"];
@@ -8,7 +9,7 @@ type ProductUpdate = Database["public"]["Tables"]["product_vouchers"]["Update"];
 
 export class ProductVoucherService {
   static async getAll(): Promise<ProductRow[]> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("product_vouchers")
       .select("*")
       .eq("status", "active")
@@ -19,7 +20,7 @@ export class ProductVoucherService {
   }
 
   static async getById(id: string): Promise<ProductRow | null> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("product_vouchers")
       .select("*")
       .eq("id", id)
@@ -31,7 +32,7 @@ export class ProductVoucherService {
   }
 
   static async create(voucher: ProductInsert): Promise<ProductRow> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("product_vouchers")
       .insert([voucher])
       .select()
@@ -42,7 +43,7 @@ export class ProductVoucherService {
   }
 
   static async update(id: string, updates: ProductUpdate): Promise<ProductRow> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("product_vouchers")
       .update(updates)
       .eq("id", id)
@@ -54,7 +55,7 @@ export class ProductVoucherService {
   }
 
   static async delete(id: string): Promise<void> {
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from("product_vouchers")
       .delete()
       .eq("id", id);

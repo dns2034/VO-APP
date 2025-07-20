@@ -1,4 +1,4 @@
-import { supabase } from "@/services/supabase/client";
+import { supabaseClient } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
 
@@ -6,10 +6,9 @@ type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 type ProductInsert = Database["public"]["Tables"]["products"]["Insert"];
 type ProductUpdate = Database["public"]["Tables"]["products"]["Update"];
 
-
 export class ProductsService {
   static async getAll(): Promise<ProductRow[]> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("products")
       .select("*")
       .order("created_at", { ascending: false });
@@ -19,7 +18,7 @@ export class ProductsService {
   }
 
   static async getById(id: string): Promise<ProductRow | null> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("products")
       .select("*")
       .eq("id", id)
@@ -30,7 +29,7 @@ export class ProductsService {
   }
 
   static async create(reward: ProductInsert): Promise<ProductRow> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("products")
       .insert([reward])
       .select()
@@ -41,7 +40,7 @@ export class ProductsService {
   }
 
   static async update(id: string, updates: ProductUpdate): Promise<ProductRow> {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("products")
       .update(updates)
       .eq("id", id)
@@ -53,7 +52,7 @@ export class ProductsService {
   }
 
   static async delete(id: string): Promise<void> {
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from("products")
       .delete()
       .eq("id", id);

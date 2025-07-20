@@ -5,21 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { forgotPassword } from "@/services/forgotPassword.service";
+import useForgotPassword from "@/hooks/useForgotPassword";
 
 export default function ForgotPasswordDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
 
+  const { handleForgotPassword } = useForgotPassword();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await forgotPassword(email);
-      setEmail("");
-      setIsOpen(false);
-    } catch (error) {
-      console.error("Error resetting password:", error);
-    }
+    await handleForgotPassword(email); // Wait for completion before clearing
+    setEmail("");
+    //setIsOpen(false);
   };
 
   return (

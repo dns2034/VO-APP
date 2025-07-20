@@ -18,8 +18,8 @@ export function useProductVouchers() {
         const data = await ProductVoucherService.getAll();
         setProductVouchers(data);
       } catch (error) {
-        console.error("Error fetching product vouchers:", error);
-        setError("Failed to fetch product vouchers");
+        //console.error("Error fetching product vouchers:", error);
+        setError("Failed to fetch product vouchers" + (error as Error).message);
       } finally {
         setLoading(false);
       }
@@ -40,7 +40,7 @@ export function useProductVouchers() {
     } catch (error: unknown) {
       const errorMessage =
         (error as Error).message || "Failed to create product voucher";
-      console.error("Error creating product voucher:", error);
+      //console.error("Error creating product voucher:", error);
       setError(errorMessage);
       return { voucher: null, error: errorMessage };
     }

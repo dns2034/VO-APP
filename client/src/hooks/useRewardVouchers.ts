@@ -15,8 +15,8 @@ export function useRewardVouchers() {
         const data = await RewardVoucherService.getAll();
         setRewardVouchers(data);
       } catch (error) {
-        console.error("Error fetching reward vouchers:", error);
-        setError("Failed to fetch reward vouchers");
+        //console.error("Error fetching reward vouchers:", error);
+        setError("Failed to fetch reward vouchers" + (error as Error).message);
       } finally {
         setLoading(false);
       }

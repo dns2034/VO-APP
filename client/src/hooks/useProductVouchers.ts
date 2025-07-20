@@ -28,5 +28,23 @@ export function useProductVouchers() {
     fetchProductVouchers();
   }, []);
 
-  return { productVouchers, loading, error };
+  const createProductVoucher = async (
+    productId: string
+  ): Promise<{ voucher: ProductVoucherRow | null; error: string | null }> => {
+    try {
+      const newVoucher = await ProductVoucherService.create({
+        product_id: productId,
+      });
+      setProductVouchers((prev) => [...prev, newVoucher]);
+      return { voucher: newVoucher, error: null };
+    } catch (error: unknown) {
+      const errorMessage =
+        (error as Error).message || "Failed to create product voucher";
+      console.error("Error creating product voucher:", error);
+      setError(errorMessage);
+      return { voucher: null, error: errorMessage };
+    }
+  };
+
+  return { productVouchers, loading, error, createProductVoucher };
 }

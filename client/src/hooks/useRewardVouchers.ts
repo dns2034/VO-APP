@@ -25,5 +25,22 @@ export function useRewardVouchers() {
     fetchRewardVouchers();
   }, []);
 
-  return { rewardVouchers, loading, error };
+  const createRewardVoucher = async (
+    rewardId: string
+  ): Promise<{ voucher: RewardRow | null; error: string | null }> => {
+    try {
+      const newVoucher = await RewardVoucherService.create({
+        reward_id: rewardId,
+      });
+      setRewardVouchers((prev) => [...prev, newVoucher]);
+      return { voucher: newVoucher, error: null };
+    } catch (error: unknown) {
+      const errorMessage =
+        (error as Error).message || "Failed to create reward voucher";
+      console.error("Error creating reward voucher:", error);
+      setError(errorMessage);
+      return { voucher: null, error: errorMessage };
+    }
+  };
+  return { rewardVouchers, loading, error, createRewardVoucher };
 }

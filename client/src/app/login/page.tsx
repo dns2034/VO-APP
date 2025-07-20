@@ -1,11 +1,31 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useLogin from "@/hooks/useLogin";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login, loading, error } = useLogin();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const { data, error: loginError } = await login(email, password);
+
+    if (data && !loginError) {
+      router.push("/refer");
+    }
+  };
+
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
       <div className="hidden bg-muted lg:flex lg:items-center lg:justify-center">
@@ -42,13 +62,15 @@ export default function LoginPage() {
               Enter your credentials to access your account
             </p>
           </div>
-          <div className="grid gap-4">
+          <form onSubmit={handleSubmit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="name@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -62,12 +84,21 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
-            <Button type="submit" className="w-full">
-              Sign In
+            {error && (
+              <div className="text-sm text-red-600 text-center">{error}</div>
+            )}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
             </Button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

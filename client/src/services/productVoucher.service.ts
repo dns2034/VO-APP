@@ -1,7 +1,6 @@
 import { supabaseClient } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
-import { SupabaseClient } from "@supabase/supabase-js";
 
 type ProductRow = Database["public"]["Tables"]["product_vouchers"]["Row"];
 type ProductInsert = Database["public"]["Tables"]["product_vouchers"]["Insert"];

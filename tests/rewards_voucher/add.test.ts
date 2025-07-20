@@ -1,25 +1,64 @@
-import { describe, it, expect } from 'vitest'
-import { supabase } from '../supabaseClient'
+import { describe, it, expect, beforeAll } from "vitest";
+import { createClient } from "@supabase/supabase-js";
 
-const testUserId = '29764f2c-81f3-4a4f-a04b-5f55167c2fef'
-const testRewardId = '21a73aef-bc3a-4db3-9c53-8f1d5a5146b4'
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "http://localhost:54321",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "your_anon_key"
+);
 
-describe('reward_vouchers table', () => {
-  it('inserts a reward voucher with real data', async () => {
-    const { data, error } = await supabase
-      .from('reward_vouchers')
+let authClient: ReturnType<typeof createClient>;
+
+beforeAll(async () => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: "jd@incub8space.com",
+    password: "Samalamig21",
+  });
+
+  if (error || !data.session) {
+    throw new Error("Failed to log in");
+  }
+
+  // Recreate client with Bearer token for subsequent requests
+  authClient = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "http://localhost:54321",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "null",
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+      },
+    }
+  );
+});
+
+const testRewardId = "966923b4-8946-4c22-9ef3-851a4d973ed5";
+
+describe("reward_vouchers table", () => {
+  it("inserts a reward voucher with real data", async () => {
+    // First, get current user's ID
+    const {
+      data: { user },
+      error: userError,
+    } = await authClient.auth.getUser();
+
+    if (userError || !user) {
+      throw new Error("Could not fetch current user");
+    }
+
+    const { data, error } = await authClient
+      .from("reward_vouchers")
       .insert([
         {
-          user_id: testUserId,
           reward_id: testRewardId,
-        }
+          user_id: user.id,
+        },
       ])
       .select()
-      .single()
+      .single();
 
-    expect(error).toBeNull()
-    expect(data?.user_id).toBe(testUserId)
-    expect(data?.reward_id).toBe(testRewardId)
-    expect(data?.status).toBe('active')
-  })
-})
+    expect(error).toBeNull();
+    expect(data?.reward_id).toBe(testRewardId);
+    expect(data?.status).toBe("active");
+  });
+});

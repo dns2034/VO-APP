@@ -11,6 +11,7 @@ export class ProductVoucherService {
     const { data, error } = await supabase
       .from("product_vouchers")
       .select("*")
+      .eq("status", "active")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
@@ -22,6 +23,7 @@ export class ProductVoucherService {
       .from("product_vouchers")
       .select("*")
       .eq("id", id)
+      .eq("status", "active")
       .single();
 
     if (error) throw error;

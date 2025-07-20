@@ -28,7 +28,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster />
+        <Toaster
+          closeButton
+          toastOptions={{
+            className: "bg-white",
+            classNames: {
+              closeButton: "text-black bg-gray-200 hover:bg-gray-300",
+              description: "!text-gray-700",
+            },
+          }}
+        />
         {children}
       </body>
     </html>

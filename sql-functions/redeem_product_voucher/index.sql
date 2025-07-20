@@ -4,40 +4,40 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 DECLARE
-  required_points int;
-  available_points int;
+  required_credits int;
+  available_credits int;
   remaining int;
   r record;
 BEGIN
-  -- 1. Get the required points from the reward
-  SELECT price INTO required_points
-  FROM rewards
-  WHERE id = NEW.reward_id;
+  -- 1. Get the required credits from the product
+  SELECT price INTO required_credits
+  FROM products
+  WHERE id = NEW.product_id;
 
-  -- 2. Count how many active points the user has
-  SELECT COUNT(*) INTO available_points
+  -- 2. Count how many active credits the user has
+  SELECT COUNT(*) INTO available_credits
   FROM public.points
   WHERE user_id = NEW.user_id AND status = 'active';
 
   -- 3. Check if user has enough
-  IF available_points < required_points THEN
-    RAISE EXCEPTION 'User does not have enough points. Required: %, Available: %',
-      required_points, available_points;
+  IF available_credits < required_credits THEN
+    RAISE EXCEPTION 'User does not have enough credits. Required: %, Available: %',
+      required_credits, available_credits;
   END IF;
 
-  -- 4. Deduct the required number of points from the oldest active rows
-  remaining := required_points;
+  -- 4. Deduct the required number of credits from the oldest active rows
+  remaining := required_credits;
 
   FOR r IN
     SELECT id
-    FROM public.points
+    FROM public.credits
     WHERE user_id = NEW.user_id AND status = 'active'
     ORDER BY created_at ASC
     FOR UPDATE SKIP LOCKED
   LOOP
     EXIT WHEN remaining <= 0;
 
-    UPDATE public.points
+    UPDATE public.credits
     SET status = 'used'
     WHERE id = r.id;
 

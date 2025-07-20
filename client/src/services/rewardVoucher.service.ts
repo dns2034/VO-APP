@@ -1,0 +1,64 @@
+import { supabase } from "@/services/supabase/client";
+
+import { Database } from "@/types/supabase";
+
+type ProductRow = Database["public"]["Tables"]["product_vouchers"]["Row"];
+type ProductInsert = Database["public"]["Tables"]["product_vouchers"]["Insert"];
+type ProductUpdate = Database["public"]["Tables"]["product_vouchers"]["Update"];
+
+export class ProductVoucherService {
+  static async getAll(): Promise<ProductRow[]> {
+    const { data, error } = await supabase
+      .from("reward_vouchers")
+      .select("*")
+      .eq("status", "active")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return data as ProductRow[];
+  }
+
+  static async getById(id: string): Promise<ProductRow | null> {
+    const { data, error } = await supabase
+      .from("reward_vouchers")
+      .select("*")
+      .eq("status", "active")
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
+  static async create(voucher: ProductInsert): Promise<ProductRow> {
+    const { data, error } = await supabase
+      .from("reward_vouchers")
+      .insert([voucher])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
+  static async update(id: string, updates: ProductUpdate): Promise<ProductRow> {
+    const { data, error } = await supabase
+      .from("reward_vouchers")
+      .update(updates)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
+  static async delete(id: string): Promise<void> {
+    const { error } = await supabase
+      .from("reward_vouchers")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+  }
+}

@@ -184,7 +184,7 @@ export type Database = {
           expiring_at: string | null;
           id: string;
           product_id: string;
-          status: Database["public"]["Enums"]["currency_status"];
+          status: Database["public"]["Enums"]["voucher_status"];
           user_id: string;
         };
         Insert: {
@@ -193,7 +193,7 @@ export type Database = {
           expiring_at?: string | null;
           id?: string;
           product_id: string;
-          status: Database["public"]["Enums"]["currency_status"];
+          status?: Database["public"]["Enums"]["voucher_status"];
           user_id?: string;
         };
         Update: {
@@ -202,7 +202,7 @@ export type Database = {
           expiring_at?: string | null;
           id?: string;
           product_id?: string;
-          status?: Database["public"]["Enums"]["currency_status"];
+          status?: Database["public"]["Enums"]["voucher_status"];
           user_id?: string;
         };
         Relationships: [

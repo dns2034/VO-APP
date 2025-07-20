@@ -53,6 +53,7 @@ type RedemptionCandidate = {
 export default function RewardsPage() {
   const { rewards } = useRewards();
   const { products } = useProducts();
+
   const { createRewardVoucher } = useRewardVouchers();
   const { createProductVoucher } = useProductVouchers();
   const [redeemingId, setRedeemingId] = useState<string | null>(null);

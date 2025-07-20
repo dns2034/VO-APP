@@ -2,12 +2,12 @@ import { supabase } from "@/services/supabase/client";
 
 import { Database } from "@/types/supabase";
 
-type ProductRow = Database["public"]["Tables"]["product_vouchers"]["Row"];
-type ProductInsert = Database["public"]["Tables"]["product_vouchers"]["Insert"];
-type ProductUpdate = Database["public"]["Tables"]["product_vouchers"]["Update"];
+type RewardRow = Database["public"]["Tables"]["reward_vouchers"]["Row"];
+type RewardInsert = Database["public"]["Tables"]["reward_vouchers"]["Insert"];
+type RewardUpdate = Database["public"]["Tables"]["reward_vouchers"]["Update"];
 
-export class ProductVoucherService {
-  static async getAll(): Promise<ProductRow[]> {
+export class RewardVoucherService {
+  static async getAll(): Promise<RewardRow[]> {
     const { data, error } = await supabase
       .from("reward_vouchers")
       .select("*")
@@ -15,10 +15,10 @@ export class ProductVoucherService {
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data as ProductRow[];
+    return data as RewardRow[];
   }
 
-  static async getById(id: string): Promise<ProductRow | null> {
+  static async getById(id: string): Promise<RewardRow | null> {
     const { data, error } = await supabase
       .from("reward_vouchers")
       .select("*")
@@ -30,7 +30,7 @@ export class ProductVoucherService {
     return data;
   }
 
-  static async create(voucher: ProductInsert): Promise<ProductRow> {
+  static async create(voucher: RewardInsert): Promise<RewardRow> {
     const { data, error } = await supabase
       .from("reward_vouchers")
       .insert([voucher])
@@ -41,7 +41,7 @@ export class ProductVoucherService {
     return data;
   }
 
-  static async update(id: string, updates: ProductUpdate): Promise<ProductRow> {
+  static async update(id: string, updates: RewardUpdate): Promise<RewardRow> {
     const { data, error } = await supabase
       .from("reward_vouchers")
       .update(updates)

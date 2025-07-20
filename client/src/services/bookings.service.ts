@@ -1,4 +1,4 @@
-import Database from "@/types/supabase";
+import { Database } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];

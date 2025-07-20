@@ -21,6 +21,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -35,25 +45,104 @@ import {
   SidebarInset,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-
+import { toast } from "sonner";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
 import { useRewardVouchers } from "@/hooks/useRewardVouchers";
 import { useProductVouchers } from "@/hooks/useProductVouchers";
 
+type RedemptionCandidate = {
+  id: string;
+  name: string;
+  type: "product" | "reward";
+};
+
 export default function RewardsPage() {
   const { rewards } = useRewards();
   const { products } = useProducts();
-  const { rewardVouchers, loading: rewardVouchersLoading } =
-    useRewardVouchers();
-  const { productVouchers, loading: productVouchersLoading } =
-    useProductVouchers();
+  const {
+    rewardVouchers,
+    loading: rewardVouchersLoading,
+    createRewardVoucher,
+  } = useRewardVouchers();
+  const {
+    productVouchers,
+    loading: productVouchersLoading,
+    createProductVoucher,
+  } = useProductVouchers();
+  const [redeemingId, setRedeemingId] = useState<string | null>(null);
   const [voucherDialogOpen, setVoucherDialogOpen] = useState(false);
+  const [redemptionCandidate, setRedemptionCandidate] =
+    useState<RedemptionCandidate | null>(null);
+
+  const handleRedeemReward = async (rewardId: string, rewardName: string) => {
+    setRedeemingId(rewardId);
+    const { voucher, error } = await createRewardVoucher(rewardId);
+    if (voucher) {
+      toast.success("Reward Redeemed!", {
+        description: `Successfully redeemed ${rewardName}. Check your vouchers.`,
+      });
+    } else {
+      toast.error("Redemption Failed", {
+        description: error || "Failed to redeem reward. Please try again.",
+      });
+    }
+    setRedeemingId(null);
+  };
+
+  const handleRedeemProduct = async (
+    productId: string,
+    productName: string
+  ) => {
+    setRedeemingId(productId);
+    const { voucher, error } = await createProductVoucher(productId);
+    if (voucher) {
+      toast.success("Product Redeemed!", {
+        description: `Successfully redeemed ${productName}. Check your vouchers.`,
+      });
+    } else {
+      toast.error("Redemption Failed", {
+        description: error || "Failed to redeem product. Please try again.",
+      });
+    }
+    setRedeemingId(null);
+  };
+
+  const handleConfirmRedemption = () => {
+    if (!redemptionCandidate) return;
+
+    if (redemptionCandidate.type === "product") {
+      handleRedeemProduct(redemptionCandidate.id, redemptionCandidate.name);
+    } else {
+      handleRedeemReward(redemptionCandidate.id, redemptionCandidate.name);
+    }
+    setRedemptionCandidate(null);
+  };
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
+        <AlertDialog
+          open={!!redemptionCandidate}
+          onOpenChange={(open) => !open && setRedemptionCandidate(null)}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirm Redemption</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to redeem &quot;
+                {redemptionCandidate?.name}&quot;?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmRedemption}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -195,7 +284,7 @@ export default function RewardsPage() {
             <TabsContent value="products">
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                 {products.map((product) => (
-                  <Card key={product.name} className="pt-0">
+                  <Card key={product.id} className="pt-0">
                     <CardHeader className="p-0">
                       <div className="relative aspect-video">
                         <Image
@@ -214,7 +303,18 @@ export default function RewardsPage() {
                     </CardContent>
                     <CardFooter className="flex justify-between items-center">
                       <p className="font-semibold">{product.price}</p>
-                      <Button>Redeem</Button>
+                      <Button
+                        onClick={() =>
+                          setRedemptionCandidate({
+                            id: product.id,
+                            name: product.name,
+                            type: "product",
+                          })
+                        }
+                        disabled={redeemingId === product.id}
+                      >
+                        {redeemingId === product.id ? "Redeeming..." : "Redeem"}
+                      </Button>
                     </CardFooter>
                   </Card>
                 ))}
@@ -223,7 +323,7 @@ export default function RewardsPage() {
             <TabsContent value="rewards">
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
                 {rewards.map((reward) => (
-                  <Card key={reward.name} className="pt-0">
+                  <Card key={reward.id} className="pt-0">
                     <CardHeader className="p-0">
                       <div className="relative aspect-video">
                         <Image
@@ -242,7 +342,18 @@ export default function RewardsPage() {
                     </CardContent>
                     <CardFooter className="flex justify-between items-center">
                       <p className="font-semibold">{reward.price}</p>
-                      <Button>Redeem</Button>
+                      <Button
+                        onClick={() =>
+                          setRedemptionCandidate({
+                            id: reward.id,
+                            name: reward.name,
+                            type: "reward",
+                          })
+                        }
+                        disabled={redeemingId === reward.id}
+                      >
+                        {redeemingId === reward.id ? "Redeeming..." : "Redeem"}
+                      </Button>
                     </CardFooter>
                   </Card>
                 ))}

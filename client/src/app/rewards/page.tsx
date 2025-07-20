@@ -144,7 +144,7 @@ export default function RewardsPage() {
           </AlertDialogContent>
         </AlertDialog>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
+          <div className="flex items-center gap-2 px-4 w-full">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
@@ -161,22 +161,16 @@ export default function RewardsPage() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-          </div>
-        </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          <header className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Rewards</h1>
-              <p className="text-muted-foreground">
-                Redeem your points for amazing products and rewards.
-              </p>
-            </div>
+            {/* Move the button here, right after the breadcrumb */}
+            <div className="flex-1" />
             <Dialog
               open={voucherDialogOpen}
               onOpenChange={setVoucherDialogOpen}
             >
               <DialogTrigger asChild>
-                <Button variant="outline">View Vouchers</Button>
+                <Button variant="outline" className="ml-auto" size="sm">
+                  My Vouchers
+                </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
@@ -275,6 +269,17 @@ export default function RewardsPage() {
                 </Tabs>
               </DialogContent>
             </Dialog>
+          </div>
+        </header>
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+          <header className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Rewards</h1>
+              <p className="text-muted-foreground">
+                Redeem your points for amazing products and rewards.
+              </p>
+            </div>
+            {/* Remove the Dialog/Button from here */}
           </header>
           <Tabs defaultValue="products" className="w-full">
             <TabsList className="grid w-full grid-cols-2 md:w-1/3 lg:w-1/4">

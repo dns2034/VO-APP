@@ -1,12 +1,12 @@
 import { Database } from "@/types/supabase";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { supabaseClient } from "@/services/supabase/client";
 
 type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];
 type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"];
 type BookingUpdate = Database["public"]["Tables"]["bookings"]["Update"];
 
 export class BookingsService {
-  static async getAll(supabaseClient: SupabaseClient): Promise<BookingRow[]> {
+  static async getAll(): Promise<BookingRow[]> {
     const { data, error } = await supabaseClient
       .from("bookings")
       .select("*")
@@ -15,10 +15,7 @@ export class BookingsService {
     if (error) throw error;
     return data as BookingRow[];
   }
-  static async getById(
-    supabaseClient: SupabaseClient,
-    id: string
-  ): Promise<BookingRow | null> {
+  static async getById(id: string): Promise<BookingRow | null> {
     const { data, error } = await supabaseClient
       .from("bookings")
       .select("*")
@@ -28,10 +25,7 @@ export class BookingsService {
     if (error) throw error;
     return data;
   }
-  static async create(
-    supabaseClient: SupabaseClient,
-    booking: BookingInsert
-  ): Promise<BookingRow> {
+  static async create(booking: BookingInsert): Promise<BookingRow> {
     const { data, error } = await supabaseClient
       .from("bookings")
       .insert([booking])
@@ -41,11 +35,7 @@ export class BookingsService {
     if (error) throw error;
     return data;
   }
-  static async update(
-    supabaseClient: SupabaseClient,
-    id: string,
-    updates: BookingUpdate
-  ): Promise<BookingRow> {
+  static async update(id: string, updates: BookingUpdate): Promise<BookingRow> {
     const { data, error } = await supabaseClient
       .from("bookings")
       .update(updates)

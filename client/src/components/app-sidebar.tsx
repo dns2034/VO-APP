@@ -1,13 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import {
-  BookOpen,
-  SquareTerminal,
-} from "lucide-react"
+import * as React from "react";
+import { BookOpen, SquareTerminal } from "lucide-react";
+import Image from "next/image";
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -15,7 +13,7 @@ import {
   SidebarHeader,
   SidebarRail,
   SidebarMenuButton,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {
@@ -35,39 +33,42 @@ const data = {
       title: "Book",
       url: "#",
       icon: BookOpen,
-
     },
     {
       title: "Rewards",
       url: "#",
       icon: BookOpen,
-
     },
     {
       title: "Businesses",
       url: "#",
       icon: BookOpen,
-
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenuButton
-              size="lg"
-              className=" primary data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-                <img src="/logo.webp" className="" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Incub8Space</span>
-                <span className="truncate text-xs">Virtual office</span>
-              </div>
-            </SidebarMenuButton>
+          size="lg"
+          className=" primary data-[state=open]:text-sidebar-accent-foreground"
+        >
+          <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+            <Image
+              src="/logo.webp"
+              alt="Site Logo"
+              className=""
+              height={32}
+              width={32}
+            />
+          </div>
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-medium">Incub8Space</span>
+            <span className="truncate text-xs">Virtual office</span>
+          </div>
+        </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
@@ -77,5 +78,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

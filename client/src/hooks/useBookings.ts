@@ -46,6 +46,18 @@ export function useBookings() {
     }
   };
 
+  const updateBooking = async (id: string, updates: BookingUpdate) => {
+    try {
+      const updatedBooking = await BookingsService.update(id, updates);
+      setBookings((prev) =>
+        prev.map((booking) => (booking.id === id ? updatedBooking : booking))
+      );
+      return updatedBooking;
+    } catch (error) {
+      throw new Error("Failed to update booking: " + (error as Error).message);
+    }
+  };
+
   return {
     bookings,
     loading,
@@ -53,5 +65,6 @@ export function useBookings() {
     cancelBooking,
     fetchBookings,
     createBooking,
+    updateBooking,
   };
 }

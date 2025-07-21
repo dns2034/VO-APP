@@ -29,20 +29,16 @@ export function useProductVouchers() {
   }, []);
 
   const createProductVoucher = async (
-    productId: string
-  ): Promise<{ voucher: ProductVoucherRow | null; error: string | null }> => {
+    voucher: Omit<ProductVoucherRow, "id" | "created_at">
+  ): Promise<ProductVoucherRow> => {
     try {
-      const newVoucher = await ProductVoucherService.create({
-        product_id: productId,
-      });
-      setProductVouchers((prev) => [...prev, newVoucher]);
-      return { voucher: newVoucher, error: null };
-    } catch (error: unknown) {
-      const errorMessage =
-        (error as Error).message || "Failed to create product voucher";
-      //console.error("Error creating product voucher:", error);
-      setError(errorMessage);
-      return { voucher: null, error: errorMessage };
+      const newVoucher = await ProductVoucherService.create(voucher);
+      setProductVouchers((prev) => [newVoucher, ...prev]);
+      return newVoucher;
+    } catch (error) {
+      throw new Error(
+        "Failed to create product voucher: " + (error as Error).message
+      );
     }
   };
 

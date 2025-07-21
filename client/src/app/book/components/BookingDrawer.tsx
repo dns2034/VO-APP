@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/select";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { BookingsService } from "@/services/bookings.service";
 import { useBranches } from "@/hooks/useBranches";
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";

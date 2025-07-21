@@ -1,5 +1,8 @@
 "use client";
 import { useBookings } from "@/hooks/useBookings";
+import { useSpaces } from "@/hooks/useSpaces";
+import { useBranches } from "@/hooks/useBranches";
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -18,30 +21,53 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { useBookings } from "@/hooks/useBookings";
 import { toast } from "sonner";
 import BookingDrawer from "./components/BookingDrawer";
-
-const branches = [
-  { id: "branch-1", name: "Main Branch" },
-  { id: "branch-2", name: "Downtown Branch" },
-  { id: "branch-3", name: "Uptown Branch" },
-];
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function BookingPage() {
   const { bookings, fetchBookings, cancelBooking, loading } = useBookings();
+  const { spaces } = useSpaces();
+  const { branches } = useBranches();
+
+  // For displaying branch/space names in bookings list
+  const [branchMap, setBranchMap] = useState<Record<string, string>>({});
+  const [spaceMap, setSpaceMap] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchBookings();
   }, [fetchBookings]);
+
+  // Build branch/space maps for display
+  useEffect(() => {
+    // Build branch map from branches
+    const branchNames: Record<string, string> = {};
+    branches.forEach((branch) => {
+      branchNames[branch.id] = branch.name;
+    });
+    setBranchMap(branchNames);
+
+    // Build space map from spaces
+    const spaceNames: Record<string, string> = {};
+    spaces.forEach((space) => {
+      spaceNames[space.id] = space.name;
+    });
+    setSpaceMap(spaceNames);
+  }, [branches, spaces]);
 
   const handleCancel = async (id: string) => {
     try {
       await cancelBooking(id);
       toast.success("Booking cancelled");
       fetchBookings();
-    } catch (err) {
-      toast.error("Failed to cancel booking");
+    } catch (error) {
+      toast.error("Failed to cancel booking" + error);
     }
   };
 
@@ -90,7 +116,14 @@ export default function BookingPage() {
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
                         <span className="font-semibold">
-                          {booking.branch_name || booking.branch || "Branch"}
+                          {branchMap[booking.branch] ||
+                            booking.branch ||
+                            "Branch"}
+                        </span>
+                        <span className="font-semibold">
+                          {spaceMap[booking.space_id] ||
+                            booking.space_id ||
+                            "Space"}
                         </span>
                         <span className="text-sm text-muted-foreground">
                           {booking.date

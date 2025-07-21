@@ -3,6 +3,8 @@ import { BookingsService } from "@/services/bookings.service";
 import { Database } from "@/types/supabase";
 
 type BookingRow = Database["public"]["Tables"]["bookings"]["Row"];
+type BookingInsert = Database["public"]["Tables"]["bookings"]["Insert"];
+type BookingUpdate = Database["public"]["Tables"]["bookings"]["Update"];
 
 export function useBookings() {
   const [bookings, setBookings] = useState<BookingRow[]>([]);
@@ -34,11 +36,22 @@ export function useBookings() {
     }
   };
 
+  const createBooking = async (booking: BookingInsert) => {
+    try {
+      const newBooking = await BookingsService.create(booking);
+      setBookings((prev) => [newBooking, ...prev]);
+      return newBooking;
+    } catch (error) {
+      throw new Error("Failed to create booking: " + (error as Error).message);
+    }
+  };
+
   return {
     bookings,
     loading,
     error,
     cancelBooking,
     fetchBookings,
+    createBooking,
   };
 }

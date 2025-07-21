@@ -1,5 +1,5 @@
 "use client";
-
+import { useBookings } from "@/hooks/useBookings";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";

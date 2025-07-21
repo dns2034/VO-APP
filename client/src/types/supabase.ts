@@ -34,51 +34,33 @@ export type Database = {
   };
   public: {
     Tables: {
-      available_points: {
-        Row: {
-          count: number | null;
-        };
-        Insert: {
-          count?: number | null;
-        };
-        Update: {
-          count?: number | null;
-        };
-        Relationships: [];
-      };
       bookings: {
         Row: {
           booked_by: string;
-          booking_status: Database["public"]["Enums"]["booking_status"];
-          checked_in_at: string | null;
-          checked_out_at: string | null;
           created_at: string;
           date: string;
           end_time: string;
-          id: number;
+          id: string;
           start_time: string;
+          status: Database["public"]["Enums"]["booking_status"];
         };
         Insert: {
           booked_by: string;
-          booking_status?: Database["public"]["Enums"]["booking_status"];
-          checked_in_at?: string | null;
-          checked_out_at?: string | null;
           created_at?: string;
           date: string;
           end_time: string;
-          id?: number;
+          id?: string;
           start_time: string;
+          status?: Database["public"]["Enums"]["booking_status"];
         };
         Update: {
           booked_by?: string;
-          booking_status?: Database["public"]["Enums"]["booking_status"];
-          checked_in_at?: string | null;
-          checked_out_at?: string | null;
           created_at?: string;
           date?: string;
           end_time?: string;
-          id?: number;
+          id?: string;
           start_time?: string;
+          status?: Database["public"]["Enums"]["booking_status"];
         };
         Relationships: [];
       };
@@ -185,7 +167,7 @@ export type Database = {
           id: string;
           product_id: string;
           status: Database["public"]["Enums"]["voucher_status"];
-          user_id: string;
+          user_id: string | null;
         };
         Insert: {
           code?: string | null;
@@ -194,7 +176,7 @@ export type Database = {
           id?: string;
           product_id: string;
           status?: Database["public"]["Enums"]["voucher_status"];
-          user_id?: string;
+          user_id?: string | null;
         };
         Update: {
           code?: string | null;
@@ -203,7 +185,7 @@ export type Database = {
           id?: string;
           product_id?: string;
           status?: Database["public"]["Enums"]["voucher_status"];
-          user_id?: string;
+          user_id?: string | null;
         };
         Relationships: [
           {
@@ -429,7 +411,7 @@ export type Database = {
           branch_id: string;
           created_at?: string;
           id?: string;
-          is_available: boolean;
+          is_available?: boolean;
           name: string;
         };
         Update: {

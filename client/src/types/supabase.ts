@@ -41,6 +41,7 @@ export type Database = {
           date: string;
           end_time: string;
           id: string;
+          space_id: string;
           start_time: string;
           status: Database["public"]["Enums"]["booking_status"];
         };
@@ -50,6 +51,7 @@ export type Database = {
           date: string;
           end_time: string;
           id?: string;
+          space_id: string;
           start_time: string;
           status?: Database["public"]["Enums"]["booking_status"];
         };
@@ -59,10 +61,19 @@ export type Database = {
           date?: string;
           end_time?: string;
           id?: string;
+          space_id?: string;
           start_time?: string;
           status?: Database["public"]["Enums"]["booking_status"];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "bookings_space_id_fkey";
+            columns: ["space_id"];
+            isOneToOne: false;
+            referencedRelation: "spaces";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       branches: {
         Row: {
@@ -240,32 +251,21 @@ export type Database = {
           avatar_url: string | null;
           created_at: string;
           id: string;
-          organization_id: string;
           role: Database["public"]["Enums"]["roles"];
         };
         Insert: {
           avatar_url?: string | null;
           created_at?: string;
           id: string;
-          organization_id: string;
           role?: Database["public"]["Enums"]["roles"];
         };
         Update: {
           avatar_url?: string | null;
           created_at?: string;
           id?: string;
-          organization_id?: string;
           role?: Database["public"]["Enums"]["roles"];
         };
-        Relationships: [
-          {
-            foreignKeyName: "profiles_organization_id_fkey";
-            columns: ["organization_id"];
-            isOneToOne: false;
-            referencedRelation: "organizations";
-            referencedColumns: ["id"];
-          }
-        ];
+        Relationships: [];
       };
       referrals: {
         Row: {
@@ -427,6 +427,35 @@ export type Database = {
             columns: ["branch_id"];
             isOneToOne: false;
             referencedRelation: "branches";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      user_organizations: {
+        Row: {
+          created_at: string;
+          id: string;
+          organization_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          organization_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          organization_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_organization_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
             referencedColumns: ["id"];
           }
         ];

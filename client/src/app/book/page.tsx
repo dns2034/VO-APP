@@ -1,16 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import {
@@ -28,6 +18,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useBookings } from "@/hooks/useBookings";
+import { toast } from "sonner";
+import BookingDrawer from "./components/BookingDrawer";
 
 const branches = [
   { id: "branch-1", name: "Main Branch" },
@@ -36,14 +29,20 @@ const branches = [
 ];
 
 export default function BookingPage() {
-  const [date, setDate] = useState<Date | undefined>(undefined);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [branch, setBranch] = useState<string>("");
+  const { bookings, fetchBookings, cancelBooking, loading } = useBookings();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // handle booking logic here
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
+
+  const handleCancel = async (id: string) => {
+    try {
+      await cancelBooking(id);
+      toast.success("Booking cancelled");
+      fetchBookings();
+    } catch (err) {
+      toast.error("Failed to cancel booking");
+    }
   };
 
   return (
@@ -70,76 +69,50 @@ export default function BookingPage() {
                 </BreadcrumbList>
               </Breadcrumb>
               <div className="flex-1" />
-              <Button variant="outline">My Bookings</Button>
+              <BookingDrawer />
             </div>
           </header>
 
           <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <header className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold tracking-tight">Book</h1>
-                <p className="text-muted-foreground">
-                  Book your amazing spaces.
-                </p>
-              </div>
-              {/* Remove the Dialog/Button from here */}
-            </header>
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <Label className="mb-2 block">Select Date</Label>
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  className="rounded-md border"
-                />
-                {date && (
-                  <div className="mt-2 text-sm text-muted-foreground">
-                    Selected: {format(date, "PPP")}
-                  </div>
-                )}
-              </div>
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <Label htmlFor="start-time">Start Time</Label>
-                  <Input
-                    id="start-time"
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    required
-                  />
+            {/* Bookings List */}
+            <section>
+              <h2 className="text-xl font-semibold mb-2">My Bookings</h2>
+              {loading ? (
+                <div className="text-muted-foreground">Loading bookings...</div>
+              ) : bookings.length === 0 ? (
+                <div className="text-muted-foreground">No bookings found.</div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {bookings.map((booking) => (
+                    <div
+                      key={booking.id}
+                      className="rounded-lg border p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white shadow"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
+                        <span className="font-semibold">
+                          {booking.branch_name || booking.branch || "Branch"}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          {booking.date
+                            ? format(new Date(booking.date), "PPP")
+                            : ""}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          {booking.start_time} - {booking.end_time}
+                        </span>
+                      </div>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleCancel(booking.id)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex-1">
-                  <Label htmlFor="end-time">End Time</Label>
-                  <Input
-                    id="end-time"
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="branch">Select Branch</Label>
-                <Select value={branch} onValueChange={setBranch} required>
-                  <SelectTrigger id="branch">
-                    <SelectValue placeholder="Choose a branch" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {branches.map((b) => (
-                      <SelectItem key={b.id} value={b.id}>
-                        {b.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button type="submit" className="w-full">
-                Book Now
-              </Button>
-            </form>
+              )}
+            </section>
           </main>
         </SidebarInset>
       </SidebarProvider>

@@ -23,6 +23,8 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { BookingsService } from "@/services/bookings.service";
 import { useBranches } from "@/hooks/useBranches";
+import { useBookings } from "@/hooks/useBookings";
+import { useSpaces } from "@/hooks/useSpaces";
 
 export default function BookingDrawer() {
   const [open, setOpen] = useState(false);
@@ -31,33 +33,44 @@ export default function BookingDrawer() {
   const [endTime, setEndTime] = useState("");
   const [branch, setBranch] = useState<string>("");
   const [loading, setLoading] = useState(false);
-
   const { branches, loading: branchesLoading } = useBranches();
+  const { spaces, loading: spacesLoading } = useSpaces();
+  const [spaceId, setSpaceId] = useState<string>("");
+
+  // Filter spaces by selected branch
+  const filteredSpaces = branch
+    ? spaces.filter((s) => s.branch_id === branch)
+    : [];
+
+  const { createBooking, fetchBookings } = useBookings();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !startTime || !endTime || !branch) {
+    if (!date || !startTime || !endTime || !branch || !spaceId) {
       toast.error("Please fill in all fields.");
       return;
     }
     setLoading(true);
     try {
-      await BookingsService.create({
+      await createBooking({
         date: date.toISOString().slice(0, 10),
         start_time: startTime,
         end_time: endTime,
-        branch,
-        status: "active",
+        space_id: spaceId,
+        status: "booked",
       });
       toast.success("Booking created!");
       setDate(undefined);
       setStartTime("");
       setEndTime("");
       setBranch("");
+      setSpaceId("");
       setOpen(false);
-    } catch (err: any) {
+      fetchBookings();
+    } catch (err: unknown) {
       toast.error(
-        "Failed to create booking: " + (err?.message || "Unknown error")
+        "Failed to create booking: " +
+          (err instanceof Error ? err.message : "Unknown error")
       );
     } finally {
       setLoading(false);
@@ -88,6 +101,49 @@ export default function BookingDrawer() {
               </div>
             )}
           </div>
+          <div>
+            <Label htmlFor="branch">Select Branch</Label>
+            <Select
+              value={branch}
+              onValueChange={(val) => {
+                setBranch(val);
+                setSpaceId(""); // Reset space selection when branch changes
+              }}
+              required
+              disabled={branchesLoading}
+            >
+              <SelectTrigger id="branch">
+                <SelectValue placeholder="Choose a branch" />
+              </SelectTrigger>
+              <SelectContent>
+                {branches.map((b) => (
+                  <SelectItem key={b.id} value={b.id}>
+                    {b.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="space">Select Space</Label>
+            <Select
+              value={spaceId}
+              onValueChange={setSpaceId}
+              required
+              disabled={!branch || spacesLoading}
+            >
+              <SelectTrigger id="space">
+                <SelectValue placeholder="Choose a space" />
+              </SelectTrigger>
+              <SelectContent>
+                {filteredSpaces.map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="flex gap-4">
             <div className="flex-1">
               <Label htmlFor="start-time">Start Time</Label>
@@ -109,26 +165,6 @@ export default function BookingDrawer() {
                 required
               />
             </div>
-          </div>
-          <div>
-            <Label htmlFor="branch">Select Branch</Label>
-            <Select
-              value={branch}
-              onValueChange={setBranch}
-              required
-              disabled={branchesLoading}
-            >
-              <SelectTrigger id="branch">
-                <SelectValue placeholder="Choose a branch" />
-              </SelectTrigger>
-              <SelectContent>
-                {branches.map((b) => (
-                  <SelectItem key={b.id} value={b.id}>
-                    {b.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Booking..." : "Book Now"}

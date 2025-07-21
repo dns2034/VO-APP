@@ -2,7 +2,6 @@
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 import { useBranches } from "@/hooks/useBranches";
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -23,13 +22,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { toast } from "sonner";
 import BookingDrawer from "./components/BookingDrawer";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export default function BookingPage() {
   const { bookings, fetchBookings, cancelBooking, loading } = useBookings();
@@ -116,9 +108,10 @@ export default function BookingPage() {
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
                         <span className="font-semibold">
-                          {branchMap[booking.branch] ||
-                            booking.branch ||
-                            "Branch"}
+                          {branchMap[
+                            spaces.find((s) => s.id === booking.space_id)
+                              ?.branch_id ?? ""
+                          ] || "Branch"}
                         </span>
                         <span className="font-semibold">
                           {spaceMap[booking.space_id] ||

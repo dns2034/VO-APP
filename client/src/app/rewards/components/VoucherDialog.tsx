@@ -27,6 +27,7 @@ import {
   DialogHeader as UIDialogHeader,
   DialogTitle as UIDialogTitle,
 } from "@/components/ui/dialog";
+import { Share2 } from "lucide-react";
 
 const PAGE_SIZE = 4;
 
@@ -124,6 +125,28 @@ export default function VoucherDialog() {
     setQrValue(null);
   };
 
+  // Share dialog state
+  const handleShare = async (code: string, name: string) => {
+    const shareData = {
+      title: "Voucher Code",
+      text: `Here is my voucher code for "${name}": ${code}`,
+      url: window.location.href,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        alert(
+          "Failed to share voucher. Please try copying the code manually." + err
+        );
+      }
+    } else {
+      // Fallback: copy to clipboard
+      await navigator.clipboard.writeText(`${name}: ${code}`);
+      alert("Voucher code copied to clipboard!");
+    }
+  };
+
   return (
     <>
       <Dialog open={voucherDialogOpen} onOpenChange={setVoucherDialogOpen}>
@@ -162,20 +185,36 @@ export default function VoucherDialog() {
                           <span className="text-base font-semibold text-gray-900 truncate flex-1">
                             {productNames[voucher.product_id] || voucher.code}
                           </span>
-                          <span className="font-mono text-xs sm:text-sm px-2 py-1 rounded bg-blue-600 text-white">
+                          <span className="font-mono text-xs sm:text-sm px-2 py-1 rounded bg-(--primary) text-white">
                             {voucher.code}
                           </span>
                         </div>
-                        {/* Second row: QR and expiry, always row on all screens */}
+                        {/* Second row: QR, expiry, share */}
                         <div className="flex flex-row items-center justify-between gap-2 mt-1">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-fit"
-                            onClick={() => openQr(voucher.code)}
-                          >
-                            QR Code
-                          </Button>
+                          <div className="flex flex-row gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-fit"
+                              onClick={() => openQr(voucher.code)}
+                            >
+                              QR Code
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              aria-label="Share voucher"
+                              onClick={() =>
+                                handleShare(
+                                  voucher.code,
+                                  productNames[voucher.product_id] ||
+                                    voucher.code
+                                )
+                              }
+                            >
+                              <Share2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                           {voucher.expiring_at && (
                             <span className="text-xs text-muted-foreground ml-2">
                               Expires:{" "}
@@ -240,20 +279,34 @@ export default function VoucherDialog() {
                           <span className="text-base font-semibold text-gray-900 truncate flex-1">
                             {rewardNames[voucher.reward_id] || voucher.code}
                           </span>
-                          <span className="font-mono text-xs sm:text-sm px-2 py-1 rounded bg-green-600 text-white">
+                          <span className="font-mono text-xs sm:text-sm px-2 py-1 rounded bg-(--primary) text-white">
                             {voucher.code}
                           </span>
                         </div>
-                        {/* Second row: QR and expiry, always row on all screens */}
                         <div className="flex flex-row items-center justify-between gap-2 mt-1">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-fit"
-                            onClick={() => openQr(voucher.code)}
-                          >
-                            QR Code
-                          </Button>
+                          <div className="flex flex-row gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-fit"
+                              onClick={() => openQr(voucher.code)}
+                            >
+                              QR Code
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              aria-label="Share voucher"
+                              onClick={() =>
+                                handleShare(
+                                  voucher.code,
+                                  rewardNames[voucher.reward_id] || voucher.code
+                                )
+                              }
+                            >
+                              <Share2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                           {voucher.expiring_at && (
                             <span className="text-xs text-muted-foreground ml-2">
                               Expires:{" "}

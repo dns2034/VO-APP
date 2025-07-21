@@ -24,6 +24,21 @@ export function useBookings() {
 
     fetchBookings();
   }, []);
+  const cancelBooking = async (id: string) => {
+    try {
+      await BookingsService.update(id, { status: "cancelled" });
+      setBookings((prev) => prev.filter((booking) => booking.id !== id));
+    } catch (error) {
+      //console.error("Error cancelling booking:", error);
+      throw new Error("Failed to cancel booking: " + (error as Error).message);
+    }
+  };
 
-  return { bookings, loading, error };
+  return {
+    bookings,
+    loading,
+    error,
+    cancelBooking,
+    fetchBookings: () => setLoading(true),
+  };
 }

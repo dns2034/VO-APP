@@ -22,12 +22,7 @@ import {
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { BookingsService } from "@/services/bookings.service";
-
-const branches = [
-  { id: "branch-1", name: "Main Branch" },
-  { id: "branch-2", name: "Downtown Branch" },
-  { id: "branch-3", name: "Uptown Branch" },
-];
+import { useBranches } from "@/hooks/useBranches";
 
 export default function BookingDrawer() {
   const [open, setOpen] = useState(false);
@@ -36,6 +31,8 @@ export default function BookingDrawer() {
   const [endTime, setEndTime] = useState("");
   const [branch, setBranch] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const { branches, loading: branchesLoading } = useBranches();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,7 +112,12 @@ export default function BookingDrawer() {
           </div>
           <div>
             <Label htmlFor="branch">Select Branch</Label>
-            <Select value={branch} onValueChange={setBranch} required>
+            <Select
+              value={branch}
+              onValueChange={setBranch}
+              required
+              disabled={branchesLoading}
+            >
               <SelectTrigger id="branch">
                 <SelectValue placeholder="Choose a branch" />
               </SelectTrigger>

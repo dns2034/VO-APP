@@ -45,7 +45,7 @@ export type Database = {
           status: Database["public"]["Enums"]["booking_status"];
         };
         Insert: {
-          booked_by: string;
+          booked_by?: string;
           created_at?: string;
           date: string;
           end_time: string;

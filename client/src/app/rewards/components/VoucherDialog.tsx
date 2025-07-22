@@ -27,9 +27,64 @@ import {
   DialogHeader as UIDialogHeader,
   DialogTitle as UIDialogTitle,
 } from "@/components/ui/dialog";
-import { Share2 } from "lucide-react";
+import { Share2, Printer } from "lucide-react";
+import Image from "next/image";
 
 const PAGE_SIZE = 4;
+
+// Voucher Layout for QR dialog
+function VoucherLayout({
+  name,
+  code,
+  expiring_at,
+}: {
+  name: string;
+  code: string;
+  expiring_at: string | null;
+}) {
+  return (
+    <div
+      className="voucher-card relative flex flex-col items-center justify-between border border-gray-200 bg-white shadow-lg px-6 py-6"
+      style={{
+        borderRadius: "18px",
+        width: "340px",
+        height: "200px",
+        minHeight: "200px",
+        aspectRatio: "340/200",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
+      }}
+    >
+      <div className="absolute top-4 left-4">
+        <Image
+          src="/logo.webp"
+          alt="Incub8Space Logo"
+          width={48}
+          height={48}
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+      <div className="flex flex-col items-center flex-1 justify-center w-full">
+        <div className="voucher-title text-lg font-bold text-primary text-center mb-1">
+          {name}
+        </div>
+        <div className="voucher-code font-mono text-base bg-gray-100 px-3 py-1 rounded mb-2 text-center">
+          {code}
+        </div>
+        <div className="voucher-qr flex flex-col items-center my-1">
+          <QRCodeSVG value={code} size={64} />
+        </div>
+        {expiring_at && (
+          <div className="voucher-expiry text-xs text-muted-foreground mt-1">
+            Expires: {new Date(expiring_at).toLocaleDateString()}
+          </div>
+        )}
+      </div>
+      <div className="absolute bottom-4 right-4 text-xs text-gray-400 font-semibold">
+        Incub8Space
+      </div>
+    </div>
+  );
+}
 
 export default function VoucherDialog() {
   const [voucherDialogOpen, setVoucherDialogOpen] = useState(false);
@@ -111,20 +166,6 @@ export default function VoucherDialog() {
     fetchRewardNames();
   }, [rewardVouchers]);
 
-  // QR code dialog state
-  const [qrOpen, setQrOpen] = useState(false);
-  const [qrValue, setQrValue] = useState<string | null>(null);
-
-  const openQr = (code: string | null) => {
-    setQrValue(code);
-    setQrOpen(true);
-  };
-
-  const closeQr = () => {
-    setQrOpen(false);
-    setQrValue(null);
-  };
-
   // Share dialog state
   const handleShare = async (code: string, name: string) => {
     const shareData = {
@@ -146,6 +187,13 @@ export default function VoucherDialog() {
       alert("Voucher code copied to clipboard!");
     }
   };
+
+  // Add state for currently viewed voucher for QR dialog
+  const [viewVoucher, setViewVoucher] = useState<{
+    name: string;
+    code: string;
+    expiring_at: string | null;
+  } | null>(null);
 
   return (
     <>
@@ -189,16 +237,25 @@ export default function VoucherDialog() {
                             {voucher.code}
                           </span>
                         </div>
-                        {/* Second row: QR, expiry, share */}
+                        {/* Second row: View, expiry, share */}
                         <div className="flex flex-row items-center justify-between gap-2 mt-1">
                           <div className="flex flex-row gap-2">
                             <Button
                               variant="outline"
                               size="sm"
                               className="w-fit"
-                              onClick={() => openQr(voucher.code ?? "")}
+                              onClick={() =>
+                                setViewVoucher({
+                                  name:
+                                    productNames[voucher.product_id] ||
+                                    voucher.code ||
+                                    "",
+                                  code: voucher.code ?? "",
+                                  expiring_at: voucher.expiring_at,
+                                })
+                              }
                             >
-                              QR Code
+                              View
                             </Button>
                             <Button
                               variant="ghost"
@@ -290,9 +347,18 @@ export default function VoucherDialog() {
                               variant="outline"
                               size="sm"
                               className="w-fit"
-                              onClick={() => openQr(voucher.code ?? "")}
+                              onClick={() =>
+                                setViewVoucher({
+                                  name:
+                                    rewardNames[voucher.reward_id] ||
+                                    voucher.code ||
+                                    "",
+                                  code: voucher.code ?? "",
+                                  expiring_at: voucher.expiring_at,
+                                })
+                              }
                             >
-                              QR Code
+                              View
                             </Button>
                             <Button
                               variant="ghost"
@@ -363,17 +429,18 @@ export default function VoucherDialog() {
         </DialogContent>
       </Dialog>
       {/* QR Code Dialog */}
-      <UIDialog open={qrOpen} onOpenChange={closeQr}>
-        <UIDialogContent className="max-w-xs">
+      <UIDialog open={!!viewVoucher} onOpenChange={() => setViewVoucher(null)}>
+        <UIDialogContent className="">
           <UIDialogHeader>
-            <UIDialogTitle>Voucher QR Code</UIDialogTitle>
+            <UIDialogTitle>Voucher</UIDialogTitle>
           </UIDialogHeader>
           <div className="flex flex-col items-center gap-4 py-2">
-            {qrValue && (
-              <>
-                <QRCodeSVG value={qrValue} size={180} />
-                <div className="font-mono text-base break-all">{qrValue}</div>
-              </>
+            {viewVoucher && (
+              <VoucherLayout
+                name={viewVoucher.name}
+                code={viewVoucher.code}
+                expiring_at={viewVoucher.expiring_at}
+              />
             )}
           </div>
         </UIDialogContent>

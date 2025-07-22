@@ -2,7 +2,7 @@ import { ProductVoucherService } from "@/services/productVoucher.service";
 import { useEffect, useState } from "react";
 import { Database } from "@/types/supabase";
 import { toast } from "sonner";
-
+import { ProductsService } from "@/services/products.service";
 type ProductVoucherRow =
   Database["public"]["Tables"]["product_vouchers"]["Row"];
 
@@ -31,9 +31,11 @@ export function useProductVouchers() {
   const createProductVoucher = async (product_id: string): Promise<void> => {
     try {
       const newVoucher = await ProductVoucherService.create({ product_id });
+      const product = await ProductsService.getById(product_id);
+      const product_name = product ? product.name : "Unknown Product";
       setProductVouchers((prev) => [newVoucher, ...prev]);
-      toast.success("Product Voucher Created!", {
-        description: `Successfully created voucher for product ID ${product_id}.`,
+      toast.success("Voucher Redeemed!", {
+        description: `You have successfully redeemed ${product_name}.`,
       });
     } catch (error: unknown) {
       const errorMessage =

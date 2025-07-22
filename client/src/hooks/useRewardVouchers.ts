@@ -1,6 +1,7 @@
 import { RewardVoucherService } from "@/services/rewardVoucher.service";
 import { useEffect, useState } from "react";
 import { Database } from "@/types/supabase";
+import { toast } from "sonner";
 
 type RewardRow = Database["public"]["Tables"]["reward_vouchers"]["Row"];
 
@@ -15,7 +16,6 @@ export function useRewardVouchers() {
         const data = await RewardVoucherService.getAll();
         setRewardVouchers(data);
       } catch (error) {
-        //console.error("Error fetching reward vouchers:", error);
         setError("Failed to fetch reward vouchers" + (error as Error).message);
       } finally {
         setLoading(false);
@@ -25,22 +25,20 @@ export function useRewardVouchers() {
     fetchRewardVouchers();
   }, []);
 
-  const createRewardVoucher = async (
-    rewardId: string
-  ): Promise<{ voucher: RewardRow | null; error: string | null }> => {
+  const createRewardVoucher = async (reward_id: string): Promise<void> => {
     try {
-      const newVoucher = await RewardVoucherService.create({
-        reward_id: rewardId,
-      });
+      const newVoucher = await RewardVoucherService.create({ reward_id });
       setRewardVouchers((prev) => [...prev, newVoucher]);
-      return { voucher: newVoucher, error: null };
-    } catch (error: unknown) {
-      const errorMessage =
-        (error as Error).message || "Failed to create reward voucher";
-      console.error("Error creating reward voucher:", error);
-      setError(errorMessage);
-      return { voucher: null, error: errorMessage };
+      toast.success("Reward Voucher Created!", {
+        description: `Successfully created voucher for reward ID ${reward_id}.`,
+      });
+    } catch (error) {
+      toast.error("Voucher Creation Failed", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+      setError(error instanceof Error ? error.message : "Unknown error");
     }
   };
+
   return { rewardVouchers, loading, error, createRewardVoucher };
 }

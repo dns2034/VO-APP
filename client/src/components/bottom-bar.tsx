@@ -1,12 +1,4 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/mGVggH0RgOv
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import Link from "next/link";
-
-// Use a grid layout, more spacing, and highlight the Book action in the center.
-// Optionally, increase the bar height and icon size for better touch targets.
 
 export default function BottomBar() {
   return (

@@ -7,6 +7,7 @@ DECLARE
   required_points int;
   available_points int;
   remaining int;
+  reward_name text;
   r record;
 BEGIN
   -- 1. Get the required points from the reward
@@ -14,6 +15,7 @@ BEGIN
   FROM rewards
   WHERE id = NEW.reward_id;
 
+  SELECT name from rewards where id = NEW.reward_id into reward_name;
   -- 2. Count how many active points the user has
   SELECT COUNT(*) INTO available_points
   FROM public.points
@@ -21,8 +23,8 @@ BEGIN
 
   -- 3. Check if user has enough
   IF available_points < required_points THEN
-    RAISE EXCEPTION 'User does not have enough points. Required: %, Available: %',
-      required_points, available_points;
+    RAISE EXCEPTION 'You do not have enough points to redeem %',
+      reward_name;
   END IF;
 
   -- 4. Deduct the required number of points from the oldest active rows

@@ -20,7 +20,7 @@ BEGIN
   FROM public.credits
   WHERE user_id = NEW.user_id AND status = 'active';
 
-SELECT name from products where id = NEW.product_id into product_name;
+  SELECT name from products where id = NEW.product_id into product_name;
   -- 3. Check if user has enough
   IF available_credits < required_credits THEN
     RAISE EXCEPTION 'You do not have enough credits to redeem %',

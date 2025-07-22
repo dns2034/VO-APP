@@ -16,7 +16,7 @@ BEGIN
 
   -- 2. Count how many active credits the user has
   SELECT COUNT(*) INTO available_credits
-  FROM public.points
+  FROM public.credits
   WHERE user_id = NEW.user_id AND status = 'active';
 
   -- 3. Check if user has enough

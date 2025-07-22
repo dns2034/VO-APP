@@ -172,7 +172,7 @@ export type Database = {
       };
       product_vouchers: {
         Row: {
-          code: string;
+          code: string | null;
           created_at: string;
           expiring_at: string | null;
           id: string;
@@ -181,7 +181,7 @@ export type Database = {
           user_id: string | null;
         };
         Insert: {
-          code: string;
+          code?: string | null;
           created_at?: string;
           expiring_at?: string | null;
           id?: string;
@@ -190,7 +190,7 @@ export type Database = {
           user_id?: string | null;
         };
         Update: {
-          code?: string;
+          code?: string | null;
           created_at?: string;
           expiring_at?: string | null;
           id?: string;
@@ -290,7 +290,7 @@ export type Database = {
       };
       reward_vouchers: {
         Row: {
-          code: string;
+          code: string | null;
           created_at: string;
           expiring_at: string;
           id: string;
@@ -299,7 +299,7 @@ export type Database = {
           user_id: string | null;
         };
         Insert: {
-          code: string;
+          code?: string | null;
           created_at?: string;
           expiring_at?: string;
           id?: string;
@@ -308,7 +308,7 @@ export type Database = {
           user_id?: string | null;
         };
         Update: {
-          code?: string;
+          code?: string | null;
           created_at?: string;
           expiring_at?: string;
           id?: string;

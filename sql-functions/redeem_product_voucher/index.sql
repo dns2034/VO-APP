@@ -6,6 +6,7 @@ AS $$
 DECLARE
   required_credits int;
   available_credits int;
+  product_name text;
   remaining int;
   r record;
 BEGIN
@@ -19,10 +20,11 @@ BEGIN
   FROM public.credits
   WHERE user_id = NEW.user_id AND status = 'active';
 
+SELECT name from products where id = NEW.product_id into product_name;
   -- 3. Check if user has enough
   IF available_credits < required_credits THEN
-    RAISE EXCEPTION 'User does not have enough credits. Required: %, Available: %',
-      required_credits, available_credits;
+    RAISE EXCEPTION 'You do not have enough credits to redeem %',
+      product_name;
   END IF;
 
   -- 4. Deduct the required number of credits from the oldest active rows

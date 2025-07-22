@@ -9,7 +9,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { toast } from "sonner";
 import { useProductVouchers } from "@/hooks/useProductVouchers";
 import { useRewardVouchers } from "@/hooks/useRewardVouchers";
 
@@ -41,16 +40,10 @@ export default function ConfirmRedeemAlertDialog({
     try {
       if (redemptionCandidate.type === "product") {
         await createProductVoucher(redemptionCandidate.id);
-        toast.success(`Product "${redemptionCandidate.name}" redeemed!`);
       } else {
         await createRewardVoucher(redemptionCandidate.id);
-        toast.success(`Reward "${redemptionCandidate.name}" redeemed!`);
       }
       setRedemptionCandidate(null);
-    } catch (e) {
-      toast.error("Redemption failed", {
-        description: e instanceof Error ? e.message : "Unknown error",
-      });
     } finally {
       setRedeeming(false);
       setRedeemingId(null);

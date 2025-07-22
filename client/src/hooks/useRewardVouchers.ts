@@ -32,11 +32,12 @@ export function useRewardVouchers() {
       toast.success("Reward Voucher Created!", {
         description: `Successfully created voucher for reward ID ${reward_id}.`,
       });
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error("Voucher Creation Failed", {
-        description: error instanceof Error ? error.message : "Unknown error",
+        description:
+          error instanceof Error ? error.message : "Di malamang error",
       });
-      setError(error instanceof Error ? error.message : "Unknown error");
+      setError(error instanceof Error ? error.message : "Di malamang error");
     }
   };
 

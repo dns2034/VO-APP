@@ -37,7 +37,9 @@ export class ProductVoucherService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new Error(error.message || "Failed to create product voucher");
+    }
     return data;
   }
 
@@ -49,7 +51,8 @@ export class ProductVoucherService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error)
+      throw new Error(error.message || "Failed to update product voucher");
     return data;
   }
 

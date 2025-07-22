@@ -37,7 +37,9 @@ export class RewardVoucherService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new Error(error.message || "Failed to create reward voucher");
+    }
     return data;
   }
 
@@ -49,7 +51,9 @@ export class RewardVoucherService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new Error(error.message || "Failed to update reward voucher");
+    }
     return data;
   }
 

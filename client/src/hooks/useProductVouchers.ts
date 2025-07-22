@@ -35,11 +35,15 @@ export function useProductVouchers() {
       toast.success("Product Voucher Created!", {
         description: `Successfully created voucher for product ID ${product_id}.`,
       });
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Di malamang error";
+
       toast.error("Voucher Creation Failed", {
-        description: error instanceof Error ? error.message : "Unknown error",
+        description: errorMessage,
       });
-      setError(error instanceof Error ? error.message : "Unknown error");
+
+      setError(errorMessage);
     }
   };
 

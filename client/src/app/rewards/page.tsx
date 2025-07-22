@@ -30,11 +30,8 @@ import {
   SidebarInset,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
-import { useRewardVouchers } from "@/hooks/useRewardVouchers";
-import { useProductVouchers } from "@/hooks/useProductVouchers";
 
 type RedemptionCandidate = {
   id: string;

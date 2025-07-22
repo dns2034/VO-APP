@@ -12,6 +12,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import ConfirmRedeemAlertDialog from "./components/ConfirmRedeemAlertDialog";
 import {
   Card,
   CardContent,
@@ -20,16 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import VoucherDialog from "./components/VoucherDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -54,80 +46,14 @@ export default function RewardsPage() {
   const { rewards } = useRewards();
   const { products } = useProducts();
 
-  const { createRewardVoucher } = useRewardVouchers();
-  const { createProductVoucher } = useProductVouchers();
-  const [redeemingId, setRedeemingId] = useState<string | null>(null);
   const [redemptionCandidate, setRedemptionCandidate] =
     useState<RedemptionCandidate | null>(null);
-
-  const handleRedeemReward = async (rewardId: string, rewardName: string) => {
-    setRedeemingId(rewardId);
-    const { voucher, error } = await createRewardVoucher(rewardId);
-    if (voucher) {
-      toast.success("Reward Redeemed!", {
-        description: `Successfully redeemed ${rewardName}. Check your vouchers.`,
-      });
-    } else {
-      toast.error("Redemption Failed", {
-        description: error || "Failed to redeem reward. Please try again.",
-      });
-    }
-    setRedeemingId(null);
-  };
-
-  const handleRedeemProduct = async (
-    productId: string,
-    productName: string
-  ) => {
-    setRedeemingId(productId);
-    const { voucher, error } = await createProductVoucher(productId);
-    if (voucher) {
-      toast.success("Product Redeemed!", {
-        description: `Successfully redeemed ${productName}. Check your vouchers.`,
-      });
-    } else {
-      toast.error("Redemption Failed", {
-        description: error || "Failed to redeem product. Please try again.",
-      });
-    }
-    setRedeemingId(null);
-  };
-
-  const handleConfirmRedemption = () => {
-    if (!redemptionCandidate) return;
-
-    if (redemptionCandidate.type === "product") {
-      handleRedeemProduct(redemptionCandidate.id, redemptionCandidate.name);
-    } else {
-      handleRedeemReward(redemptionCandidate.id, redemptionCandidate.name);
-    }
-    setRedemptionCandidate(null);
-  };
+  const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <AlertDialog
-          open={!!redemptionCandidate}
-          onOpenChange={(open) => !open && setRedemptionCandidate(null)}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Confirm Redemption</AlertDialogTitle>
-              <AlertDialogDescription>
-                Are you sure you want to redeem &quot;
-                {redemptionCandidate?.name}&quot;?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirmRedemption}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4 w-full">
             <SidebarTrigger className="-ml-1" />
@@ -244,6 +170,12 @@ export default function RewardsPage() {
               </div>
             </TabsContent>
           </Tabs>
+          {/* Redemption dialog */}
+          <ConfirmRedeemAlertDialog
+            redemptionCandidate={redemptionCandidate}
+            setRedemptionCandidate={setRedemptionCandidate}
+            setRedeemingId={setRedeemingId}
+          />
         </main>
       </SidebarInset>
     </SidebarProvider>

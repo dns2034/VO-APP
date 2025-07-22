@@ -39,7 +39,7 @@ export default function RootLayout({
             },
           }}
         />
-        {children}
+        <div className="min-h-screen pb-14 md:pb-16">{children}</div>
         <BottomBar />
       </body>
     </html>

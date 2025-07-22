@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { AppSidebar } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
 import ConfirmRedeemAlertDialog from "./components/ConfirmRedeemAlertDialog";
 import {

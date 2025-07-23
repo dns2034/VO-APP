@@ -17,7 +17,6 @@ import VoucherDialog from "./components/VoucherDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
-
 type RedemptionCandidate = {
   id: string;
   name: string;
@@ -34,22 +33,14 @@ export default function RewardsPage() {
 
   return (
     <>
-      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 z-50 bg-background border-b border-border">
         <div className="flex items-center gap-2 px-4 w-full">
+          <h1 className="text-xl font-bold tracking-tight">Rewards</h1>
           <VoucherDialog />
         </div>
       </header>
 
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Rewards</h1>
-            <p className="text-muted-foreground">
-              Redeem your points for amazing products and rewards.
-            </p>
-          </div>
-        </header>
-
         <Tabs defaultValue="products" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:w-1/3 lg:w-1/4">
             <TabsTrigger value="products">Products</TabsTrigger>
@@ -134,7 +125,6 @@ export default function RewardsPage() {
             </div>
           </TabsContent>
         </Tabs>
-        {/* Redemption dialog */}
         <ConfirmRedeemAlertDialog
           redemptionCandidate={redemptionCandidate}
           setRedemptionCandidate={setRedemptionCandidate}

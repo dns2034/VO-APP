@@ -2,7 +2,10 @@ import { supabaseClient } from "@/services/supabase/client";
 
 export const forgotPassword = async (email: string) => {
   const { data, error } = await supabaseClient.auth.resetPasswordForEmail(
-    email
+    email,
+    {
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/reset-password`,
+    }
   );
 
   if (error) {

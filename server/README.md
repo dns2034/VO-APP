@@ -65,6 +65,7 @@ npx supabase db push --db-url postgresql://postgres:73R9yNL86b3dZxI8MPrmLMPIOQrB
 
 ## Development Commands
 
+npx supabase db push --db-url postgresql://postgres:73R9yNL86b3dZxI8MPrmLMPIOQrBKxHt@api.virtualoffice.incub8.space:54324/postgres
 **Pull schema from local Supabase instance**
 
 ```sh
@@ -102,6 +103,25 @@ npx supabase db dump --data-only > supabase/seed.sql --db-url postgresql://postg
 ```
 
 ---
+
+**Remove all migrations from Production server**
+
+```sh
+DELETE FROM supabase_migrations.schema_migrations;
+```
+
+**Reset remote DB**
+
+```sh
+DROP SCHEMA public CASCADE;
+DROP SCHEMA supabase_migrations CASCADE;
+
+CREATE SCHEMA public AUTHORIZATION postgres;
+CREATE SCHEMA supabase_migrations AUTHORIZATION postgres;
+
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA supabase_migrations TO postgres;
+```
 
 ## Notes
 

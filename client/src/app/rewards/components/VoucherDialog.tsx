@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/pagination";
 import Image from "next/image";
 import { Share2 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 const PAGE_SIZE = 4;
 
@@ -84,8 +85,7 @@ function VoucherLayout({
           </span>
         </div>
         <div className="flex flex-col items-center">
-          {/* <QRCodeSVG value={code} size={72} /> */}
-          <span className="text-[10px] text-gray-400 mt-1">Scan to redeem</span>
+          <QRCodeSVG value={code} size={48} />
         </div>
       </div>
 
@@ -218,6 +218,56 @@ export default function VoucherDialog() {
     expiring_at: string | null;
   } | null>(null);
 
+  // Print handler for the voucher
+  const handlePrint = () => {
+    if (!viewVoucher) return;
+    const printWindow = window.open("", "_blank", "width=400,height=600");
+    if (!printWindow) return;
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Voucher</title>
+          <style>
+            body { margin: 0; padding: 0; font-family: sans-serif; background: #f9fafb; }
+            .voucher-card {
+              width: 360px;
+              height: 210px;
+              border-radius: 18px;
+              border: 2px dashed #e5e7eb;
+              background: repeating-linear-gradient(135deg, #f8fafc 0px, #f8fafc 20px, #f1f5f9 20px, #f1f5f9 40px);
+              box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+              padding: 0;
+              overflow: hidden;
+              display: flex;
+              flex-direction: column;
+              justify-content: stretch;
+              align-items: stretch;
+            }
+          </style>
+        </head>
+        <body>
+          <div id="voucher-print-root"></div>
+          <script>
+            window.onload = function() {
+              var el = document.getElementById('voucher-print-root');
+              el.innerHTML = window.opener.document.getElementById('voucher-print-content').innerHTML;
+              window.print();
+              window.close();
+            }
+          </script>
+        </body>
+      </html>
+    `);
+    // Place the voucher layout in a hidden div for printing
+    setTimeout(() => {
+      const voucherContent = document.getElementById("voucher-print-content");
+      if (voucherContent && printWindow) {
+        printWindow.document.getElementById("voucher-print-root")!.innerHTML =
+          voucherContent.innerHTML;
+      }
+    }, 100);
+  };
+
   return (
     <>
       <Dialog open={voucherDialogOpen} onOpenChange={setVoucherDialogOpen}>
@@ -235,18 +285,21 @@ export default function VoucherDialog() {
           </DialogHeader>
           {viewVoucher ? (
             <div className="flex flex-col items-center py-4">
-              <VoucherLayout
-                name={viewVoucher.name}
-                code={viewVoucher.code}
-                expiring_at={viewVoucher.expiring_at}
-              />
-              <Button
-                variant="outline"
-                className="mt-6"
-                onClick={() => setViewVoucher(null)}
-              >
-                Back to List
-              </Button>
+              <div id="voucher-print-content">
+                <VoucherLayout
+                  name={viewVoucher.name}
+                  code={viewVoucher.code}
+                  expiring_at={viewVoucher.expiring_at}
+                />
+              </div>
+              <div className="flex gap-2 mt-6">
+                <Button variant="outline" onClick={() => setViewVoucher(null)}>
+                  Back to List
+                </Button>
+                <Button variant="outline" onClick={handlePrint}>
+                  Print
+                </Button>
+              </div>
             </div>
           ) : (
             <Tabs defaultValue="product-vouchers" className="w-full">

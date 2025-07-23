@@ -68,19 +68,19 @@ alter table "public"."bookings" add column "status" booking_status not null defa
 
 alter table "public"."bookings" alter column "booked_by" set default auth.uid();
 
-alter table "public"."bookings" alter column "id" set default gen_random_uuid();
-
 alter table "public"."bookings" alter column "id" drop identity;
 
-alter table "public"."bookings" alter column "id" set data type uuid using "id"::uuid;
+alter table "public"."bookings" drop column "id";
+
+alter table "public"."bookings" add column "id" uuid not null default gen_random_uuid();
 
 alter table "public"."points" enable row level security;
 
-alter table "public"."product_vouchers" alter column "status" set default 'active'::voucher_status;
+alter table "public"."product_vouchers" drop column "status";
+
+alter table "public"."product_vouchers" add column "status" voucher_status not null default 'active'::voucher_status;
 
 alter table "public"."product_vouchers" alter column "status" set not null;
-
-alter table "public"."product_vouchers" alter column "status" set data type voucher_status using "status"::text::voucher_status;
 
 alter table "public"."product_vouchers" alter column "user_id" drop not null;
 

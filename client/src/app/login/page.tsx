@@ -26,7 +26,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
+    <div className="w-full lg:grid lg:h-screen lg:grid-cols-2 xl:h-screen">
       <div className="hidden bg-muted lg:flex lg:items-center lg:justify-center">
         <div className="text-center px-12">
           <Image
@@ -44,14 +44,16 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-      <div className="flex items-center justify-center py-12">
+
+      {/* Main Login Page */}
+      <div className="flex items-center justify-center h-screen">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="lg:hidden text-center">
             <Image
               src="/logo.webp"
               alt="Virtual Office Logo"
-              width={80}
-              height={80}
+              width={70}
+              height={70}
               className="mx-auto mb-4"
             />
           </div>
@@ -76,7 +78,12 @@ export default function LoginPage() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <ForgotPasswordDialog />
+                <a
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline"
+                >
+                  Forgot your password?
+                </a>
               </div>
               <Input
                 id="password"

@@ -28,7 +28,6 @@ export default function BookingPage() {
   const { spaces } = useSpaces();
   const { branches } = useBranches();
 
-  // For displaying branch/space names in bookings list
   const [branchMap, setBranchMap] = useState<Record<string, string>>({});
   const [spaceMap, setSpaceMap] = useState<Record<string, string>>({});
 

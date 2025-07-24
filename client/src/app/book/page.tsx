@@ -36,16 +36,13 @@ export default function BookingPage() {
     fetchBookings();
   }, [fetchBookings]);
 
-  // Build branch/space maps for display
   useEffect(() => {
-    // Build branch map from branches
     const branchNames: Record<string, string> = {};
     branches.forEach((branch) => {
       branchNames[branch.id] = branch.name;
     });
     setBranchMap(branchNames);
 
-    // Build space map from spaces
     const spaceNames: Record<string, string> = {};
     spaces.forEach((space) => {
       spaceNames[space.id] = space.name;

@@ -25,13 +25,7 @@ import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import {
-  CalendarDays,
-  Building2,
-  MapPin,
-  Clock,
-  StickyNote,
-} from "lucide-react"; // lucide-react icons
+import { CalendarDays, MapPin, Clock, StickyNote } from "lucide-react"; // lucide-react icons
 
 export default function BookingDrawer({ branchId }: { branchId: string }) {
   const [open, setOpen] = useState(false);
@@ -89,9 +83,9 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="text-xs flex items-center gap-1">
+        <Button className="inline-flex items-center  text-xs">
           <CalendarDays className="w-4 h-4" />
-          Book
+          <span className="leading-none mt-[1px]">Book</span>
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-0 flex flex-col max-h-[90vh]">
@@ -106,19 +100,16 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
           onSubmit={handleSubmit}
         >
           {/* Select Space Section */}
-          <div className="flex flex-col gap-3 mb-3">
-            <div className="flex flex-col gap-2 mb-3">
-              <div className="flex flex-row gap-2">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span className="text-base font-semibold gap-0">
-                  Pick a Space
-                </span>
-              </div>
-
-              <p className="text-sm mt-0!">A space that suites your needs.</p>
+          <div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-primary" />
+              <span className="text-base font-semibold">Pick a Space</span>
             </div>
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
+            <p className="text-xs text-muted-foreground mb-3 ml-7">
+              Choose the date you want to book the space for.
+            </p>
+            <div className="flex flex-col gap-3 bg-muted/50 rounded-lg p-4 border">
+              <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="branch"
                   className="text-sm font-medium flex items-center gap-2"
@@ -183,30 +174,35 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
 
           {/* Select Date Section */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-1">
               <CalendarDays className="w-5 h-5 text-primary" />
               <span className="text-base font-semibold">Select Date</span>
             </div>
-            <div className="flex flex-col gap-1.5">
-              <div className="p-2 flex items-center justify-center rounded-lg border bg-muted">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  className="rounded-md"
-                />
-              </div>
+            <p className="text-xs text-muted-foreground mb-3 ml-7">
+              Choose the date you want to book the space for.
+            </p>
+            <div className="p-2 flex items-center justify-center rounded-lg border bg-muted">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                className="rounded-md"
+              />
             </div>
           </div>
+
           <Separator />
 
           {/* Select Time Section */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-1">
               <Clock className="w-5 h-5 text-primary" />
               <span className="text-base font-semibold">Pick a Time Slot</span>
             </div>
-            <div className="flex gap-4">
+            <p className="text-xs text-muted-foreground mb-3 ml-7">
+              Select the start and end time for your booking.
+            </p>
+            <div className="flex gap-4 bg-muted/50 rounded-lg p-4 border">
               <div className="flex-1 flex flex-col gap-1.5">
                 <Label
                   htmlFor="start-time"
@@ -245,10 +241,20 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               </div>
             </div>
           </div>
+          <Separator />
 
           {/* Additional Remarks Section */}
           <div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2 mb-1">
+              <StickyNote className="w-5 h-5 text-primary" />
+              <span className="text-base font-semibold">
+                Additional Remarks
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground mb-3 ml-7">
+              Add any notes or special requests for your booking (optional).
+            </p>
+            <div className="flex flex-col gap-1.5 bg-muted/50 rounded-lg p-4 border">
               <Label
                 htmlFor="remarks"
                 className="text-sm font-medium flex items-center gap-2"

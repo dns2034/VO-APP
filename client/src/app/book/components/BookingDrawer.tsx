@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { useBranches } from "@/hooks/useBranches";
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function BookingDrawer({ branchId }: { branchId: string }) {
   const [open, setOpen] = useState(false);
@@ -81,94 +82,91 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       <DrawerTrigger asChild>
         <Button className="text-xs">Book</Button>
       </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>New Booking</DrawerTitle>
-        </DrawerHeader>
-        <form className="space-y-6 p-4" onSubmit={handleSubmit}>
-          <div>
-            <Label className="mb-2 block">Select Date</Label>
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border"
-            />
-            {date && (
-              <div className="mt-2 text-sm text-muted-foreground">
-                Selected: {format(date, "PPP")}
+      <DrawerContent className="">
+        <ScrollArea className="overflow-y-auto max-h-[90vh]">
+          <DrawerHeader>
+            <DrawerTitle>New Booking</DrawerTitle>
+          </DrawerHeader>
+          <form className="space-y-6 p-4" onSubmit={handleSubmit}>
+            <div>
+              <Label className="mb-2 block">Select Date</Label>
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                className="w-full rounded-lg shadow-sm"
+              />
+            </div>
+            <div>
+              <Label htmlFor="branch">Select Branch</Label>
+              <Select
+                value={branchId}
+                onValueChange={(val) => {
+                  setBranch(val);
+                  setSpaceId("");
+                }}
+                required
+                disabled={branchesLoading}
+              >
+                <SelectTrigger id="branch">
+                  <SelectValue placeholder="Choose a branch..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {branches.map((b) => (
+                    <SelectItem key={b.id} value={b.id}>
+                      {b.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="space">Select Space</Label>
+              <Select
+                value={spaceId}
+                onValueChange={setSpaceId}
+                required
+                disabled={!branch || spacesLoading}
+              >
+                <SelectTrigger id="space">
+                  <SelectValue placeholder="Choose a space" />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredSpaces.map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <Label htmlFor="start-time">Start Time</Label>
+                <Input
+                  id="start-time"
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  required
+                />
               </div>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="branch">Select Branch</Label>
-            <Select
-              value={branchId}
-              onValueChange={(val) => {
-                setBranch(val);
-                setSpaceId("");
-              }}
-              required
-              disabled={branchesLoading}
-            >
-              <SelectTrigger id="branch">
-                <SelectValue placeholder="Choose a branch..." />
-              </SelectTrigger>
-              <SelectContent>
-                {branches.map((b) => (
-                  <SelectItem key={b.id} value={b.id}>
-                    {b.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="space">Select Space</Label>
-            <Select
-              value={spaceId}
-              onValueChange={setSpaceId}
-              required
-              disabled={!branch || spacesLoading}
-            >
-              <SelectTrigger id="space">
-                <SelectValue placeholder="Choose a space" />
-              </SelectTrigger>
-              <SelectContent>
-                {filteredSpaces.map((s) => (
-                  <SelectItem key={s.id} value={s.id}>
-                    {s.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <Label htmlFor="start-time">Start Time</Label>
-              <Input
-                id="start-time"
-                type="time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                required
-              />
+              <div className="flex-1">
+                <Label htmlFor="end-time">End Time</Label>
+                <Input
+                  id="end-time"
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  required
+                />
+              </div>
             </div>
-            <div className="flex-1">
-              <Label htmlFor="end-time">End Time</Label>
-              <Input
-                id="end-time"
-                type="time"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Booking..." : "Book Now"}
-          </Button>
-        </form>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Booking..." : "Book Now"}
+            </Button>
+          </form>
+        </ScrollArea>
       </DrawerContent>
     </Drawer>
   );

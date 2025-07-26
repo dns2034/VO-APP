@@ -1,10 +1,10 @@
 "use client";
+
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { History, Clock, ChevronLeft } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { History, Clock, ChevronLeft, Calendar } from "lucide-react";
+import { useBranches } from "@/hooks/useBranches";
 import {
   Pagination,
   PaginationContent,
@@ -21,10 +21,22 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { format } from "date-fns";
+import { CalendarDays, MapPin, Building2 } from "lucide-react";
+
+function formatTimeTo12Hour(time: string): string {
+  const match = time.match(/^(\d{2}):(\d{2})/);
+  if (!match) return "N/A";
+  let hour = parseInt(match[1], 10);
+  const minute = match[2];
+  const ampm = hour >= 12 ? "pm" : "am";
+  hour = hour % 12 || 12;
+  return `${hour}:${minute} ${ampm}`;
+}
 
 export default function Bookings() {
   const { bookings, loading } = useBookings();
   const { spaces } = useSpaces();
+  const { branches } = useBranches();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -43,7 +55,6 @@ export default function Bookings() {
           </p>
         </div>
       </header>
-
       <main className="pt-[85px] p-4 flex-1 flex flex-col h-screen">
         <Tabs
           defaultValue="current-bookings"
@@ -63,34 +74,71 @@ export default function Bookings() {
             value="current-bookings"
             className="flex-1 flex flex-col h-full"
           >
-            <div className="border rounded-lg w-full flex-1 flex flex-col min-h-0 h-full px-4">
-              <ScrollArea className="flex-1 min-h-0 h-full">
-                {bookings
-                  .filter((booking) => booking.status === "booked")
-                  .map((booking) => (
+            <div className="border rounded-lg w-full flex-1 flex flex-col min-h-0 h-full p-4">
+              {bookings
+                .filter((booking) => booking.status === "booked")
+                .map((booking) => {
+                  const space = spaces.find((s) => s.id === booking.space_id);
+                  const branch = branches.find(
+                    (b) => b.id === space?.branch_id
+                  );
+                  const spaceName = space?.name || "Unknown Space";
+                  const branchName = branch?.name || "Unknown Branch";
+                  const dateStr = booking.date
+                    ? format(new Date(booking.date), "PPP")
+                    : "";
+                  let timeStr = "";
+                  if (booking.start_time && booking.end_time) {
+                    const startMatch =
+                      booking.start_time.match(/^(\d{2}:\d{2})/);
+                    const endMatch = booking.end_time.match(/^(\d{2}:\d{2})/);
+                    if (startMatch && endMatch) {
+                      timeStr = `${formatTimeTo12Hour(
+                        startMatch[1]
+                      )} - ${formatTimeTo12Hour(endMatch[1])}`;
+                    } else {
+                      timeStr = "N/A";
+                    }
+                  } else {
+                    timeStr = "N/A";
+                  }
+                  return (
                     <div key={booking.id}>
                       <Accordion type="single" collapsible className="py-0">
-                        <AccordionItem value="item-1">
-                          <AccordionTrigger className="py-3">
-                            {booking.date
-                              ? format(new Date(booking.date), "PPP")
-                              : ""}
-                            {" [ "}
-                            {
-                              spaces.find(
-                                (space) => space.id === booking.space_id
-                              )?.name
-                            }
-                            {" ] "}
+                        <AccordionItem value={`item-${booking.id}`}>
+                          <AccordionTrigger className="py-3 justify-start">
+                            <Calendar className="w-4 h-4 text-black" />
+                            {branchName} – {dateStr}
                           </AccordionTrigger>
                           <AccordionContent>
-                            Yes. It adheres to the WAI-ARIA design pattern.
+                            <div className="text-sm space-y-2 mt-2">
+                              <div className="flex items-center gap-2">
+                                <CalendarDays className="w-4 h-4 text-primary" />
+                                <span className="font-medium">Date:</span>
+                                <span>{dateStr}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Clock className="w-4 h-4 text-primary" />
+                                <span className="font-medium">Time:</span>
+                                <span>{timeStr}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <MapPin className="w-4 h-4 text-primary" />
+                                <span className="font-medium">Space:</span>
+                                <span>{spaceName}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Building2 className="w-4 h-4 text-primary" />
+                                <span className="font-medium">Branch:</span>
+                                <span>{branchName}</span>
+                              </div>
+                            </div>
                           </AccordionContent>
                         </AccordionItem>
                       </Accordion>
                     </div>
-                  ))}
-              </ScrollArea>
+                  );
+                })}
             </div>
             <Pagination className="w-full flex justify-center mt-4">
               <PaginationContent>
@@ -113,29 +161,57 @@ export default function Bookings() {
             className="flex-1 flex flex-col h-full"
           >
             <div className="border rounded-lg w-full flex-1 flex flex-col min-h-0 h-full">
-              <ScrollArea className="flex-1 min-h-0 h-full">
-                <ul>
-                  {bookings
-                    .filter(
-                      (booking) =>
-                        booking.status === "completed" ||
-                        booking.status === "cancelled" ||
-                        booking.status === "pending"
-                    )
-                    .map((booking) => (
-                      <li key={booking.id}>
-                        {booking.date
-                          ? format(new Date(booking.date), "PPP")
-                          : ""}
-                        {" - "}
-                        {
-                          spaces.find((space) => space.id === booking.space_id)
-                            ?.name
-                        }
+              <ul>
+                {bookings
+                  .filter(
+                    (booking) =>
+                      booking.status === "completed" ||
+                      booking.status === "cancelled" ||
+                      booking.status === "pending"
+                  )
+                  .map((booking) => {
+                    const space = spaces.find((s) => s.id === booking.space_id);
+                    const branch = branches.find(
+                      (b) => b.id === space?.branch_id
+                    );
+                    const spaceName = space?.name || "Unknown Space";
+                    const branchName = branch?.name || "Unknown Branch";
+                    const dateStr = booking.date
+                      ? format(new Date(booking.date), "PPP")
+                      : "";
+                    let timeStr = "";
+                    if (booking.start_time && booking.end_time) {
+                      const startMatch =
+                        booking.start_time.match(/^(\d{2}:\d{2})/);
+                      const endMatch = booking.end_time.match(/^(\d{2}:\d{2})/);
+                      if (startMatch && endMatch) {
+                        timeStr = `${formatTimeTo12Hour(
+                          startMatch[1]
+                        )} - ${formatTimeTo12Hour(endMatch[1])}`;
+                      } else {
+                        timeStr = "N/A";
+                      }
+                    } else {
+                      timeStr = "N/A";
+                    }
+                    return (
+                      <li
+                        key={booking.id}
+                        className="flex items-center gap-3 mb-2"
+                      >
+                        <CalendarDays className="w-4 h-4 text-primary" />
+                        <span>{dateStr}</span>
+                        <Clock className="w-4 h-4 text-primary" />
+                        <span>{timeStr}</span>
+                        <MapPin className="w-4 h-4 text-primary" />
+                        <span>{spaceName}</span>
+                        <Building2 className="w-4 h-4 text-primary" />
+                        <span>{branchName}</span>
                       </li>
-                    ))}
-                </ul>
-              </ScrollArea>
+                    );
+                  })}
+              </ul>
+
               <Pagination className="w-full flex justify-center mt-auto">
                 <PaginationContent>
                   <PaginationItem>

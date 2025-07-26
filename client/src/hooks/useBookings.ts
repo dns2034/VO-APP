@@ -11,11 +11,14 @@ export function useBookings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchBookings = useCallback(async () => {
+  const fetchBookings = useCallback(async (): Promise<
+    BookingRow[] | undefined
+  > => {
     setLoading(true);
     try {
       const data = await BookingsService.getAll();
       setBookings(data);
+      return data;
     } catch (error) {
       setError("Failed to fetch bookings: " + (error as Error).message);
     } finally {

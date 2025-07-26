@@ -2,7 +2,7 @@
 import Header from "./components/Header";
 import Branches from "./components/Branches";
 import BottomBar from "@/components/bottom-bar";
-
+import Bookings from "./components/Bookings";
 export default function BookingPage() {
   return (
     <>
@@ -12,6 +12,7 @@ export default function BookingPage() {
         <Branches />
       </main>
       <BottomBar />
+      <Bookings />
     </>
   );
 }

@@ -2,7 +2,6 @@
 import Header from "./components/Header";
 import Branches from "./components/Branches";
 import BottomBar from "@/components/bottom-bar";
-import BookingDrawer from "./components/BookingDrawer";
 export default function BookingPage() {
   return (
     <>
@@ -10,7 +9,6 @@ export default function BookingPage() {
 
       <main className="">
         <Branches />
-        <BookingDrawer />
       </main>
       <BottomBar />
     </>

@@ -25,7 +25,7 @@ import { useBranches } from "@/hooks/useBranches";
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 
-export default function BookingDrawer() {
+export default function BookingDrawer({ branchId }: { branchId: string }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState("");
@@ -79,7 +79,7 @@ export default function BookingDrawer() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="default">Add Booking</Button>
+        <Button className="text-xs">Book</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
@@ -103,16 +103,16 @@ export default function BookingDrawer() {
           <div>
             <Label htmlFor="branch">Select Branch</Label>
             <Select
-              value={branch}
+              value={branchId}
               onValueChange={(val) => {
                 setBranch(val);
-                setSpaceId(""); // Reset space selection when branch changes
+                setSpaceId("");
               }}
               required
               disabled={branchesLoading}
             >
               <SelectTrigger id="branch">
-                <SelectValue placeholder="Choose a branch" />
+                <SelectValue placeholder="Choose a branch..." />
               </SelectTrigger>
               <SelectContent>
                 {branches.map((b) => (

@@ -24,6 +24,7 @@ import { useBranches } from "@/hooks/useBranches";
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import {
   CalendarDays,
   Building2,
@@ -94,29 +95,34 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-0 flex flex-col max-h-[90vh]">
-        <div className="sticky top-0 z-10 bg-white border-b">
+        <div className="sticky top-0 z-10 bg-white">
           <DrawerHeader className="px-6 pt-4 pb-2 flex items-center gap-2">
-            <CalendarDays className="w-6 h-6 text-primary" />
             <DrawerTitle className="text-lg font-bold">New Booking</DrawerTitle>
           </DrawerHeader>
         </div>
+        <Separator />
         <form
           className="flex-1 overflow-y-auto px-6 py-4 space-y-8"
           onSubmit={handleSubmit}
         >
-          {/* Section 1: Select Space */}
-          <div>
-            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-primary" />
-              Select Space
-            </h3>
+          {/* Select Space Section */}
+          <div className="flex flex-col gap-3 mb-3">
+            <div className="flex flex-col gap-2 mb-3">
+              <div className="flex flex-row gap-2">
+                <MapPin className="w-5 h-5 text-primary" />
+                <span className="text-base font-semibold gap-0">
+                  Pick a Space
+                </span>
+              </div>
+
+              <p className="text-sm mt-0!">A space that suites your needs.</p>
+            </div>
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1.5">
                 <Label
                   htmlFor="branch"
-                  className="mb-1 text-sm font-medium flex items-center gap-2"
+                  className="text-sm font-medium flex items-center gap-2"
                 >
-                  <Building2 className="w-4 h-4 text-muted-foreground" />
                   Branch
                 </Label>
                 <Select
@@ -143,12 +149,11 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1.5">
                 <Label
                   htmlFor="space"
-                  className="mb-1 text-sm font-medium flex items-center gap-2"
+                  className="text-sm font-medium flex items-center gap-2"
                 >
-                  <MapPin className="w-4 h-4 text-muted-foreground" />
                   Space
                 </Label>
                 <Select
@@ -174,18 +179,15 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               </div>
             </div>
           </div>
+          <Separator />
 
-          {/* Section 2: Select Date */}
+          {/* Select Date Section */}
           <div>
-            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-3">
               <CalendarDays className="w-5 h-5 text-primary" />
-              Select Date
-            </h3>
-            <div className="flex flex-col gap-2">
-              <Label className="mb-1 text-sm font-medium flex items-center gap-2">
-                <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                Date
-              </Label>
+              <span className="text-base font-semibold">Select Date</span>
+            </div>
+            <div className="flex flex-col gap-1.5">
               <div className="p-2 flex items-center justify-center rounded-lg border bg-muted">
                 <Calendar
                   mode="single"
@@ -196,21 +198,20 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               </div>
             </div>
           </div>
+          <Separator />
 
-          {/* Section 3: Select Time */}
+          {/* Select Time Section */}
           <div>
-            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-3">
               <Clock className="w-5 h-5 text-primary" />
-              Select Time
-            </h3>
+              <span className="text-base font-semibold">Pick a Time Slot</span>
+            </div>
             <div className="flex gap-4">
-              {/* Start Time */}
               <div className="flex-1 flex flex-col gap-1.5">
                 <Label
                   htmlFor="start-time"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  <Clock className="w-4 h-4 text-muted-foreground" />
                   Start Time
                 </Label>
                 <div className="relative">
@@ -224,13 +225,11 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                   <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 </div>
               </div>
-              {/* End Time */}
               <div className="flex-1 flex flex-col gap-1.5">
                 <Label
                   htmlFor="end-time"
                   className="text-sm font-medium flex items-center gap-2"
                 >
-                  <Clock className="w-4 h-4 text-muted-foreground" />
                   End Time
                 </Label>
                 <div className="relative">
@@ -247,18 +246,13 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
             </div>
           </div>
 
-          {/* Section 4: Additional Remarks */}
+          {/* Additional Remarks Section */}
           <div>
-            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
-              <StickyNote className="w-5 h-5 text-primary" />
-              Additional Remarks
-            </h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               <Label
                 htmlFor="remarks"
-                className="mb-1 text-sm font-medium flex items-center gap-2"
+                className="text-sm font-medium flex items-center gap-2"
               >
-                <StickyNote className="w-4 h-4 text-muted-foreground" />
                 Remarks (Optional)
               </Label>
               <Textarea

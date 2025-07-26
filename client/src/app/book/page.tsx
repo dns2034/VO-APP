@@ -1,16 +1,18 @@
 "use client";
-
-import { useBookings } from "@/hooks/useBookings";
-
+import Header from "./components/Header";
+import Branches from "./components/Branches";
+import BottomBar from "@/components/bottom-bar";
+import BookingDrawer from "./components/BookingDrawer";
 export default function BookingPage() {
-  const bookings = useBookings();
   return (
     <>
-      <header className="flex items-center justify-between p-4 border-b">
-        <h1 className="font-bold text-xl">Book</h1>
-      </header>
-      {bookings}
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6"></main>
+      <Header />
+
+      <main className="">
+        <Branches />
+        <BookingDrawer />
+      </main>
+      <BottomBar />
     </>
   );
 }

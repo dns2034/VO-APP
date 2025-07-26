@@ -115,7 +115,64 @@ INSERT INTO "auth"."audit_log_entries" ("instance_id", "id", "payload", "created
 	('00000000-0000-0000-0000-000000000000', '4fd294e0-72e0-4501-a63a-0ccdd3e60e64', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 06:16:27.222236+00', ''),
 	('00000000-0000-0000-0000-000000000000', '9d7b3ede-575e-4726-9a32-fdca35571d7f', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 06:16:27.225547+00', ''),
 	('00000000-0000-0000-0000-000000000000', '9f4e85e7-72cb-4ef0-a44f-448528a504f8', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 09:15:08.633242+00', ''),
-	('00000000-0000-0000-0000-000000000000', '5d67988c-1f95-4f9f-a996-b012d71ca0bb', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 09:15:08.634049+00', '');
+	('00000000-0000-0000-0000-000000000000', '5d67988c-1f95-4f9f-a996-b012d71ca0bb', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 09:15:08.634049+00', ''),
+	('00000000-0000-0000-0000-000000000000', '0e089307-cbd7-4c39-b962-2e2caf3d6c4a', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 10:14:44.363451+00', ''),
+	('00000000-0000-0000-0000-000000000000', '5321cc95-8447-44e5-b1a7-959f829798a2', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 10:14:44.366176+00', ''),
+	('00000000-0000-0000-0000-000000000000', '9c291b4c-7901-47e4-8baf-ad7f349362eb', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 12:37:32.538437+00', ''),
+	('00000000-0000-0000-0000-000000000000', '0749af4e-db75-4655-b054-d5805cc293a3', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 12:37:32.541307+00', ''),
+	('00000000-0000-0000-0000-000000000000', '27ef6979-22dc-47fe-afba-026bf770df5c', '{"action":"login","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2025-07-23 12:37:40.16798+00', ''),
+	('00000000-0000-0000-0000-000000000000', '00aea99a-95de-4443-9494-5893efdbbb85', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 14:18:45.163773+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'eda6f0db-9fa7-46b8-aee0-f84f182ac02b', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 14:18:45.165753+00', ''),
+	('00000000-0000-0000-0000-000000000000', '3d631225-1047-460c-8037-3fef4eb4588e', '{"action":"login","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2025-07-23 14:50:37.355297+00', ''),
+	('00000000-0000-0000-0000-000000000000', '53678004-f31e-4fcf-b94a-9a26f126dbb1', '{"action":"user_recovery_requested","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"user"}', '2025-07-23 15:06:28.766604+00', ''),
+	('00000000-0000-0000-0000-000000000000', '23671f32-85be-4472-8694-5e142d322015', '{"action":"user_recovery_requested","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"user"}', '2025-07-23 15:07:09.337403+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'f5876fb1-3c75-472e-9691-7342dcadb5b9', '{"action":"user_recovery_requested","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"user"}', '2025-07-23 15:07:30.17358+00', ''),
+	('00000000-0000-0000-0000-000000000000', '518f6878-9354-4afb-bb2f-f5d436c440b8', '{"action":"user_recovery_requested","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"user"}', '2025-07-23 15:08:18.447845+00', ''),
+	('00000000-0000-0000-0000-000000000000', '4287e1f2-4723-42b5-ab87-903b66f61d2b', '{"action":"login","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2025-07-23 15:25:10.902716+00', ''),
+	('00000000-0000-0000-0000-000000000000', '2e556914-1925-40f7-90a0-1472ae3c71ff', '{"action":"user_recovery_requested","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"user"}', '2025-07-23 15:25:24.989305+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'cc89793f-a5b5-42b8-af99-ee6c729dc0d4', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 16:25:17.216967+00', ''),
+	('00000000-0000-0000-0000-000000000000', '43b8539a-13ea-493d-98a4-8cc59fbdce12', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 16:25:17.218805+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'cdb60f86-816b-4b7e-9179-f0f7c3450bc0', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 18:15:38.994014+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'fe91da47-dcf5-4310-8f1b-6d68df9628c7', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-23 18:15:38.996636+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'a04a8fb9-2f61-43ab-95ec-4b079f0f7ae6', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 04:12:28.231081+00', ''),
+	('00000000-0000-0000-0000-000000000000', '28052031-3ec1-4e78-82be-83509831393d', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 04:12:28.232618+00', ''),
+	('00000000-0000-0000-0000-000000000000', '4acd8f54-67e1-4fd6-b273-094bc59cce58', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 05:19:19.971679+00', ''),
+	('00000000-0000-0000-0000-000000000000', '9ea2d0d7-6377-47e5-ab55-a56aea0a0169', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 05:19:19.973502+00', ''),
+	('00000000-0000-0000-0000-000000000000', '1795edcf-90bf-48e9-a086-1cb370e011b6', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 06:17:24.868006+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'ec19200a-ff01-4a88-ba9d-72213d57512d', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 06:17:24.86838+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'c568a2e6-82ae-4d34-ace5-62ba94057dd0', '{"action":"login","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}', '2025-07-24 06:30:39.769749+00', ''),
+	('00000000-0000-0000-0000-000000000000', '35dbff08-84db-4ded-afa2-1c910cb644ee', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 16:38:51.922341+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'b382d0e4-9144-4b21-b37a-76270a3e4df9', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 16:38:51.923726+00', ''),
+	('00000000-0000-0000-0000-000000000000', '1fdd4d0b-c437-45cf-ad6d-ea06e18e0644', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 17:43:14.210113+00', ''),
+	('00000000-0000-0000-0000-000000000000', '683d1975-4a17-4e19-9008-51281c008b46', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 17:43:14.213515+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'e1ef6772-cd12-4bbb-b231-7358e86201e7', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 18:42:07.894408+00', ''),
+	('00000000-0000-0000-0000-000000000000', '9f5040ed-ea1d-4485-ac69-b3057c76edac', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 18:42:07.895941+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'e4c0cef6-2604-4377-b9ae-473754fb20bf', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 19:43:57.295848+00', ''),
+	('00000000-0000-0000-0000-000000000000', '487e1645-66c1-430b-ba8c-b66254a87f16', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 19:43:57.296741+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'ad9ea4c2-04a5-47e3-9f5d-fb002a9df9ea', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 20:42:54.914445+00', ''),
+	('00000000-0000-0000-0000-000000000000', '82f61b4e-9ef7-4c66-a615-a478621eb454', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-24 20:42:54.914836+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'db04bbbd-c883-4cdf-8220-14b6d827fbcc', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 03:56:44.581145+00', ''),
+	('00000000-0000-0000-0000-000000000000', '620f52fe-00b2-4db6-a038-7f3fcbced630', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 03:56:44.584896+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'd4f64125-23b0-40a4-8eb6-2cde2df34d89', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 04:55:03.686575+00', ''),
+	('00000000-0000-0000-0000-000000000000', '7b27a046-216f-47d7-bd07-e9d06d5364df', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 04:55:03.687701+00', ''),
+	('00000000-0000-0000-0000-000000000000', '737b81bb-746a-4a2b-96d4-a2ceb329f7a2', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 08:56:55.242013+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'cbe0cdee-3f3a-4bed-ac55-90da08ae6972', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 08:56:55.242708+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'f4e6ab19-f3b4-4d38-9206-c1b9207cec74', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 10:00:00.845575+00', ''),
+	('00000000-0000-0000-0000-000000000000', '77185d7a-c3b8-4b89-bfc6-e9b077590d22', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 10:00:00.847584+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'da02c820-c9a3-434e-964d-b92b3707e3f1', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 10:58:37.432352+00', ''),
+	('00000000-0000-0000-0000-000000000000', '95b2bfb0-c915-47a4-aa58-e9813e211ee9', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 10:58:37.434573+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'f827dc93-c3ab-4413-bea6-25f1e3d7fe3d', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 11:57:19.235795+00', ''),
+	('00000000-0000-0000-0000-000000000000', '105ea521-aa2e-438a-9dd3-53204968a1c6', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 11:57:19.238179+00', ''),
+	('00000000-0000-0000-0000-000000000000', '317f5cc7-38e5-4eb3-8a2e-1dfb4d7f29cf', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 12:55:45.575729+00', ''),
+	('00000000-0000-0000-0000-000000000000', '0c1daad2-17cd-4b01-b065-66415ca8996c', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 12:55:45.577116+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'a9450964-b01a-4a8d-b2bd-62b467f4e78a', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 15:41:38.334284+00', ''),
+	('00000000-0000-0000-0000-000000000000', '37f632c8-d4a6-40d5-96c9-1ef5dc6a448e', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 15:41:38.334828+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'c65b579a-a766-4091-8814-9838431a305c', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 16:40:10.480636+00', ''),
+	('00000000-0000-0000-0000-000000000000', '65e487ff-4b8a-4284-9012-95e181347148', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 16:40:10.48327+00', ''),
+	('00000000-0000-0000-0000-000000000000', '5973fc37-9566-4248-881f-71b1ff45ff18', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 17:38:57.016562+00', ''),
+	('00000000-0000-0000-0000-000000000000', '5c7f6a72-6907-4872-a55f-3fbcba2c6ca9', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 17:38:57.019243+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'e018575d-e44b-4188-a238-b3711376ad34', '{"action":"token_refreshed","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 20:23:00.968677+00', ''),
+	('00000000-0000-0000-0000-000000000000', 'b216d031-0976-4ec0-b2fd-283e898e4915', '{"action":"token_revoked","actor_id":"e2039206-f313-49c3-bc16-0596c11e4a5d","actor_username":"jd@incub8space.com","actor_via_sso":false,"log_type":"token"}', '2025-07-26 20:23:00.970742+00', '');
 
 
 --
@@ -129,7 +186,7 @@ INSERT INTO "auth"."audit_log_entries" ("instance_id", "id", "payload", "created
 --
 
 INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encrypted_password", "email_confirmed_at", "invited_at", "confirmation_token", "confirmation_sent_at", "recovery_token", "recovery_sent_at", "email_change_token_new", "email_change", "email_change_sent_at", "last_sign_in_at", "raw_app_meta_data", "raw_user_meta_data", "is_super_admin", "created_at", "updated_at", "phone", "phone_confirmed_at", "phone_change", "phone_change_token", "phone_change_sent_at", "email_change_token_current", "email_change_confirm_status", "banned_until", "reauthentication_token", "reauthentication_sent_at", "is_sso_user", "deleted_at", "is_anonymous") VALUES
-	('00000000-0000-0000-0000-000000000000', 'e2039206-f313-49c3-bc16-0596c11e4a5d', 'authenticated', 'authenticated', 'jd@incub8space.com', '$2a$10$R36dm12HMH0jpt27cuRCve2bJGpjbQRk2TVSLL64InY2L2GSWQ8aK', '2025-07-17 13:57:22.888743+00', NULL, '', NULL, '5fb81ad6eff9ef400cfe675b35d5b5e9a6bc768355bee0ab52678b3d', '2025-07-20 16:27:41.734624+00', '', '', NULL, '2025-07-21 18:24:42.377955+00', '{"provider": "email", "providers": ["email"]}', '{"email_verified": true}', NULL, '2025-07-17 13:57:22.885157+00', '2025-07-23 09:15:08.636617+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
+	('00000000-0000-0000-0000-000000000000', 'e2039206-f313-49c3-bc16-0596c11e4a5d', 'authenticated', 'authenticated', 'jd@incub8space.com', '$2a$10$R36dm12HMH0jpt27cuRCve2bJGpjbQRk2TVSLL64InY2L2GSWQ8aK', '2025-07-17 13:57:22.888743+00', NULL, '', NULL, '4233f34e49d8b9df832905f2f54edc7986775d984f3760767e93d7ab', '2025-07-23 15:25:24.990339+00', '', '', NULL, '2025-07-24 06:30:39.770204+00', '{"provider": "email", "providers": ["email"]}', '{"email_verified": true}', NULL, '2025-07-17 13:57:22.885157+00', '2025-07-26 20:23:00.974405+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
 
 
 --
@@ -193,8 +250,12 @@ INSERT INTO "auth"."sessions" ("id", "user_id", "created_at", "updated_at", "fac
 	('0aeea375-17c8-4a39-b427-fa919f085b7d', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-20 15:50:26.025566+00', '2025-07-20 15:50:26.025566+00', NULL, 'aal1', NULL, NULL, 'undici', '172.18.0.1', NULL),
 	('775f426a-a7fa-43b2-aed1-a999c7122044', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-20 15:50:26.046219+00', '2025-07-20 15:50:26.046219+00', NULL, 'aal1', NULL, NULL, 'undici', '172.18.0.1', NULL),
 	('b3d2da69-bae1-461a-8074-79f786e5a24a', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-20 15:50:26.049757+00', '2025-07-20 15:50:26.049757+00', NULL, 'aal1', NULL, NULL, 'undici', '172.18.0.1', NULL),
-	('cc5b7a29-6d46-4ae6-955c-4ef322dbcddd', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-21 18:24:42.378039+00', '2025-07-23 09:15:08.637845+00', NULL, 'aal1', NULL, '2025-07-23 09:15:08.637758', 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '172.18.0.1', NULL),
-	('de62a67d-2953-4d7d-b2ca-ae980337cced', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-20 15:48:43.302874+00', '2025-07-21 02:59:01.194175+00', NULL, 'aal1', NULL, '2025-07-21 02:59:01.194122', 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '172.18.0.1', NULL);
+	('19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-24 06:30:39.770429+00', '2025-07-26 20:23:00.978761+00', NULL, 'aal1', NULL, '2025-07-26 20:23:00.978692', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', '172.18.0.1', NULL),
+	('cc5b7a29-6d46-4ae6-955c-4ef322dbcddd', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-21 18:24:42.378039+00', '2025-07-23 12:37:32.549367+00', NULL, 'aal1', NULL, '2025-07-23 12:37:32.549132', 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '172.18.0.1', NULL),
+	('de62a67d-2953-4d7d-b2ca-ae980337cced', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-20 15:48:43.302874+00', '2025-07-21 02:59:01.194175+00', NULL, 'aal1', NULL, '2025-07-21 02:59:01.194122', 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '172.18.0.1', NULL),
+	('027dc3a5-08bc-48a3-99db-21057df0de25', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-23 12:37:40.168933+00', '2025-07-23 14:18:45.172047+00', NULL, 'aal1', NULL, '2025-07-23 14:18:45.172008', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', '172.18.0.1', NULL),
+	('734e63fc-1910-48a6-a3c9-504887d0e8af', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-23 15:25:10.905728+00', '2025-07-24 06:17:24.870759+00', NULL, 'aal1', NULL, '2025-07-24 06:17:24.870701', 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '172.18.0.1', NULL),
+	('9844d17c-6957-4864-a07b-47d2c1a090fa', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '2025-07-23 14:50:37.35834+00', '2025-07-23 14:50:37.35834+00', NULL, 'aal1', NULL, NULL, 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1', '172.18.0.1', NULL);
 
 
 --
@@ -245,7 +306,11 @@ INSERT INTO "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "
 	('775f426a-a7fa-43b2-aed1-a999c7122044', '2025-07-20 15:50:26.047581+00', '2025-07-20 15:50:26.047581+00', 'password', '88ecff76-d09b-4d8c-9831-7399fbf8eb43'),
 	('b3d2da69-bae1-461a-8074-79f786e5a24a', '2025-07-20 15:50:26.051434+00', '2025-07-20 15:50:26.051434+00', 'password', 'a1aea857-2548-42eb-b899-8e8cafe5b839'),
 	('a37dabef-0ede-4fb6-9a66-35439f2c367c', '2025-07-21 02:59:27.102187+00', '2025-07-21 02:59:27.102187+00', 'password', 'c5939c8c-0a94-40e1-9453-4aa8c1e3ed12'),
-	('cc5b7a29-6d46-4ae6-955c-4ef322dbcddd', '2025-07-21 18:24:42.381594+00', '2025-07-21 18:24:42.381594+00', 'password', 'bf4058e5-d56a-464c-8d8d-697d496a44cb');
+	('cc5b7a29-6d46-4ae6-955c-4ef322dbcddd', '2025-07-21 18:24:42.381594+00', '2025-07-21 18:24:42.381594+00', 'password', 'bf4058e5-d56a-464c-8d8d-697d496a44cb'),
+	('027dc3a5-08bc-48a3-99db-21057df0de25', '2025-07-23 12:37:40.171199+00', '2025-07-23 12:37:40.171199+00', 'password', '32086914-2aec-44d7-8dbe-c67892e4bbaa'),
+	('9844d17c-6957-4864-a07b-47d2c1a090fa', '2025-07-23 14:50:37.364548+00', '2025-07-23 14:50:37.364548+00', 'password', 'e5e1a89e-3f67-468c-9bcb-b6d573735526'),
+	('734e63fc-1910-48a6-a3c9-504887d0e8af', '2025-07-23 15:25:10.914049+00', '2025-07-23 15:25:10.914049+00', 'password', '03b5d88f-2770-4daa-8b26-b8f197cf2f78'),
+	('19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2', '2025-07-24 06:30:39.772998+00', '2025-07-24 06:30:39.772998+00', 'password', '78529381-9bc2-47a7-b504-f00c537f17b2');
 
 
 --
@@ -265,7 +330,7 @@ INSERT INTO "auth"."mfa_amr_claims" ("session_id", "created_at", "updated_at", "
 --
 
 INSERT INTO "auth"."one_time_tokens" ("id", "user_id", "token_type", "token_hash", "relates_to", "created_at", "updated_at") VALUES
-	('add920f8-3f0d-4b97-bdc8-a4fa79ae9056', 'e2039206-f313-49c3-bc16-0596c11e4a5d', 'recovery_token', '5fb81ad6eff9ef400cfe675b35d5b5e9a6bc768355bee0ab52678b3d', 'jd@incub8space.com', '2025-07-20 16:27:41.755621', '2025-07-20 16:27:41.755621');
+	('25a30f27-d73e-421e-90f1-9584b4752f16', 'e2039206-f313-49c3-bc16-0596c11e4a5d', 'recovery_token', '4233f34e49d8b9df832905f2f54edc7986775d984f3760767e93d7ab', 'jd@incub8space.com', '2025-07-23 15:25:25.003295', '2025-07-23 15:25:25.003295');
 
 
 --
@@ -336,7 +401,35 @@ INSERT INTO "auth"."refresh_tokens" ("instance_id", "id", "token", "user_id", "r
 	('00000000-0000-0000-0000-000000000000', 93, 'li6dzoqtzrou', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 01:22:59.15294+00', '2025-07-23 02:24:52.903778+00', '3i7oquutankt', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd'),
 	('00000000-0000-0000-0000-000000000000', 94, 'ivk2qdrl4hja', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 02:24:52.906956+00', '2025-07-23 06:16:27.22631+00', 'li6dzoqtzrou', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd'),
 	('00000000-0000-0000-0000-000000000000', 95, 'xiux5zxnzqoz', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 06:16:27.229291+00', '2025-07-23 09:15:08.634527+00', 'ivk2qdrl4hja', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd'),
-	('00000000-0000-0000-0000-000000000000', 96, 'lqv5bwuy6wxb', 'e2039206-f313-49c3-bc16-0596c11e4a5d', false, '2025-07-23 09:15:08.635442+00', '2025-07-23 09:15:08.635442+00', 'xiux5zxnzqoz', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd');
+	('00000000-0000-0000-0000-000000000000', 96, 'lqv5bwuy6wxb', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 09:15:08.635442+00', '2025-07-23 10:14:44.366843+00', 'xiux5zxnzqoz', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd'),
+	('00000000-0000-0000-0000-000000000000', 97, 'ftddjqm4yyz2', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 10:14:44.36865+00', '2025-07-23 12:37:32.542203+00', 'lqv5bwuy6wxb', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd'),
+	('00000000-0000-0000-0000-000000000000', 98, 'a3eqqf4umsqu', 'e2039206-f313-49c3-bc16-0596c11e4a5d', false, '2025-07-23 12:37:32.543778+00', '2025-07-23 12:37:32.543778+00', 'ftddjqm4yyz2', 'cc5b7a29-6d46-4ae6-955c-4ef322dbcddd'),
+	('00000000-0000-0000-0000-000000000000', 99, '3ezlvvv5e3lr', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 12:37:40.170595+00', '2025-07-23 14:18:45.165927+00', NULL, '027dc3a5-08bc-48a3-99db-21057df0de25'),
+	('00000000-0000-0000-0000-000000000000', 100, 'xl5p5f4xazbd', 'e2039206-f313-49c3-bc16-0596c11e4a5d', false, '2025-07-23 14:18:45.1683+00', '2025-07-23 14:18:45.1683+00', '3ezlvvv5e3lr', '027dc3a5-08bc-48a3-99db-21057df0de25'),
+	('00000000-0000-0000-0000-000000000000', 101, 'jsias3s74sce', 'e2039206-f313-49c3-bc16-0596c11e4a5d', false, '2025-07-23 14:50:37.36102+00', '2025-07-23 14:50:37.36102+00', NULL, '9844d17c-6957-4864-a07b-47d2c1a090fa'),
+	('00000000-0000-0000-0000-000000000000', 102, 'jub6z2qupbnx', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 15:25:10.910154+00', '2025-07-23 16:25:17.219052+00', NULL, '734e63fc-1910-48a6-a3c9-504887d0e8af'),
+	('00000000-0000-0000-0000-000000000000', 103, '6lxey26ozucu', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 16:25:17.221519+00', '2025-07-23 18:15:38.99745+00', 'jub6z2qupbnx', '734e63fc-1910-48a6-a3c9-504887d0e8af'),
+	('00000000-0000-0000-0000-000000000000', 104, 'b2io3i6puhsz', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-23 18:15:38.999441+00', '2025-07-24 04:12:28.233467+00', '6lxey26ozucu', '734e63fc-1910-48a6-a3c9-504887d0e8af'),
+	('00000000-0000-0000-0000-000000000000', 105, 'lpmsykoh7tkj', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 04:12:28.23485+00', '2025-07-24 05:19:19.974213+00', 'b2io3i6puhsz', '734e63fc-1910-48a6-a3c9-504887d0e8af'),
+	('00000000-0000-0000-0000-000000000000', 106, '7nexmwo6hy7w', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 05:19:19.975228+00', '2025-07-24 06:17:24.868581+00', 'lpmsykoh7tkj', '734e63fc-1910-48a6-a3c9-504887d0e8af'),
+	('00000000-0000-0000-0000-000000000000', 107, 'ufu566burjfo', 'e2039206-f313-49c3-bc16-0596c11e4a5d', false, '2025-07-24 06:17:24.869003+00', '2025-07-24 06:17:24.869003+00', '7nexmwo6hy7w', '734e63fc-1910-48a6-a3c9-504887d0e8af'),
+	('00000000-0000-0000-0000-000000000000', 108, 'qzkgh57hrgqs', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 06:30:39.772078+00', '2025-07-24 16:38:51.924219+00', NULL, '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 109, '62qczujylbwb', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 16:38:51.92565+00', '2025-07-24 17:43:14.214472+00', 'qzkgh57hrgqs', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 110, 'vmsgxp5jmzux', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 17:43:14.216001+00', '2025-07-24 18:42:07.896618+00', '62qczujylbwb', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 111, 'x4cvgdoj3yvt', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 18:42:07.898235+00', '2025-07-24 19:43:57.29765+00', 'vmsgxp5jmzux', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 112, 'cuaf6ajpdbnb', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 19:43:57.298321+00', '2025-07-24 20:42:54.915127+00', 'x4cvgdoj3yvt', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 113, 'pp46xx372yyl', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-24 20:42:54.915603+00', '2025-07-26 03:56:44.58605+00', 'cuaf6ajpdbnb', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 114, 'wdsi47js47bo', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 03:56:44.587492+00', '2025-07-26 04:55:03.687922+00', 'pp46xx372yyl', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 115, 'fzzft22tq6kl', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 04:55:03.689052+00', '2025-07-26 08:56:55.243086+00', 'wdsi47js47bo', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 116, 'jwycx33djwaw', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 08:56:55.243679+00', '2025-07-26 10:00:00.847929+00', 'fzzft22tq6kl', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 117, 'uspgcl45zfsf', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 10:00:00.849698+00', '2025-07-26 10:58:37.434775+00', 'jwycx33djwaw', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 118, '4by4p2lgoink', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 10:58:37.437438+00', '2025-07-26 11:57:19.238406+00', 'uspgcl45zfsf', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 119, '5qkolq2tqsb7', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 11:57:19.240954+00', '2025-07-26 12:55:45.577598+00', '4by4p2lgoink', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 120, 'znpddtph32iy', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 12:55:45.578362+00', '2025-07-26 15:41:38.335269+00', '5qkolq2tqsb7', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 121, '77lwbanctmo4', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 15:41:38.335581+00', '2025-07-26 16:40:10.484048+00', 'znpddtph32iy', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 122, 'd3wxrbsnui42', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 16:40:10.486498+00', '2025-07-26 17:38:57.0199+00', '77lwbanctmo4', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 123, 'uv4ge5lkbsxe', 'e2039206-f313-49c3-bc16-0596c11e4a5d', true, '2025-07-26 17:38:57.023604+00', '2025-07-26 20:23:00.971565+00', 'd3wxrbsnui42', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2'),
+	('00000000-0000-0000-0000-000000000000', 124, 'hlprg7ygkeue', 'e2039206-f313-49c3-bc16-0596c11e4a5d', false, '2025-07-26 20:23:00.972455+00', '2025-07-26 20:23:00.972455+00', 'uv4ge5lkbsxe', '19200bcc-dd58-4fcb-ba2e-2f346cf5bcd2');
 
 
 --
@@ -375,8 +468,9 @@ INSERT INTO "public"."organizations" ("id", "created_at", "name") VALUES
 -- Data for Name: branches; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."branches" ("created_at", "name", "organization_id", "id") VALUES
-	('2025-07-21 01:56:36.741916+00', 'Kawit Branch', '0021c85b-7419-453f-8287-83c47347d431', '6a067506-e3c1-4a31-87f5-432884a84dce');
+INSERT INTO "public"."branches" ("created_at", "name", "organization_id", "id", "image_path", "location") VALUES
+	('2025-07-26 04:16:42.823493+00', 'Dasmarinas Branch', '0021c85b-7419-453f-8287-83c47347d431', '6006d119-db50-467d-83d3-4e7786dcef3d', 'Incub8Space/workstation-1.webp', '2nd Floor, Robertson Plaza, Centennial Road, Brgy. Tabon 1, Kawit, Cavite, Philippines'),
+	('2025-07-21 01:56:36.741916+00', 'Kawit Cavite Branch', '0021c85b-7419-453f-8287-83c47347d431', '6a067506-e3c1-4a31-87f5-432884a84dce', 'Incub8Space/workstation-1.webp', '2nd Floor, Robertson Plaza, Centennial Road, Brgy. Tabon 1, Kawit, Cavite, Philippines');
 
 
 --
@@ -384,16 +478,21 @@ INSERT INTO "public"."branches" ("created_at", "name", "organization_id", "id") 
 --
 
 INSERT INTO "public"."spaces" ("id", "created_at", "name", "is_available", "branch_id") VALUES
-	('6ed9b450-425a-453c-bfae-c23727d5c5fe', '2025-07-21 01:57:06.726977+00', 'Meeting Room', true, '6a067506-e3c1-4a31-87f5-432884a84dce');
+	('6ed9b450-425a-453c-bfae-c23727d5c5fe', '2025-07-21 01:57:06.726977+00', 'Meeting Room', true, '6a067506-e3c1-4a31-87f5-432884a84dce'),
+	('25d9d93f-44c8-492e-a5af-6a156efe6f3a', '2025-07-26 11:35:22.241968+00', 'Conference Room', true, '6006d119-db50-467d-83d3-4e7786dcef3d'),
+	('96097b1d-c19c-455b-9604-d1305a0e80e2', '2025-07-26 12:20:50.364242+00', 'Coworking Space', true, '6a067506-e3c1-4a31-87f5-432884a84dce'),
+	('755a6ac6-ede7-4242-9ed2-5b2d3f2f9bc2', '2025-07-26 12:21:23.565333+00', 'Coworking Space', true, '6006d119-db50-467d-83d3-4e7786dcef3d');
 
 
 --
 -- Data for Name: bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."bookings" ("created_at", "booked_by", "start_time", "end_time", "date", "status", "id", "space_id") VALUES
-	('2025-07-21 01:50:16.638628+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '02:03:00+08', '15:03:00+08', '2025-07-21', 'booked', '9471c888-fafb-4f4a-b2a3-9b9c91d50ee3', '6ed9b450-425a-453c-bfae-c23727d5c5fe'),
-	('2025-07-21 03:13:40.766581+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '02:03:00+00', '15:00:00+00', '2025-07-21', 'booked', 'f091f82a-980a-4202-9de6-c7ffd9d011e2', '6ed9b450-425a-453c-bfae-c23727d5c5fe');
+INSERT INTO "public"."bookings" ("created_at", "booked_by", "start_time", "end_time", "date", "status", "id", "space_id", "remarks") VALUES
+	('2025-07-21 01:50:16.638628+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '02:03:00+08', '15:03:00+08', '2025-07-21', 'booked', '9471c888-fafb-4f4a-b2a3-9b9c91d50ee3', '6ed9b450-425a-453c-bfae-c23727d5c5fe', NULL),
+	('2025-07-21 03:13:40.766581+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '02:03:00+00', '15:00:00+00', '2025-07-21', 'booked', 'f091f82a-980a-4202-9de6-c7ffd9d011e2', '6ed9b450-425a-453c-bfae-c23727d5c5fe', NULL),
+	('2025-07-26 15:51:06.654843+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '10:00:00+00', '12:00:00+00', '2025-07-30', 'booked', '222aa3db-8385-43c2-b13d-3e52d21ac8db', '25d9d93f-44c8-492e-a5af-6a156efe6f3a', NULL),
+	('2025-07-26 15:53:33.42306+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '10:00:00+00', '10:00:00+00', '2025-07-08', 'booked', 'fc7717ea-672b-4b9e-a071-0aa1a0b79697', '6ed9b450-425a-453c-bfae-c23727d5c5fe', 'Wala');
 
 
 --
@@ -497,6 +596,8 @@ INSERT INTO "public"."user_organizations" ("id", "created_at", "user_id", "organ
 -- Data for Name: buckets; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
 
+INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id", "type") VALUES
+	('branch-images', 'branch-images', NULL, '2025-07-24 17:19:39.29018+00', '2025-07-24 17:19:39.29018+00', true, false, NULL, NULL, NULL, 'STANDARD');
 
 
 --
@@ -521,12 +622,17 @@ INSERT INTO "public"."user_organizations" ("id", "created_at", "user_id", "organ
 -- Data for Name: objects; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
 
+INSERT INTO "storage"."objects" ("id", "bucket_id", "name", "owner", "created_at", "updated_at", "last_accessed_at", "metadata", "version", "owner_id", "user_metadata", "level") VALUES
+	('1d34cde5-e515-4958-bdd6-2365d1ad6ef5', 'branch-images', 'Incub8Space/workstation-1.webp', NULL, '2025-07-24 18:30:52.088918+00', '2025-07-24 18:30:52.088918+00', '2025-07-24 18:30:52.088918+00', '{"eTag": "\"8f119fcb73a4a9b7f572701bdde36852\"", "size": 171420, "mimetype": "image/webp", "cacheControl": "max-age=3600", "lastModified": "2025-07-24T18:30:52.063Z", "contentLength": 171420, "httpStatusCode": 200}', '1bfbfa9d-59e5-4381-8a45-dfdb9efc4fa6', NULL, NULL, 2),
+	('731ab46e-7e90-44df-9cb8-2cafe56c44c4', 'branch-images', 'Incub8Space/1000038003.webp', NULL, '2025-07-24 18:30:52.17378+00', '2025-07-24 18:30:52.17378+00', '2025-07-24 18:30:52.17378+00', '{"eTag": "\"18f43ba230f79c87d5c586be3491b286\"", "size": 411450, "mimetype": "image/webp", "cacheControl": "max-age=3600", "lastModified": "2025-07-24T18:30:52.064Z", "contentLength": 411450, "httpStatusCode": 200}', '247b82b5-e951-4279-8424-4bdbf86a7d86', NULL, NULL, 2);
 
 
 --
 -- Data for Name: prefixes; Type: TABLE DATA; Schema: storage; Owner: supabase_storage_admin
 --
 
+INSERT INTO "storage"."prefixes" ("bucket_id", "name", "created_at", "updated_at") VALUES
+	('branch-images', 'Incub8Space', '2025-07-24 18:18:15.191857+00', '2025-07-24 18:18:15.191857+00');
 
 
 --
@@ -551,7 +657,7 @@ INSERT INTO "public"."user_organizations" ("id", "created_at", "user_id", "organ
 -- Name: refresh_tokens_id_seq; Type: SEQUENCE SET; Schema: auth; Owner: supabase_auth_admin
 --
 
-SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 96, true);
+SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 124, true);
 
 
 --

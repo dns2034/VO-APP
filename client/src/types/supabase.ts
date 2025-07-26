@@ -480,7 +480,12 @@ export type Database = {
       };
     };
     Enums: {
-      booking_status: "booked" | "cancelled" | "pending";
+      booking_status:
+        | "booked"
+        | "cancelled"
+        | "pending"
+        | "completed"
+        | "no-show";
       currency_status: "active" | "used" | "expired";
       reward_types: "credit" | "point";
       roles: "manager" | "client" | "superadmin";
@@ -618,7 +623,13 @@ export const Constants = {
   },
   public: {
     Enums: {
-      booking_status: ["booked", "cancelled", "pending"],
+      booking_status: [
+        "booked",
+        "cancelled",
+        "pending",
+        "completed",
+        "no-show",
+      ],
       currency_status: ["active", "used", "expired"],
       reward_types: ["credit", "point"],
       roles: ["manager", "client", "superadmin"],

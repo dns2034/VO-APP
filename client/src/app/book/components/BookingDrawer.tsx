@@ -60,6 +60,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
         end_time: endTime,
         space_id: spaceId,
         status: "booked",
+        remarks: remarks,
       });
       toast.success("Booking created!");
       setDate(undefined);
@@ -108,7 +109,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
             <p className="text-xs text-muted-foreground mb-3 ml-7">
               Choose the date you want to book the space for.
             </p>
-            <div className="flex flex-col gap-3 bg-muted/50 rounded-lg p-4 border">
+            <div className="flex flex-col gap-3 rounded-lg p-2">
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="branch"
@@ -181,12 +182,12 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
             <p className="text-xs text-muted-foreground mb-3 ml-7">
               Choose the date you want to book the space for.
             </p>
-            <div className="p-2 flex items-center justify-center rounded-lg border bg-muted">
+            <div className="flex items-center justify-center rounded-lg border ">
               <Calendar
                 mode="single"
                 selected={date}
                 onSelect={setDate}
-                className="rounded-md"
+                className="rounded-md w-full"
               />
             </div>
           </div>
@@ -202,7 +203,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
             <p className="text-xs text-muted-foreground mb-3 ml-7">
               Select the start and end time for your booking.
             </p>
-            <div className="flex gap-4 bg-muted/50 rounded-lg p-4 border">
+            <div className="flex gap-4 p-2">
               <div className="flex-1 flex flex-col gap-1.5">
                 <Label
                   htmlFor="start-time"
@@ -254,13 +255,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
             <p className="text-xs text-muted-foreground mb-3 ml-7">
               Add any notes or special requests for your booking (optional).
             </p>
-            <div className="flex flex-col gap-1.5 bg-muted/50 rounded-lg p-4 border">
-              <Label
-                htmlFor="remarks"
-                className="text-sm font-medium flex items-center gap-2"
-              >
-                Remarks (Optional)
-              </Label>
+            <div className="flex flex-col gap-1.5">
               <Textarea
                 id="remarks"
                 value={remarks}

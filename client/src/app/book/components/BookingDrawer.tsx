@@ -19,23 +19,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format } from "date-fns";
 import { toast } from "sonner";
 import { useBranches } from "@/hooks/useBranches";
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  CalendarDays,
+  Building2,
+  MapPin,
+  Clock,
+  StickyNote,
+} from "lucide-react"; // lucide-react icons
 
 export default function BookingDrawer({ branchId }: { branchId: string }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [branch, setBranch] = useState<string>("");
+  const [branch, setBranch] = useState<string>(branchId);
   const [loading, setLoading] = useState(false);
   const { branches, loading: branchesLoading } = useBranches();
   const { spaces, loading: spacesLoading } = useSpaces();
   const [spaceId, setSpaceId] = useState<string>("");
+  const [remarks, setRemarks] = useState<string>("");
 
   // Filter spaces by selected branch
   const filteredSpaces = branch
@@ -67,6 +74,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       setSpaceId("");
       setOpen(false);
       fetchBookings();
+      setRemarks("");
     } catch (err: unknown) {
       toast.error(
         "Failed to create booking: " +
@@ -80,93 +88,193 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="text-xs">Book</Button>
+        <Button className="text-xs flex items-center gap-1">
+          <CalendarDays className="w-4 h-4" />
+          Book
+        </Button>
       </DrawerTrigger>
-      <DrawerContent className="">
-        <ScrollArea className="overflow-y-auto max-h-[90vh]">
-          <DrawerHeader>
-            <DrawerTitle>New Booking</DrawerTitle>
+      <DrawerContent className="p-0 flex flex-col max-h-[90vh]">
+        <div className="sticky top-0 z-10 bg-white border-b">
+          <DrawerHeader className="px-6 pt-4 pb-2 flex items-center gap-2">
+            <CalendarDays className="w-6 h-6 text-primary" />
+            <DrawerTitle className="text-lg font-bold">New Booking</DrawerTitle>
           </DrawerHeader>
-          <form className="space-y-6 p-4" onSubmit={handleSubmit}>
-            <div>
-              <Label className="mb-2 block">Select Date</Label>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="w-full rounded-lg shadow-sm"
+        </div>
+        <form
+          className="flex-1 overflow-y-auto px-6 py-4 space-y-8"
+          onSubmit={handleSubmit}
+        >
+          {/* Section 1: Select Space */}
+          <div>
+            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-primary" />
+              Select Space
+            </h3>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Label
+                  htmlFor="branch"
+                  className="mb-1 text-sm font-medium flex items-center gap-2"
+                >
+                  <Building2 className="w-4 h-4 text-muted-foreground" />
+                  Branch
+                </Label>
+                <Select
+                  value={branch}
+                  onValueChange={(val) => {
+                    setBranch(val);
+                    setSpaceId("");
+                  }}
+                  required
+                  disabled={branchesLoading}
+                >
+                  <SelectTrigger
+                    id="branch"
+                    className="rounded-md border px-3 py-2 bg-white"
+                  >
+                    <SelectValue placeholder="Choose a branch..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {branches.map((b) => (
+                      <SelectItem key={b.id} value={b.id}>
+                        {b.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label
+                  htmlFor="space"
+                  className="mb-1 text-sm font-medium flex items-center gap-2"
+                >
+                  <MapPin className="w-4 h-4 text-muted-foreground" />
+                  Space
+                </Label>
+                <Select
+                  value={spaceId}
+                  onValueChange={setSpaceId}
+                  required
+                  disabled={!branch || spacesLoading}
+                >
+                  <SelectTrigger
+                    id="space"
+                    className="rounded-md border px-3 py-2 bg-white"
+                  >
+                    <SelectValue placeholder="Choose a space" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredSpaces.map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Select Date */}
+          <div>
+            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
+              <CalendarDays className="w-5 h-5 text-primary" />
+              Select Date
+            </h3>
+            <div className="flex flex-col gap-2">
+              <Label className="mb-1 text-sm font-medium flex items-center gap-2">
+                <CalendarDays className="w-4 h-4 text-muted-foreground" />
+                Date
+              </Label>
+              <div className="p-2 flex items-center justify-center rounded-lg border bg-muted">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Select Time */}
+          <div>
+            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-primary" />
+              Select Time
+            </h3>
+            <div className="flex gap-4">
+              {/* Start Time */}
+              <div className="flex-1 flex flex-col gap-1.5">
+                <Label
+                  htmlFor="start-time"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <Clock className="w-4 h-4 text-muted-foreground" />
+                  Start Time
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="start-time"
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    required
+                  />
+                  <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                </div>
+              </div>
+              {/* End Time */}
+              <div className="flex-1 flex flex-col gap-1.5">
+                <Label
+                  htmlFor="end-time"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  <Clock className="w-4 h-4 text-muted-foreground" />
+                  End Time
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="end-time"
+                    type="time"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    required
+                  />
+                  <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Additional Remarks */}
+          <div>
+            <h3 className="text-base font-semibold mb-3 flex items-center gap-2">
+              <StickyNote className="w-5 h-5 text-primary" />
+              Additional Remarks
+            </h3>
+            <div className="flex flex-col gap-2">
+              <Label
+                htmlFor="remarks"
+                className="mb-1 text-sm font-medium flex items-center gap-2"
+              >
+                <StickyNote className="w-4 h-4 text-muted-foreground" />
+                Remarks (Optional)
+              </Label>
+              <Textarea
+                id="remarks"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+                placeholder="Additional notes or requests"
+                className="rounded-md border px-3 py-2 min-h-[80px]"
               />
             </div>
-            <div>
-              <Label htmlFor="branch">Select Branch</Label>
-              <Select
-                value={branchId}
-                onValueChange={(val) => {
-                  setBranch(val);
-                  setSpaceId("");
-                }}
-                required
-                disabled={branchesLoading}
-              >
-                <SelectTrigger id="branch">
-                  <SelectValue placeholder="Choose a branch..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {branches.map((b) => (
-                    <SelectItem key={b.id} value={b.id}>
-                      {b.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="space">Select Space</Label>
-              <Select
-                value={spaceId}
-                onValueChange={setSpaceId}
-                required
-                disabled={!branch || spacesLoading}
-              >
-                <SelectTrigger id="space">
-                  <SelectValue placeholder="Choose a space" />
-                </SelectTrigger>
-                <SelectContent>
-                  {filteredSpaces.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Label htmlFor="start-time">Start Time</Label>
-                <Input
-                  id="start-time"
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="flex-1">
-                <Label htmlFor="end-time">End Time</Label>
-                <Input
-                  id="end-time"
-                  type="time"
-                  value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Booking..." : "Book Now"}
-            </Button>
-          </form>
-        </ScrollArea>
+          </div>
+
+          <Button type="submit" className="w-full mt-2" disabled={loading}>
+            {loading ? "Booking..." : "Book Now"}
+          </Button>
+        </form>
       </DrawerContent>
     </Drawer>
   );

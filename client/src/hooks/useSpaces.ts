@@ -28,6 +28,15 @@ export function useSpaces() {
     fetchSpaces();
   }, [fetchSpaces]);
 
+  const fetchSpaceById = async (id: string) => {
+    try {
+      const space = await SpacesService.getById(id);
+      return space;
+    } catch (error) {
+      throw new Error("Failed to fetch space: " + (error as Error).message);
+    }
+  };
+
   const createSpace = async (space: SpaceInsert) => {
     try {
       const newSpace = await SpacesService.create(space);
@@ -62,6 +71,7 @@ export function useSpaces() {
     loading,
     error,
     fetchSpaces,
+    fetchSpaceById,
     createSpace,
     updateSpace,
     deleteSpace,

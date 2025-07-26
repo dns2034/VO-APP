@@ -13,6 +13,17 @@ export class BranchesService {
     return data || [];
   }
 
+  static async getById(id: string): Promise<BranchRow | null> {
+    const { data, error } = await supabaseClient
+      .from("branches")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) throw new Error("Failed to fetch branch: " + error.message);
+    return data;
+  }
+
   static async create(branch: BranchInsert): Promise<BranchRow> {
     const { data, error } = await supabaseClient
       .from("branches")

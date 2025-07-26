@@ -1,25 +1,31 @@
 import { BranchesService } from "@/services/branches.service";
 import { Database } from "@/types/supabase";
-
 type BranchRow = Database["public"]["Tables"]["branches"]["Row"];
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 export function useBranches() {
   const [branches, setBranches] = useState<BranchRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchBranches = useCallback(async () => {
+  useEffect(() => {
     setLoading(true);
-    try {
-      const data = await BranchesService.getAll();
-      setBranches(data);
-    } catch (error) {
-      setError("Failed to fetch branches: " + (error as Error).message);
-    } finally {
-      setLoading(false);
-    }
+    BranchesService.getAll()
+      .then((data) => setBranches(data))
+      .catch((error) =>
+        setError("Failed to fetch branches: " + (error as Error).message)
+      )
+      .finally(() => setLoading(false));
   }, []);
+
+  const fetchBranchById = async (id: string) => {
+    try {
+      const branch = await BranchesService.getById(id);
+      return branch;
+    } catch (error) {
+      throw new Error("Failed to fetch branch: " + (error as Error).message);
+    }
+  };
 
   const handleCreateBranch = async (branch: Omit<BranchRow, "id">) => {
     try {
@@ -30,9 +36,11 @@ export function useBranches() {
     }
   };
 
-  useEffect(() => {
-    fetchBranches();
-  }, [fetchBranches]);
-
-  return { branches, loading, error, fetchBranches, handleCreateBranch };
+  return {
+    branches,
+    loading,
+    error,
+    fetchBranchById,
+    handleCreateBranch,
+  };
 }

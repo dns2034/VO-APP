@@ -41,6 +41,7 @@ export type Database = {
           date: string;
           end_time: string;
           id: string;
+          remarks: string | null;
           space_id: string;
           start_time: string;
           status: Database["public"]["Enums"]["booking_status"];
@@ -51,6 +52,7 @@ export type Database = {
           date: string;
           end_time: string;
           id?: string;
+          remarks?: string | null;
           space_id: string;
           start_time: string;
           status?: Database["public"]["Enums"]["booking_status"];
@@ -61,6 +63,7 @@ export type Database = {
           date?: string;
           end_time?: string;
           id?: string;
+          remarks?: string | null;
           space_id?: string;
           start_time?: string;
           status?: Database["public"]["Enums"]["booking_status"];
@@ -79,18 +82,24 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
+          image_path: string | null;
+          location: string | null;
           name: string;
           organization_id: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
+          image_path?: string | null;
+          location?: string | null;
           name: string;
           organization_id: string;
         };
         Update: {
           created_at?: string;
           id?: string;
+          image_path?: string | null;
+          location?: string | null;
           name?: string;
           organization_id?: string;
         };

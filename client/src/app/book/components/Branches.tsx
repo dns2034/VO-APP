@@ -1,12 +1,8 @@
-import { useBookings } from "@/hooks/useBookings";
 import { useBranches } from "@/hooks/useBranches";
-import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import BookingDrawer from "./BookingDrawer";
 
 export default function Branches() {
-  const { bookings, fetchBookings } = useBookings();
   const { branches } = useBranches();
 
   return (

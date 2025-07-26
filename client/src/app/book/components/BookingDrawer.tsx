@@ -128,7 +128,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                 >
                   <SelectTrigger
                     id="branch"
-                    className="rounded-md border px-3 py-2 bg-white"
+                    className="rounded-md border px-3 py-2 bg-white w-full"
                   >
                     <SelectValue placeholder="Choose a branch..." />
                   </SelectTrigger>
@@ -156,7 +156,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                 >
                   <SelectTrigger
                     id="space"
-                    className="rounded-md border px-3 py-2 bg-white"
+                    className="rounded-md border px-3 py-2 bg-white w-full"
                   >
                     <SelectValue placeholder="Choose a space" />
                   </SelectTrigger>

@@ -108,7 +108,7 @@ export default function Bookings() {
                   const spaceName = space?.name || "Unknown Space";
                   const branchName = branch?.name || "Unknown Branch";
                   const dateStr = booking.date
-                    ? format(new Date(booking.date), "PPP")
+                    ? format(new Date(booking.date), "P")
                     : "";
                   let timeStr = "";
                   if (booking.start_time && booking.end_time) {
@@ -136,7 +136,7 @@ export default function Bookings() {
                           <AccordionTrigger className="py-3 flex items-center w-full">
                             <Calendar className="w-4 h-4 text-black mr-2" />
                             <span className="flex-1 text-left">
-                              {branchName} – {dateStr}
+                              {spaceName} – {dateStr}
                             </span>
                           </AccordionTrigger>
                           <AccordionContent>

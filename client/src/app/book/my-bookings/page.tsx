@@ -126,12 +126,18 @@ export default function Bookings() {
                     timeStr = "N/A";
                   }
                   return (
-                    <div key={booking.id}>
-                      <Accordion type="single" collapsible className="py-0">
+                    <div key={booking.id} className="flex">
+                      <Accordion
+                        type="single"
+                        collapsible
+                        className="py-0 flex-1"
+                      >
                         <AccordionItem value={`item-${booking.id}`}>
-                          <AccordionTrigger className="py-3 justify-start">
-                            <Calendar className="w-4 h-4 text-black" />
-                            {branchName} – {dateStr}
+                          <AccordionTrigger className="py-3 flex items-center w-full">
+                            <Calendar className="w-4 h-4 text-black mr-2" />
+                            <span className="flex-1 text-left">
+                              {branchName} – {dateStr}
+                            </span>
                           </AccordionTrigger>
                           <AccordionContent>
                             <div className="text-sm space-y-2 mt-2">

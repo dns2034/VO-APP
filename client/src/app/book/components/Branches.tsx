@@ -8,7 +8,7 @@ export default function Branches() {
   return (
     <div className="text-left">
       {branches.length === 0 ? (
-        <p>No bookings found.</p>
+        <p>No branches found.</p>
       ) : (
         <div>
           {branches.map((branch) => (
@@ -19,6 +19,7 @@ export default function Branches() {
                 width={500}
                 height={500}
                 className="w-full h-auto object-cover"
+                priority
               />
               <div className="bg-gray-800/40 absolute bottom-0 left-0 w-full text-white p-2 flex flex-row">
                 <div className="flex flex-col">

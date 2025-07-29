@@ -17,6 +17,8 @@ import VoucherDialog from "./components/VoucherDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
+import BottomBar from "@/components/bottom-bar";
+
 type RedemptionCandidate = {
   id: string;
   name: string;
@@ -125,6 +127,7 @@ export default function RewardsPage() {
             </div>
           </TabsContent>
         </Tabs>
+        <BottomBar />
         <ConfirmRedeemAlertDialog
           redemptionCandidate={redemptionCandidate}
           setRedemptionCandidate={setRedemptionCandidate}

@@ -224,8 +224,8 @@ export type Database = {
           id: string;
           image_path: string;
           name: string;
-          organization_id: string;
           price: number;
+          space_id: string | null;
         };
         Insert: {
           created_at?: string;
@@ -233,8 +233,8 @@ export type Database = {
           id?: string;
           image_path: string;
           name: string;
-          organization_id: string;
           price?: number;
+          space_id?: string | null;
         };
         Update: {
           created_at?: string;
@@ -242,15 +242,15 @@ export type Database = {
           id?: string;
           image_path?: string;
           name?: string;
-          organization_id?: string;
           price?: number;
+          space_id?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: "products_organization_id_fkey";
-            columns: ["organization_id"];
+            foreignKeyName: "products_space_id_fkey";
+            columns: ["space_id"];
             isOneToOne: false;
-            referencedRelation: "organizations";
+            referencedRelation: "spaces";
             referencedColumns: ["id"];
           }
         ];

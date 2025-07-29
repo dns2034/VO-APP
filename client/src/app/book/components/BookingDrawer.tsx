@@ -54,24 +54,15 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   const {
     productVouchers,
     loading: productVouchersLoading,
-    setProductVouchers,
     updateProductVoucherStatus,
   } = useProductVouchers();
   const { products, loading: productsLoading } = useProducts();
 
-  // Add state for dynamic slot range
-  const [slotRange, setSlotRange] = useState<{ start: string; end: string }>({
-    start: "08:00",
-    end: "20:00",
-  });
-
-  // Fetch space availability for the selected space and date
   const { availability, loading: availabilityLoading } = useSpaceAvailability(
     spaceId,
     date
   );
 
-  // Memoize slots for performance, using availability times if available
   const slots = useMemo(
     () =>
       generateTimeSlots(

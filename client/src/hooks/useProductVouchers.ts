@@ -49,5 +49,28 @@ export function useProductVouchers() {
     }
   };
 
-  return { productVouchers, loading, error, createProductVoucher };
+  const updateProductVoucherStatus = async (
+    voucherId: string,
+    status: Database["public"]["Enums"]["voucher_status"]
+  ) => {
+    try {
+      await ProductVoucherService.update(voucherId, { status });
+      setProductVouchers((prev) =>
+        prev.map((v) => (v.id === voucherId ? { ...v, status } : v))
+      );
+    } catch (error) {
+      toast.error("Failed to update voucher status", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  };
+
+  return {
+    productVouchers,
+    loading,
+    error,
+    createProductVoucher,
+    setProductVouchers,
+    updateProductVoucherStatus,
+  };
 }

@@ -2,8 +2,8 @@
 import Header from "./components/Header";
 import Branches from "./components/Branches";
 import BottomBar from "@/components/bottom-bar";
-import { Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import MyBookings from "./components/MyBookings";
 
 export default function BookingPage() {
   return (
@@ -11,12 +11,18 @@ export default function BookingPage() {
       <Header />
 
       <main className="flex flex-col text-center items-center bg-white text-gray-900 m-4">
-        <a href="/book/my-bookings">
-          <Button className="bg-white text-gray-900 hover:bg-gray-100 border border-gray-300 text-xs mb-4">
-            <Calendar className="h-5 w-5 text-gray-900 " /> My Bookings
-          </Button>
-        </a>
-        <Branches />
+        <Tabs defaultValue="account" className="w-full">
+          <TabsList className="w-full justify-center">
+            <TabsTrigger value="account">Book</TabsTrigger>
+            <TabsTrigger value="bookings">My Bookings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">
+            <Branches />
+          </TabsContent>
+          <TabsContent value="bookings">
+            <MyBookings />
+          </TabsContent>
+        </Tabs>
       </main>
       <BottomBar />
     </>

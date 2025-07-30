@@ -92,7 +92,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   // Helper to get bookings for selected space and date
   const bookingsForSelected = bookings.filter(
     (b) =>
-      b.space_id === spaceId &&
+      b.space_unit_id === spaceId &&
       b.date === (date ? date.toISOString().slice(0, 10) : "")
   );
 
@@ -171,7 +171,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
         date: date.toISOString().slice(0, 10),
         start_time: startTime,
         end_time: endTime,
-        space_id: spaceId,
+        space_unit_id: spaceId,
         status: "booked",
         remarks: remarks,
       });

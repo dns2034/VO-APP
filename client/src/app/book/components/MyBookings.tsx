@@ -105,7 +105,7 @@ export default function MyBookings() {
             </div>
           ) : (
             filteredBookings.map((booking) => {
-              const space = spaces.find((s) => s.id === booking.space_id);
+              const space = spaces.find((s) => s.id === booking.space_unit_id);
               const branch = branches.find((b) => b.id === space?.branch_id);
               const spaceName = space?.name || "Unknown Space";
               const branchName = branch?.name || "Unknown Branch";

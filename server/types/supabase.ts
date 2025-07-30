@@ -41,8 +41,9 @@ export type Database = {
           date: string
           end_time: string
           id: string
+          product_voucher_id: string | null
           remarks: string | null
-          space_id: string
+          space_unit_id: string
           start_time: string
           status: Database["public"]["Enums"]["booking_status"]
         }
@@ -52,8 +53,9 @@ export type Database = {
           date: string
           end_time: string
           id?: string
+          product_voucher_id?: string | null
           remarks?: string | null
-          space_id: string
+          space_unit_id: string
           start_time: string
           status?: Database["public"]["Enums"]["booking_status"]
         }
@@ -63,17 +65,25 @@ export type Database = {
           date?: string
           end_time?: string
           id?: string
+          product_voucher_id?: string | null
           remarks?: string | null
-          space_id?: string
+          space_unit_id?: string
           start_time?: string
           status?: Database["public"]["Enums"]["booking_status"]
         }
         Relationships: [
           {
-            foreignKeyName: "bookings_space_id_fkey"
-            columns: ["space_id"]
+            foreignKeyName: "bookings_product_voucher_id_fkey"
+            columns: ["product_voucher_id"]
             isOneToOne: false
-            referencedRelation: "spaces"
+            referencedRelation: "product_vouchers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_space_unit_id_fkey"
+            columns: ["space_unit_id"]
+            isOneToOne: false
+            referencedRelation: "space_units"
             referencedColumns: ["id"]
           },
         ]
@@ -134,6 +144,24 @@ export type Database = {
           id?: string
           status?: Database["public"]["Enums"]["currency_status"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      organization_pages: {
+        Row: {
+          created_at: string
+          id: string
+          page_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page_url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page_url?: string
         }
         Relationships: []
       }
@@ -388,7 +416,7 @@ export type Database = {
           date: string
           id?: string
           opening_time: string
-          space_id?: string
+          space_id: string
         }
         Update: {
           closing_time?: string
@@ -401,6 +429,35 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "space_availability_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      space_units: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          space_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          space_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          space_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "space_units_space_id_fkey"
             columns: ["space_id"]
             isOneToOne: false
             referencedRelation: "spaces"
@@ -468,6 +525,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["roles"]
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["roles"]
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["roles"]
+          user_id?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

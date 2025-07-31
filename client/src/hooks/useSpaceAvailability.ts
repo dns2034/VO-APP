@@ -17,6 +17,14 @@ export function useSpaceAvailability(spaceId?: string, date?: Date) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Helper to format date as YYYY-MM-DD in local time (not UTC)
+  function formatDateLocal(date: Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   useEffect(() => {
     async function fetchAvailability() {
       setLoading(true);
@@ -27,10 +35,10 @@ export function useSpaceAvailability(spaceId?: string, date?: Date) {
           setLoading(false);
           return;
         }
-        // Fetch all availabilities for the date
+        // Use local date string, not UTC, to avoid off-by-one errors
         const availabilities =
           await SpaceAvailabilityService.getAvailableSpaces(
-            date.toISOString().slice(0, 10)
+            formatDateLocal(date)
           );
         // Find the one for the given spaceId
         const found =

@@ -91,12 +91,13 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     setSpaceUnitId("");
   }, [spaceId, branch]);
 
-  // Helper to get bookings for selected space unit and date
-  const bookingsForSelected = bookings.filter(
-    (b) =>
-      b.space_unit_id === spaceUnitId &&
-      b.date === (date ? formatDateLocal(date) : "")
-  );
+  // Helper to format date as YYYY-MM-DD in local time
+  function formatDateLocal(date: Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   // Helper to convert "HH:mm" to minutes
   function timeToMinutes(t: string) {
@@ -104,21 +105,85 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     return h * 60 + m;
   }
 
-  // Helper to check if a slot overlaps with any booking
-  function isSlotUnavailable(
-    slot: { start: string; end: string },
-    bookings: typeof bookingsForSelected
-  ) {
-    const slotStart = timeToMinutes(slot.start);
-    const slotEnd = timeToMinutes(slot.end);
-    return bookings.some((b) => {
-      const bStart = timeToMinutes(b.start_time);
-      const bEnd = timeToMinutes(b.end_time);
-      return (
-        slotStart < bEnd && slotEnd > bStart // overlap
-      );
+  // Helper to convert minutes to "HH:mm"
+  function minutesToTime(minutes: number) {
+    const h = Math.floor(minutes / 60)
+      .toString()
+      .padStart(2, "0");
+    const m = (minutes % 60).toString().padStart(2, "0");
+    return `${h}:${m}`;
+  }
+
+  // Helper to get bookings for selected space unit and date
+  const bookingsForSelected = bookings.filter(
+    (b) =>
+      b.space_unit_id === spaceUnitId &&
+      b.date === (date ? formatDateLocal(date) : "")
+  );
+
+  // Helper to format time as h:mm AM/PM
+  function formatTimeAMPM(time: string) {
+    const [h, m] = time.split(":").map(Number);
+    const date = new Date();
+    date.setHours(h, m, 0, 0);
+    return date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
     });
   }
+
+  // Compute available time slots based on intersection of availability and bookings
+  const availableSlots = useMemo(() => {
+    if (!availability || !spaceUnitId || !date) return [];
+    const open = timeToMinutes(availability.opening_time);
+    const close = timeToMinutes(availability.closing_time);
+
+    // Only consider bookings for the selected space unit and date
+    const relevantBookings = bookings.filter(
+      (b) => b.space_unit_id === spaceUnitId && b.date === formatDateLocal(date)
+    );
+
+    // Sort bookings by start_time
+    const sortedBookings = relevantBookings
+      .slice()
+      .sort(
+        (a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time)
+      );
+
+    const slots: { start: string; end: string }[] = [];
+    let current = open;
+
+    for (const booking of sortedBookings) {
+      const bStart = timeToMinutes(booking.start_time);
+      const bEnd = timeToMinutes(booking.end_time);
+
+      // Only add slot if current < bStart and bStart > current
+      if (current < bStart) {
+        // Ensure slot is within the availability window and not reversed
+        const slotStart = Math.max(current, open);
+        const slotEnd = Math.min(bStart, close);
+        if (slotStart < slotEnd) {
+          slots.push({
+            start: minutesToTime(slotStart),
+            end: minutesToTime(slotEnd),
+          });
+        }
+      }
+      // Move current pointer forward, but never before the end of this booking
+      current = Math.max(current, bEnd);
+    }
+
+    // Free slot after last booking
+    if (current < close) {
+      slots.push({ start: minutesToTime(current), end: minutesToTime(close) });
+    }
+
+    // Remove zero-length or negative slots (shouldn't happen, but for safety)
+    return slots.filter(
+      (slot) => timeToMinutes(slot.end) > timeToMinutes(slot.start)
+    );
+  }, [availability, bookings, spaceUnitId, date]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,14 +269,6 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       setEndTime(`${endH}:${endM}`);
     }
   }, [selectedProduct, startTime]);
-
-  // Helper to format date as YYYY-MM-DD in local time
-  function formatDateLocal(date: Date) {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -431,38 +488,40 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               <Clock className="w-5 h-5 text-primary" />
               <span className="text-base font-semibold">Pick a Time Slot</span>
             </div>
-            {/* Space Availability Info (moved here, above time slot UI) */}
-            <div className="mb-2 ml-7">
-              {availabilityLoading ? (
-                <div className="text-xs text-muted-foreground mb-1">
-                  Loading availability...
-                </div>
-              ) : availability ? (
-                <div className="text-xs text-green-700 mb-1">
-                  <span className="font-semibold">Available:</span>{" "}
-                  {availability.opening_time} - {availability.closing_time}
-                </div>
-              ) : (
-                <div className="text-xs text-muted-foreground mb-1">
-                  No availability set for this space and date.
-                </div>
-              )}
-            </div>
+
             <p className="text-xs text-muted-foreground mb-3 ml-7">
               {!selectedVoucherId
                 ? "Select a voucher to pick a time slot."
                 : availabilityLoading
                 ? "Loading availability..."
                 : availability
-                ? `Available from ${availability.opening_time} to ${availability.closing_time}`
+                ? "Pick a time within the available slots below."
                 : "Select an available time for your booking."}
             </p>
-            {/* Remove Time Slot UI grid */}
-            {/* <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4">
-              {slots.map((slot) => {
-                ...existing code...
-              })}
-            </div> */}
+            {/* Show available slots as sections */}
+            {availableSlots.length > 0 && (
+              <div className="my-4">
+                <div className="text-sm font-semibold mb-1 ml-1">
+                  Available Slots:
+                </div>
+                <ul className="space-y-1">
+                  {availableSlots.map((slot) => (
+                    <li key={slot.start + "-" + slot.end} className="ml-2">
+                      <span
+                        className="inline-block rounded px-2 py-0.5 text-sm"
+                        style={{
+                          background: "var(--primary)",
+                          color: "var(--primary-foreground, #fff)",
+                        }}
+                      >
+                        {formatTimeAMPM(slot.start)} -{" "}
+                        {formatTimeAMPM(slot.end)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {/* Only show manual input for custom times */}
             <div className="flex gap-4 p-2">
               <div className="flex-1 flex flex-col gap-1.5">

@@ -63,15 +63,6 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     date // <-- pass the selected date
   );
 
-  const slots = useMemo(
-    () =>
-      generateTimeSlots(
-        availability?.opening_time ?? "08:00",
-        availability?.closing_time ?? "20:00"
-      ),
-    [availability]
-  );
-
   const filteredSpaces = branch
     ? spaces.filter((s) => s.branch_id === branch)
     : [];
@@ -111,33 +102,6 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   function timeToMinutes(t: string) {
     const [h, m] = t.split(":").map(Number);
     return h * 60 + m;
-  }
-
-  // Helper to generate 30-min time slots for a day (e.g. 08:00 - 20:00)
-  function generateTimeSlots(start = "08:00", end = "20:00") {
-    const slots: { start: string; end: string }[] = [];
-    let [h, m] = start.split(":").map(Number);
-    const [endH, endM] = end.split(":").map(Number);
-    while (h < endH || (h === endH && m < endM)) {
-      const slotStart = `${h.toString().padStart(2, "0")}:${m
-        .toString()
-        .padStart(2, "0")}`;
-      let nextM = m + 30;
-      let nextH = h;
-      if (nextM >= 60) {
-        nextH += 1;
-        nextM -= 60;
-      }
-      const slotEnd = `${nextH.toString().padStart(2, "0")}:${nextM
-        .toString()
-        .padStart(2, "0")}`;
-      if (nextH < endH || (nextH === endH && nextM <= endM)) {
-        slots.push({ start: slotStart, end: slotEnd });
-      }
-      h = nextH;
-      m = nextM;
-    }
-    return slots;
   }
 
   // Helper to check if a slot overlaps with any booking
@@ -491,50 +455,15 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                 ? "Loading availability..."
                 : availability
                 ? `Available from ${availability.opening_time} to ${availability.closing_time}`
-                : "Select an available 30-minute time slot for your booking."}
+                : "Select an available time for your booking."}
             </p>
-            {/* Time Slot UI */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4">
+            {/* Remove Time Slot UI grid */}
+            {/* <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4">
               {slots.map((slot) => {
-                const voucherRequired = !selectedVoucherId;
-                const unavailable = isSlotUnavailable(
-                  slot,
-                  bookingsForSelected
-                );
-                const selected =
-                  startTime === slot.start && endTime === slot.end;
-                return (
-                  <button
-                    type="button"
-                    key={slot.start + "-" + slot.end}
-                    className={`px-2 py-1 rounded border text-xs transition
-                      ${
-                        unavailable || voucherRequired
-                          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                          : selected
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white hover:bg-primary/10 border-gray-300"
-                      }
-                    `}
-                    disabled={
-                      unavailable || availabilityLoading || voucherRequired
-                    }
-                    aria-pressed={selected}
-                    tabIndex={unavailable || voucherRequired ? -1 : 0}
-                    onClick={() => {
-                      setStartTime(slot.start);
-                      // endTime will be auto-set by useEffect if voucher is selected
-                      if (!selectedProduct || !selectedProduct.duration) {
-                        setEndTime(slot.end);
-                      }
-                    }}
-                  >
-                    {slot.start} - {slot.end}
-                  </button>
-                );
+                ...existing code...
               })}
-            </div>
-            {/* Fallback manual input for custom times */}
+            </div> */}
+            {/* Only show manual input for custom times */}
             <div className="flex gap-4 p-2">
               <div className="flex-1 flex flex-col gap-1.5">
                 <Label
@@ -608,19 +537,17 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
           </div>
 
           {/* Availability & Bookings Info Section */}
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Clock className="w-5 h-5 text-primary" />
-              <span className="text-base font-semibold">
-                Availability & Bookings
-              </span>
-            </div>
-            <div className="mb-2 ml-7">
-              {/* Remove space availability display from here */}
-              {/* Show existing bookings */}
-              <div className="text-xs">
-                <span className="font-semibold">Existing Bookings:</span>
-                {bookingsForSelected.length > 0 ? (
+          {bookingsForSelected.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Clock className="w-5 h-5 text-primary" />
+                <span className="text-base font-semibold">
+                  Availability & Bookings
+                </span>
+              </div>
+              <div className="mb-2 ml-7">
+                <div className="text-xs">
+                  <span className="font-semibold">Existing Bookings:</span>
                   <ul className="list-disc ml-5 mt-1">
                     {bookingsForSelected.map((b) => (
                       <li key={b.id}>
@@ -633,12 +560,10 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                       </li>
                     ))}
                   </ul>
-                ) : (
-                  <span className="ml-1 text-muted-foreground">None</span>
-                )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <Separator />
 
           <Button type="submit" className="w-full mt-2" disabled={loading}>

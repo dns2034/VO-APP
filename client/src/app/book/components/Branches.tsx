@@ -1,6 +1,6 @@
 import { useBranches } from "@/hooks/useBranches";
 import Image from "next/image";
-import BookingDrawer from "./BookingDrawer";
+import BookingDrawer from "./BookingDrawer/BookingDrawer";
 
 export default function Branches() {
   const { branches } = useBranches();

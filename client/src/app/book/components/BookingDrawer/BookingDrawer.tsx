@@ -32,6 +32,7 @@ import { useSpaceUnits } from "@/hooks/useSpaceUnits";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { CalendarDays, MapPin, Clock, StickyNote } from "lucide-react";
+import { Tables } from "@/types/supabase";
 
 export default function BookingDrawer({ branchId }: { branchId: string }) {
   const [open, setOpen] = useState(false);
@@ -43,13 +44,12 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   const { branches, loading: branchesLoading } = useBranches();
   const { spaces, loading: spacesLoading } = useSpaces();
   const [spaceId, setSpaceId] = useState<string>("");
-  const [spaceUnitId, setSpaceUnitId] = useState<string>(""); // <-- Add this line
+  const [spaceUnitId, setSpaceUnitId] = useState<string>("");
   const [remarks, setRemarks] = useState<string>("");
 
-  const [paymentMethod, setPaymentMethod] = useState<"voucher" | "cash">(
-    "voucher"
-  );
   const [selectedVoucherId, setSelectedVoucherId] = useState<string>("");
+  const [selectedProduct, setSelectedProduct] =
+    useState<Tables<"products"> | null>(null); // <-- Add this line
 
   const { createBooking, fetchBookings, bookings } = useBookings();
   const {
@@ -60,9 +60,10 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   const { products, loading: productsLoading } = useProducts();
   const { spaceUnits, loading: spaceUnitsLoading } = useSpaceUnits();
 
+  // Use selected date for space availability
   const { availability, loading: availabilityLoading } = useSpaceAvailability(
     spaceId,
-    date
+    date // <-- pass the selected date
   );
 
   const slots = useMemo(
@@ -87,9 +88,10 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   const filteredProductVouchers = productVouchers.filter(
     (v) => productIdToSpaceId[v.product_id] === spaceId
   );
-  const allFilteredVouchers = [
-    ...filteredProductVouchers.map((v) => ({ ...v, type: "product" })),
-  ];
+  const allFilteredVouchers = useMemo(
+    () => [...filteredProductVouchers.map((v) => ({ ...v, type: "product" }))],
+    [filteredProductVouchers]
+  );
 
   // Filter space units for the selected space
   const filteredSpaceUnits = spaceUnits.filter(
@@ -105,7 +107,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   const bookingsForSelected = bookings.filter(
     (b) =>
       b.space_unit_id === spaceUnitId &&
-      b.date === (date ? date.toISOString().slice(0, 10) : "")
+      b.date === (date ? formatDateLocal(date) : "")
   );
 
   // Helper to convert "HH:mm" to minutes
@@ -165,7 +167,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       !endTime ||
       !branch ||
       !spaceId ||
-      !spaceUnitId // <-- use the state variable here
+      !spaceUnitId
     ) {
       toast.error("Please fill in all fields.");
       return;
@@ -180,25 +182,16 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       toast.error("Minimum booking duration is 30 minutes.");
       return;
     }
-    if (paymentMethod === "voucher" && !selectedVoucherId) {
-      toast.error("Please select a voucher.");
-      return;
-    }
     setLoading(true);
     try {
       await createBooking({
-        date: date.toISOString().slice(0, 10),
+        date: formatDateLocal(date), // <-- use local date string
         start_time: startTime,
         end_time: endTime,
-        space_unit_id: spaceUnitId, // <-- use the state variable here
+        space_unit_id: spaceUnitId,
         status: "booked",
         remarks: remarks,
       });
-
-      if (paymentMethod === "voucher" && selectedVoucherId) {
-        // Update voucher status in backend and UI
-        await updateProductVoucherStatus(selectedVoucherId, "used");
-      }
 
       toast.success("Booking created!");
       setDate(undefined);
@@ -210,7 +203,6 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       setOpen(false);
       fetchBookings();
       setRemarks("");
-      setPaymentMethod("voucher");
       setSelectedVoucherId("");
     } catch (err: unknown) {
       toast.error(
@@ -221,6 +213,44 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       setLoading(false);
     }
   };
+
+  // When voucher is selected, update selectedProduct
+  useEffect(() => {
+    if (selectedVoucherId) {
+      const voucher = allFilteredVouchers.find(
+        (v) => v.id === selectedVoucherId
+      );
+      if (voucher) {
+        const product = products.find((p) => p.id === voucher.product_id);
+        setSelectedProduct(product ?? null);
+      } else {
+        setSelectedProduct(null);
+      }
+    } else {
+      setSelectedProduct(null);
+    }
+  }, [selectedVoucherId, allFilteredVouchers, products]);
+
+  // When voucher or startTime changes, auto-set endTime if voucher is used
+  useEffect(() => {
+    if (selectedProduct && startTime && selectedProduct.duration) {
+      // Add duration (in hours) to startTime
+      const [h, m] = startTime.split(":").map(Number);
+      const endDate = new Date(0, 0, 0, h, m);
+      endDate.setHours(endDate.getHours() + selectedProduct.duration);
+      const endH = endDate.getHours().toString().padStart(2, "0");
+      const endM = endDate.getMinutes().toString().padStart(2, "0");
+      setEndTime(`${endH}:${endM}`);
+    }
+  }, [selectedProduct, startTime]);
+
+  // Helper to format date as YYYY-MM-DD in local time
+  function formatDateLocal(date: Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -342,6 +372,77 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
           </div>
           <Separator />
 
+          {/* Voucher Selection Section (refined) */}
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <StickyNote className="w-5 h-5 text-primary" />
+              <span className="text-base font-semibold">Select Voucher</span>
+            </div>
+            <p className="text-xs text-muted-foreground mb-3 ml-7">
+              Choose a voucher to use for this booking.
+            </p>
+            <div className="flex flex-col gap-2 rounded-lg p-2">
+              <Select
+                value={selectedVoucherId}
+                onValueChange={setSelectedVoucherId}
+                disabled={
+                  spacesLoading ||
+                  !spaceId ||
+                  allFilteredVouchers.length === 0 ||
+                  productVouchersLoading ||
+                  productsLoading
+                }
+                required
+              >
+                <SelectTrigger
+                  id="voucher-select"
+                  className="rounded-md border px-3 py-2 bg-white w-full"
+                >
+                  <SelectValue
+                    placeholder={
+                      spaceId
+                        ? allFilteredVouchers.length === 0
+                          ? "No vouchers available"
+                          : "Choose a voucher"
+                        : "Select a space first"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {allFilteredVouchers.map((v) => (
+                    <SelectItem key={v.id} value={v.id}>
+                      {products.find((p) => p.id === v.product_id)?.name ||
+                        "Unnamed Product"}
+                      {v.code ? (
+                        <span className="ml-2 text-xs text-muted-foreground">
+                          [#{v.code}]
+                        </span>
+                      ) : null}
+                      {v.expiring_at ? (
+                        <span className="ml-2 text-xs text-muted-foreground">
+                          (Expires:{" "}
+                          {new Date(v.expiring_at).toLocaleDateString()})
+                        </span>
+                      ) : null}
+                      {/* Show duration if available */}
+                      {products.find((p) => p.id === v.product_id)?.duration ? (
+                        <span className="ml-2 text-xs text-muted-foreground">
+                          (
+                          {
+                            products.find((p) => p.id === v.product_id)
+                              ?.duration
+                          }
+                          h)
+                        </span>
+                      ) : null}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <Separator />
+
           {/* Select Date Section */}
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -369,8 +470,27 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               <Clock className="w-5 h-5 text-primary" />
               <span className="text-base font-semibold">Pick a Time Slot</span>
             </div>
+            {/* Space Availability Info (moved here, above time slot UI) */}
+            <div className="mb-2 ml-7">
+              {availabilityLoading ? (
+                <div className="text-xs text-muted-foreground mb-1">
+                  Loading availability...
+                </div>
+              ) : availability ? (
+                <div className="text-xs text-green-700 mb-1">
+                  <span className="font-semibold">Available:</span>{" "}
+                  {availability.opening_time} - {availability.closing_time}
+                </div>
+              ) : (
+                <div className="text-xs text-muted-foreground mb-1">
+                  No availability set for this space and date.
+                </div>
+              )}
+            </div>
             <p className="text-xs text-muted-foreground mb-3 ml-7">
-              {availabilityLoading
+              {!selectedVoucherId
+                ? "Select a voucher to pick a time slot."
+                : availabilityLoading
                 ? "Loading availability..."
                 : availability
                 ? `Available from ${availability.opening_time} to ${availability.closing_time}`
@@ -379,6 +499,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
             {/* Time Slot UI */}
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-4">
               {slots.map((slot) => {
+                const voucherRequired = !selectedVoucherId;
                 const unavailable = isSlotUnavailable(
                   slot,
                   bookingsForSelected
@@ -391,19 +512,24 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                     key={slot.start + "-" + slot.end}
                     className={`px-2 py-1 rounded border text-xs transition
                       ${
-                        unavailable
+                        unavailable || voucherRequired
                           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                           : selected
                           ? "bg-primary text-white border-primary"
                           : "bg-white hover:bg-primary/10 border-gray-300"
                       }
                     `}
-                    disabled={unavailable || availabilityLoading}
+                    disabled={
+                      unavailable || availabilityLoading || voucherRequired
+                    }
                     aria-pressed={selected}
-                    tabIndex={unavailable ? -1 : 0}
+                    tabIndex={unavailable || voucherRequired ? -1 : 0}
                     onClick={() => {
                       setStartTime(slot.start);
-                      setEndTime(slot.end);
+                      // endTime will be auto-set by useEffect if voucher is selected
+                      if (!selectedProduct || !selectedProduct.duration) {
+                        setEndTime(slot.end);
+                      }
                     }}
                   >
                     {slot.start} - {slot.end}
@@ -427,6 +553,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                     value={startTime}
                     onChange={(e) => setStartTime(e.target.value)}
                     required
+                    disabled={!selectedVoucherId}
                   />
                   <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 </div>
@@ -445,9 +572,17 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                     value={endTime}
                     onChange={(e) => setEndTime(e.target.value)}
                     required
+                    disabled={!!selectedVoucherId}
                   />
                   <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 </div>
+                {selectedProduct?.duration && (
+                  <span className="text-xs text-muted-foreground">
+                    End time is automatically set to {selectedProduct.duration}{" "}
+                    hour
+                    {selectedProduct.duration > 1 ? "s" : ""} after start time.
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -484,17 +619,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               </span>
             </div>
             <div className="mb-2 ml-7">
-              {/* Show space availability */}
-              {availability ? (
-                <div className="text-xs text-green-700 mb-1">
-                  <span className="font-semibold">Available:</span>{" "}
-                  {availability.opening_time} - {availability.closing_time}
-                </div>
-              ) : (
-                <div className="text-xs text-muted-foreground mb-1">
-                  No availability set for this space and date.
-                </div>
-              )}
+              {/* Remove space availability display from here */}
               {/* Show existing bookings */}
               <div className="text-xs">
                 <span className="font-semibold">Existing Bookings:</span>
@@ -519,84 +644,6 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
           </div>
           <Separator />
 
-          <div>
-            <div className="">
-              <Label className="mb-2 block">Payment Method</Label>
-              <div className="flex gap-4 mb-2">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="payment-method"
-                    value="voucher"
-                    checked={paymentMethod === "voucher"}
-                    onChange={() => setPaymentMethod("voucher")}
-                  />
-                  Voucher
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="payment-method"
-                    value="cash"
-                    checked={paymentMethod === "cash"}
-                    onChange={() => setPaymentMethod("cash")}
-                  />
-                  Cash
-                </label>
-              </div>
-              {paymentMethod === "voucher" && (
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="voucher-select">Select Voucher</Label>
-                  <Select
-                    value={selectedVoucherId}
-                    onValueChange={setSelectedVoucherId}
-                    disabled={
-                      spacesLoading ||
-                      !spaceId ||
-                      allFilteredVouchers.length === 0 ||
-                      productVouchersLoading ||
-                      productsLoading
-                    }
-                    required
-                  >
-                    <SelectTrigger
-                      id="voucher-select"
-                      className="rounded-md border px-3 py-2 bg-white w-full"
-                    >
-                      <SelectValue
-                        placeholder={
-                          spaceId
-                            ? allFilteredVouchers.length === 0
-                              ? "No vouchers available"
-                              : "Choose a voucher"
-                            : "Select a space first"
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {allFilteredVouchers.map((v) => (
-                        <SelectItem key={v.id} value={v.id}>
-                          {products.find((p) => p.id === v.product_id)?.name ||
-                            "Unnamed Product"}
-                          {v.code ? (
-                            <span className="ml-2 text-xs text-muted-foreground">
-                              [#{v.code}]
-                            </span>
-                          ) : null}
-                          {v.expiring_at ? (
-                            <span className="ml-2 text-xs text-muted-foreground">
-                              (Expires:{" "}
-                              {new Date(v.expiring_at).toLocaleDateString()})
-                            </span>
-                          ) : null}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </div>
-          </div>
           <Button type="submit" className="w-full mt-2" disabled={loading}>
             {loading ? "Booking..." : "Book Now"}
           </Button>

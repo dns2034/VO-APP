@@ -52,11 +52,8 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     useState<Tables<"products"> | null>(null); // <-- Add this line
 
   const { createBooking, fetchBookings, bookings } = useBookings();
-  const {
-    productVouchers,
-    loading: productVouchersLoading,
-    updateProductVoucherStatus,
-  } = useProductVouchers();
+  const { productVouchers, loading: productVouchersLoading } =
+    useProductVouchers();
   const { products, loading: productsLoading } = useProducts();
   const { spaceUnits, loading: spaceUnitsLoading } = useSpaceUnits();
 

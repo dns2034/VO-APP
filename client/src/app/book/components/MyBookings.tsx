@@ -3,6 +3,8 @@
 import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 import { useBranches } from "@/hooks/useBranches";
+import { useSpaceUnits } from "@/hooks/useSpaceUnits";
+
 import {
   Pagination,
   PaginationContent,
@@ -27,6 +29,7 @@ import {
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Building2, Calendar, Clock } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 function formatTimeTo12Hour(time: string): string {
   const match = time.match(/^(\d{2}):(\d{2})/);
@@ -39,9 +42,10 @@ function formatTimeTo12Hour(time: string): string {
 }
 
 export default function MyBookings() {
-  const { bookings, loading } = useBookings();
+  const { bookings, loading, cancelBooking } = useBookings();
   const { spaces } = useSpaces();
   const { branches } = useBranches();
+  const { spaceUnits } = useSpaceUnits();
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
@@ -105,9 +109,13 @@ export default function MyBookings() {
             </div>
           ) : (
             filteredBookings.map((booking) => {
-              const space = spaces.find((s) => s.id === booking.space_unit_id);
+              // Use space_unit_id to find the space unit, then the space, then the branch
+              const spaceUnit = spaceUnits.find(
+                (su) => su.id === booking.space_unit_id
+              );
+              const space = spaces.find((s) => s.id === spaceUnit?.space_id);
               const branch = branches.find((b) => b.id === space?.branch_id);
-              const spaceName = space?.name || "Unknown Space";
+              const spaceName = spaceUnit?.name || "Unknown Space Unit";
               const branchName = branch?.name || "Unknown Branch";
               const dateStr = booking.date
                 ? format(new Date(booking.date), "P")
@@ -153,7 +161,7 @@ export default function MyBookings() {
                           </div>
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-primary" />
-                            <span className="font-medium">Space:</span>
+                            <span className="font-medium">Space Unit:</span>
                             <span>{spaceName}</span>
                           </div>
                           <div className="flex items-center gap-2">
@@ -165,6 +173,27 @@ export default function MyBookings() {
                             <span className="font-medium">Status:</span>
                             <span className="capitalize">{booking.status}</span>
                           </div>
+                          {/* Cancel button for booked or pending bookings */}
+                          {(booking.status === "booked" ||
+                            booking.status === "pending") && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={async () => {
+                                  if (
+                                    confirm(
+                                      "Are you sure you want to cancel this booking?"
+                                    )
+                                  ) {
+                                    await cancelBooking(booking.id);
+                                  }
+                                }}
+                              >
+                                Cancel Booking
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </AccordionContent>
                     </AccordionItem>

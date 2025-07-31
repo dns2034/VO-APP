@@ -114,13 +114,6 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     return `${h}:${m}`;
   }
 
-  // Helper to get bookings for selected space unit and date
-  const bookingsForSelected = bookings.filter(
-    (b) =>
-      b.space_unit_id === spaceUnitId &&
-      b.date === (date ? formatDateLocal(date) : "")
-  );
-
   // Helper to format time as h:mm AM/PM
   function formatTimeAMPM(time: string) {
     const [h, m] = time.split(":").map(Number);
@@ -590,42 +583,12 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
                 placeholder="Additional notes or requests"
-                className="rounded-md border px-3 py-2 min-h-[80px]"
+                className="rounded-md border px-3 pt-2 min-h-[80px]"
               />
             </div>
           </div>
 
-          {/* Availability & Bookings Info Section */}
-          {bookingsForSelected.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <Clock className="w-5 h-5 text-primary" />
-                <span className="text-base font-semibold">
-                  Availability & Bookings
-                </span>
-              </div>
-              <div className="mb-2 ml-7">
-                <div className="text-xs">
-                  <span className="font-semibold">Existing Bookings:</span>
-                  <ul className="list-disc ml-5 mt-1">
-                    {bookingsForSelected.map((b) => (
-                      <li key={b.id}>
-                        {b.start_time} - {b.end_time}
-                        {b.remarks ? (
-                          <span className="ml-2 text-muted-foreground">
-                            ({b.remarks})
-                          </span>
-                        ) : null}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-          <Separator />
-
-          <Button type="submit" className="w-full mt-2" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Booking..." : "Book Now"}
           </Button>
         </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Drawer,
   DrawerContent,
@@ -27,11 +27,11 @@ import { useSpaces } from "@/hooks/useSpaces";
 import { useProductVouchers } from "@/hooks/useProductVouchers";
 import { useProducts } from "@/hooks/useProducts";
 import { useSpaceAvailability } from "@/hooks/useSpaceAvailability";
+import { useSpaceUnits } from "@/hooks/useSpaceUnits";
 
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { CalendarDays, MapPin, Clock, StickyNote } from "lucide-react";
-import { useMemo } from "react";
 
 export default function BookingDrawer({ branchId }: { branchId: string }) {
   const [open, setOpen] = useState(false);
@@ -43,6 +43,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
   const { branches, loading: branchesLoading } = useBranches();
   const { spaces, loading: spacesLoading } = useSpaces();
   const [spaceId, setSpaceId] = useState<string>("");
+  const [spaceUnitId, setSpaceUnitId] = useState<string>(""); // <-- Add this line
   const [remarks, setRemarks] = useState<string>("");
 
   const [paymentMethod, setPaymentMethod] = useState<"voucher" | "cash">(
@@ -57,6 +58,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     updateProductVoucherStatus,
   } = useProductVouchers();
   const { products, loading: productsLoading } = useProducts();
+  const { spaceUnits, loading: spaceUnitsLoading } = useSpaceUnits();
 
   const { availability, loading: availabilityLoading } = useSpaceAvailability(
     spaceId,
@@ -89,10 +91,20 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
     ...filteredProductVouchers.map((v) => ({ ...v, type: "product" })),
   ];
 
-  // Helper to get bookings for selected space and date
+  // Filter space units for the selected space
+  const filteredSpaceUnits = spaceUnits.filter(
+    (unit) => unit.space_id === spaceId
+  );
+
+  // Reset spaceUnitId when spaceId or branch changes
+  useEffect(() => {
+    setSpaceUnitId("");
+  }, [spaceId, branch]);
+
+  // Helper to get bookings for selected space unit and date
   const bookingsForSelected = bookings.filter(
     (b) =>
-      b.space_unit_id === spaceId &&
+      b.space_unit_id === spaceUnitId &&
       b.date === (date ? date.toISOString().slice(0, 10) : "")
   );
 
@@ -147,7 +159,14 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!date || !startTime || !endTime || !branch || !spaceId) {
+    if (
+      !date ||
+      !startTime ||
+      !endTime ||
+      !branch ||
+      !spaceId ||
+      !spaceUnitId // <-- use the state variable here
+    ) {
       toast.error("Please fill in all fields.");
       return;
     }
@@ -171,7 +190,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
         date: date.toISOString().slice(0, 10),
         start_time: startTime,
         end_time: endTime,
-        space_unit_id: spaceId,
+        space_unit_id: spaceUnitId, // <-- use the state variable here
         status: "booked",
         remarks: remarks,
       });
@@ -187,6 +206,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       setEndTime("");
       setBranch("");
       setSpaceId("");
+      setSpaceUnitId(""); // <-- reset after booking
       setOpen(false);
       fetchBookings();
       setRemarks("");
@@ -285,6 +305,34 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                     {filteredSpaces.map((s) => (
                       <SelectItem key={s.id} value={s.id}>
                         {s.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label
+                  htmlFor="space-unit"
+                  className="text-sm font-medium flex items-center gap-2"
+                >
+                  Space Unit
+                </Label>
+                <Select
+                  value={spaceUnitId}
+                  onValueChange={setSpaceUnitId}
+                  required
+                  disabled={!spaceId || spaceUnitsLoading}
+                >
+                  <SelectTrigger
+                    id="space-unit"
+                    className="rounded-md border px-3 py-2 bg-white w-full"
+                  >
+                    <SelectValue placeholder="Choose a space unit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredSpaceUnits.map((unit) => (
+                      <SelectItem key={unit.id} value={unit.id}>
+                        {unit.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

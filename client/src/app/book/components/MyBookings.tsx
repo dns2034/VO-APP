@@ -27,9 +27,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { format } from "date-fns";
-import { CalendarDays, MapPin, Building2, Calendar, Clock } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Filter as FilterIcon, SortAsc, SortDesc } from "lucide-react";
 
 function formatTimeTo12Hour(time: string): string {
   const match = time.match(/^(\d{2}):(\d{2})/);
@@ -48,10 +53,11 @@ export default function MyBookings() {
   const { spaceUnits } = useSpaceUnits();
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [sortAscOrder, setSortAscOrder] = useState<boolean>(true);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center h-screen">
         <svg
           className="inline-block h-10 w-10 animate-spin"
           xmlns="http://www.w3.org/2000/svg"
@@ -81,129 +87,180 @@ export default function MyBookings() {
       ? bookings
       : bookings.filter((booking) => booking.status === statusFilter);
 
+  // Sort bookings by date (ascending or descending)
+  const sortedBookings = [...filteredBookings].sort((a, b) => {
+    if (!a.date || !b.date) return 0;
+    return sortAscOrder
+      ? new Date(a.date).getTime() - new Date(b.date).getTime()
+      : new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
   return (
     <>
-      <main className="p-4 flex-1 flex flex-col h-screen">
-        {/* Filter */}
-        <div className="mb-4 flex gap-2 items-center">
-          <span className="text-sm font-medium">Filter:</span>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[140px] h-8">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="booked">Booked</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="no-show">No-show</SelectItem>
-            </SelectContent>
-          </Select>
+      <main className="sm:p-2 flex-1 flex flex-col h-screen">
+        {/* Filter and Sort Row */}
+        <div className="flex flex-row items-center justify-end py-2 px-0 gap-2">
+          {/* Filter Popover */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+                aria-label="Filter"
+                type="button"
+              >
+                <FilterIcon className="w-5 h-5" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-44 p-2">
+              <div className="mb-2 text-xs font-semibold text-gray-700">
+                Status Filter
+              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="h-8 text-xs w-full">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="booked">Booked</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="no-show">No-show</SelectItem>
+                </SelectContent>
+              </Select>
+            </PopoverContent>
+          </Popover>
+          {/* Sort Button */}
+          <button
+            className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+            onClick={() => setSortAscOrder((prev) => !prev)}
+            type="button"
+            aria-label="Sort"
+          >
+            {sortAscOrder ? (
+              <SortAsc className="w-5 h-5" />
+            ) : (
+              <SortDesc className="w-5 h-5" />
+            )}
+          </button>
         </div>
+
         {/* Bookings List */}
-        <div className="border rounded-lg w-full flex-1 flex flex-col min-h-0 h-full p-2 sm:p-4">
-          {filteredBookings.length === 0 ? (
-            <div className="text-center text-muted-foreground py-8">
-              No bookings found.
+        <div className="flex-1 overflow-y-auto w-full">
+          {sortedBookings.length === 0 ? (
+            <div className="text-center text-muted-foreground py-16 rounded-lg bg-white">
+              <span className="text-lg font-medium">No bookings found.</span>
             </div>
           ) : (
-            filteredBookings.map((booking) => {
-              // Use space_unit_id to find the space unit, then the space, then the branch
-              const spaceUnit = spaceUnits.find(
-                (su) => su.id === booking.space_unit_id
-              );
-              const space = spaces.find((s) => s.id === spaceUnit?.space_id);
-              const branch = branches.find((b) => b.id === space?.branch_id);
-              const spaceName = spaceUnit?.name || "Unknown Space Unit";
-              const branchName = branch?.name || "Unknown Branch";
-              const dateStr = booking.date
-                ? format(new Date(booking.date), "P")
-                : "";
-              let timeStr = "";
-              if (booking.start_time && booking.end_time) {
-                const startMatch = booking.start_time.match(/^(\d{2}:\d{2})/);
-                const endMatch = booking.end_time.match(/^(\d{2}:\d{2})/);
-                if (startMatch && endMatch) {
-                  timeStr = `${formatTimeTo12Hour(
-                    startMatch[1]
-                  )} - ${formatTimeTo12Hour(endMatch[1])}`;
+            <div className="flex flex-col gap-1">
+              {sortedBookings.map((booking) => {
+                // Use space_unit_id to find the space unit, then the space, then the branch
+                const spaceUnit = spaceUnits.find(
+                  (su) => su.id === booking.space_unit_id
+                );
+                const space = spaces.find((s) => s.id === spaceUnit?.space_id);
+                const branch = branches.find((b) => b.id === space?.branch_id);
+                const spaceName = spaceUnit?.name || "Unknown Space Unit";
+                const branchName = branch?.name || "Unknown Branch";
+
+                const dateStr = booking.date
+                  ? format(new Date(booking.date), "yyyy-MM-dd")
+                  : "";
+                const dateStrFull = booking.date
+                  ? format(new Date(booking.date), "PPPP")
+                  : "";
+                let timeStr = "";
+                if (booking.start_time && booking.end_time) {
+                  const startMatch = booking.start_time.match(/^(\d{2}:\d{2})/);
+                  const endMatch = booking.end_time.match(/^(\d{2}:\d{2})/);
+                  if (startMatch && endMatch) {
+                    timeStr = `${formatTimeTo12Hour(
+                      startMatch[1]
+                    )} - ${formatTimeTo12Hour(endMatch[1])}`;
+                  } else {
+                    timeStr = "N/A";
+                  }
                 } else {
                   timeStr = "N/A";
                 }
-              } else {
-                timeStr = "N/A";
-              }
-              return (
-                <div key={booking.id} className="flex mb-2">
-                  <Accordion type="single" collapsible className="py-0 flex-1">
-                    <AccordionItem value={`item-${booking.id}`}>
-                      <AccordionTrigger className="py-3 flex items-center w-full">
-                        <Calendar className="w-4 h-4 text-black mr-2" />
-                        <span className="flex-1 text-left">
-                          {spaceName} – {dateStr}
-                        </span>
-                        <span className="ml-2 text-xs capitalize text-muted-foreground">
-                          {booking.status}
-                        </span>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="text-sm space-y-2 mt-2">
-                          <div className="flex items-center gap-2">
-                            <CalendarDays className="w-4 h-4 text-primary" />
-                            <span className="font-medium">Date:</span>
-                            <span>{dateStr}</span>
+                return (
+                  <Accordion
+                    key={`item-${booking.id}`}
+                    type="single"
+                    collapsible
+                    className="bg-white "
+                  >
+                    <AccordionItem value={`item-${booking.date}`}>
+                      <AccordionTrigger className="py-1 flex items-center w-full rounded-lg">
+                        <div className="flex flex-row flex-1 min-w-0 items-center gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-base text-primary truncate">
+                              {spaceName}
+                            </div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
+                              <span className="truncate">
+                                {dateStr} &middot; {timeStr}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-primary" />
-                            <span className="font-medium">Time:</span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="">
+                        <div className="flex flex-col gap-1 text-xs text-left">
+                          <div>
+                            <span className="font-medium text-muted-foreground">
+                              Date:{" "}
+                            </span>
+                            <span>{dateStrFull}</span>
+                          </div>
+                          <div>
+                            <span className="font-medium text-muted-foreground">
+                              Time:{" "}
+                            </span>
                             <span>{timeStr}</span>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-primary" />
-                            <span className="font-medium">Space Unit:</span>
-                            <span>{spaceName}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Building2 className="w-4 h-4 text-primary" />
-                            <span className="font-medium">Branch:</span>
+                          <div>
+                            <span className="font-medium text-muted-foreground">
+                              Branch:{" "}
+                            </span>
                             <span>{branchName}</span>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">Status:</span>
+                          <div>
+                            <span className="font-medium text-muted-foreground">
+                              Status:{" "}
+                            </span>
                             <span className="capitalize">{booking.status}</span>
                           </div>
-                          {/* Cancel button for booked or pending bookings */}
-                          {(booking.status === "booked" ||
-                            booking.status === "pending") && (
-                            <div className="flex items-center gap-2 mt-2">
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                onClick={async () => {
-                                  if (
-                                    confirm(
-                                      "Are you sure you want to cancel this booking?"
-                                    )
-                                  ) {
-                                    await cancelBooking(booking.id);
-                                  }
-                                }}
-                              >
-                                Cancel Booking
-                              </Button>
-                            </div>
-                          )}
                         </div>
+                        {(booking.status === "booked" ||
+                          booking.status === "pending") && (
+                          <div className="flex items-center gap-2 mt-6">
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={async () => {
+                                if (
+                                  confirm(
+                                    "Are you sure you want to cancel this booking?"
+                                  )
+                                ) {
+                                  await cancelBooking(booking.id);
+                                }
+                              }}
+                            >
+                              Cancel Booking
+                            </Button>
+                          </div>
+                        )}
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
-                </div>
-              );
-            })
+                );
+              })}
+            </div>
           )}
         </div>
-        <Pagination className="w-full flex justify-center mt-4">
+        <Pagination className="w-full flex justify-center mt-6">
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious href="#" />

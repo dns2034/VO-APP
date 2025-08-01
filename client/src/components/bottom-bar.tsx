@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function BottomBar() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background shadow-[0_-2px_4px_rgba(0,0,0,0.1)] px-2 pb-2 pt-2 md:pt-3 md:pb-3">
+    <nav className="absolute bottom-0 left-0 right-0 z-50 w-full bg-background shadow-[0_-2px_4px_rgba(0,0,0,0.1)] px-2 pb-2 pt-2 md:pt-3 md:pb-3">
       <div className="grid grid-cols-5 gap-2 max-w-lg mx-auto">
         <BarItem href="/refer" label="Refer">
           <ReferIcon className="h-6 w-6" />

@@ -139,17 +139,23 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
 
     // Sort bookings by start_time
     const sortedBookings = relevantBookings
+      .filter(
+        (b) =>
+          typeof b.start_time === "string" && typeof b.end_time === "string"
+      ) // skip bookings with null times
       .slice()
       .sort(
-        (a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time)
+        (a, b) =>
+          timeToMinutes(a.start_time as string) -
+          timeToMinutes(b.start_time as string)
       );
 
     const slots: { start: string; end: string }[] = [];
     let current = open;
 
     for (const booking of sortedBookings) {
-      const bStart = timeToMinutes(booking.start_time);
-      const bEnd = timeToMinutes(booking.end_time);
+      const bStart = timeToMinutes(booking.start_time as string);
+      const bEnd = timeToMinutes(booking.end_time as string);
 
       // Only add slot if current < bStart and bStart > current
       if (current < bStart) {
@@ -180,36 +186,40 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !date ||
-      !startTime ||
-      !endTime ||
-      !branch ||
-      !spaceId ||
-      !spaceUnitId
-    ) {
+    if (!date || !branch || !spaceId || !spaceUnitId) {
       toast.error("Please fill in all fields.");
       return;
     }
-    // Validation: start time < end time
-    if (timeToMinutes(startTime) >= timeToMinutes(endTime)) {
-      toast.error("Start time must be before end time.");
-      return;
+
+    const isFullDay = selectedProduct?.duration === 24;
+
+    if (!isFullDay) {
+      if (!startTime || !endTime) {
+        toast.error("Please fill in all fields.");
+        return;
+      }
+      // Validation: start time < end time
+      if (timeToMinutes(startTime) >= timeToMinutes(endTime)) {
+        toast.error("Start time must be before end time.");
+        return;
+      }
+      // Validation: minimum 30 minutes
+      if (timeToMinutes(endTime) - timeToMinutes(startTime) < 30) {
+        toast.error("Minimum booking duration is 30 minutes.");
+        return;
+      }
     }
-    // Validation: minimum 30 minutes
-    if (timeToMinutes(endTime) - timeToMinutes(startTime) < 30) {
-      toast.error("Minimum booking duration is 30 minutes.");
-      return;
-    }
+
     setLoading(true);
     try {
       await createBooking({
-        date: formatDateLocal(date), // <-- use local date string
-        start_time: startTime,
-        end_time: endTime,
+        date: formatDateLocal(date),
+        start_time: isFullDay ? null : startTime,
+        end_time: isFullDay ? null : endTime,
         space_unit_id: spaceUnitId,
         status: "booked",
         remarks: remarks,
+        product_voucher_id: selectedVoucherId ? selectedVoucherId : undefined, // <-- fix here
       });
 
       toast.success("Booking created!");
@@ -218,7 +228,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
       setEndTime("");
       setBranch("");
       setSpaceId("");
-      setSpaceUnitId(""); // <-- reset after booking
+      setSpaceUnitId("");
       setOpen(false);
       fetchBookings();
       setRemarks("");
@@ -252,7 +262,12 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
 
   // When voucher or startTime changes, auto-set endTime if voucher is used
   useEffect(() => {
-    if (selectedProduct && startTime && selectedProduct.duration) {
+    if (
+      selectedProduct &&
+      startTime &&
+      selectedProduct.duration &&
+      selectedProduct.duration !== 24
+    ) {
       // Add duration (in hours) to startTime
       const [h, m] = startTime.split(":").map(Number);
       const endDate = new Date(0, 0, 0, h, m);
@@ -476,96 +491,99 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
           <Separator />
 
           {/* Select Time Section */}
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Clock className="w-5 h-5 text-primary" />
-              <span className="text-base font-semibold">Pick a Time Slot</span>
-            </div>
+          {selectedProduct?.duration !== 24 && (
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Clock className="w-5 h-5 text-primary" />
+                <span className="text-base font-semibold">
+                  Pick a Time Slot
+                </span>
+              </div>
 
-            <p className="text-xs text-muted-foreground mb-3 ml-7">
-              {!selectedVoucherId
-                ? "Select a voucher to pick a time slot."
-                : availabilityLoading
-                ? "Loading availability..."
-                : availability
-                ? "Pick a time within the available slots below."
-                : "Select an available time for your booking."}
-            </p>
-            {/* Show available slots as sections */}
-            {availableSlots.length > 0 && (
-              <div className="my-4">
-                <div className="text-sm font-semibold mb-1 ml-1">
-                  Available Slots:
+              <p className="text-xs text-muted-foreground mb-3 ml-7">
+                {!selectedVoucherId
+                  ? "Select a voucher to pick a time slot."
+                  : availabilityLoading
+                  ? "Loading availability..."
+                  : availability
+                  ? "Pick a time within the available slots below."
+                  : "Select an available time for your booking."}
+              </p>
+              {/* Show available slots as sections */}
+              {availableSlots.length > 0 && (
+                <div className="my-4">
+                  <div className="text-sm font-semibold mb-1 ml-1">
+                    Available Slots:
+                  </div>
+                  <ul className="space-y-1">
+                    {availableSlots.map((slot) => (
+                      <li key={slot.start + "-" + slot.end} className="ml-2">
+                        <span
+                          className="inline-block rounded px-2 py-0.5 text-sm"
+                          style={{
+                            background: "var(--primary)",
+                            color: "var(--primary-foreground, #fff)",
+                          }}
+                        >
+                          {formatTimeAMPM(slot.start)} -{" "}
+                          {formatTimeAMPM(slot.end)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-1">
-                  {availableSlots.map((slot) => (
-                    <li key={slot.start + "-" + slot.end} className="ml-2">
-                      <span
-                        className="inline-block rounded px-2 py-0.5 text-sm"
-                        style={{
-                          background: "var(--primary)",
-                          color: "var(--primary-foreground, #fff)",
-                        }}
-                      >
-                        {formatTimeAMPM(slot.start)} -{" "}
-                        {formatTimeAMPM(slot.end)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {/* Only show manual input for custom times */}
-            <div className="flex gap-4 p-2">
-              <div className="flex-1 flex flex-col gap-1.5">
-                <Label
-                  htmlFor="start-time"
-                  className="text-sm font-medium flex items-center gap-2"
-                >
-                  Start Time
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="start-time"
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    required
-                    disabled={!selectedVoucherId}
-                  />
-                  <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              )}
+              {/* Only show manual input for custom times */}
+              <div className="flex gap-4 p-2">
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <Label
+                    htmlFor="start-time"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    Start Time
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="start-time"
+                      type="time"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      required
+                      disabled={!selectedVoucherId}
+                    />
+                    <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
                 </div>
-              </div>
-              <div className="flex-1 flex flex-col gap-1.5">
-                <Label
-                  htmlFor="end-time"
-                  className="text-sm font-medium flex items-center gap-2"
-                >
-                  End Time
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="end-time"
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    required
-                    disabled={!!selectedVoucherId}
-                  />
-                  <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <Label
+                    htmlFor="end-time"
+                    className="text-sm font-medium flex items-center gap-2"
+                  >
+                    End Time
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="end-time"
+                      type="time"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      required
+                      disabled={!!selectedVoucherId}
+                    />
+                    <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  </div>
+                  {selectedProduct?.duration && (
+                    <span className="text-xs text-muted-foreground">
+                      End time is automatically set to{" "}
+                      {selectedProduct.duration} hour
+                      {selectedProduct.duration > 1 ? "s" : ""} after start
+                      time.
+                    </span>
+                  )}
                 </div>
-                {selectedProduct?.duration && (
-                  <span className="text-xs text-muted-foreground">
-                    End time is automatically set to {selectedProduct.duration}{" "}
-                    hour
-                    {selectedProduct.duration > 1 ? "s" : ""} after start time.
-                  </span>
-                )}
               </div>
             </div>
-          </div>
-          <Separator />
-
+          )}
           {/* Additional Remarks Section */}
           <div>
             <div className="flex items-center gap-2 mb-1">

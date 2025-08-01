@@ -39,36 +39,36 @@ export type Database = {
           booked_by: string;
           created_at: string;
           date: string;
-          end_time: string;
+          end_time: string | null;
           id: string;
           product_voucher_id: string | null;
           remarks: string | null;
           space_unit_id: string;
-          start_time: string;
+          start_time: string | null;
           status: Database["public"]["Enums"]["booking_status"];
         };
         Insert: {
           booked_by?: string;
           created_at?: string;
           date: string;
-          end_time: string;
+          end_time?: string | null;
           id?: string;
           product_voucher_id?: string | null;
           remarks?: string | null;
           space_unit_id: string;
-          start_time: string;
+          start_time?: string | null;
           status?: Database["public"]["Enums"]["booking_status"];
         };
         Update: {
           booked_by?: string;
           created_at?: string;
           date?: string;
-          end_time?: string;
+          end_time?: string | null;
           id?: string;
           product_voucher_id?: string | null;
           remarks?: string | null;
           space_unit_id?: string;
-          start_time?: string;
+          start_time?: string | null;
           status?: Database["public"]["Enums"]["booking_status"];
         };
         Relationships: [

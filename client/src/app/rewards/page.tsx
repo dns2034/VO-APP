@@ -12,12 +12,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import VoucherDialog from "./components/VoucherDialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
 import BottomBar from "@/components/bottom-bar";
+import VoucherDialog from "./components/VoucherDialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Filter as FilterIcon } from "lucide-react";
 
 type RedemptionCandidate = {
   id: string;
@@ -33,98 +38,135 @@ export default function RewardsPage() {
     useState<RedemptionCandidate | null>(null);
   const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
+  // Filter state: "all", "product", "reward"
+  const [filterType, setFilterType] = useState<"all" | "product" | "reward">(
+    "all"
+  );
+
+  // Crunch products and rewards into one array
+  const allItems = [
+    ...products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      image_path: product.image_path,
+      price: product.price,
+      type: "product" as const,
+    })),
+    ...rewards.map((reward) => ({
+      id: reward.id,
+      name: reward.name,
+      description: reward.description ?? "",
+      image_path: reward.image_path ?? "",
+      price: reward.price,
+      type: "reward" as const,
+    })),
+  ];
+
+  const filteredItems =
+    filterType === "all"
+      ? allItems
+      : allItems.filter((item) => item.type === filterType);
+
   return (
     <>
-      <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 z-50 bg-background border-b border-border">
+      <header className="flex h-16 shrink-0 items-center gap-2 z-50 bg-background border-b border-border">
         <div className="flex items-center gap-2 px-4 w-full">
           <h1 className="text-xl font-bold tracking-tight">Rewards</h1>
-          <VoucherDialog />
         </div>
       </header>
 
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <Tabs defaultValue="products" className="w-full">
+        <Tabs defaultValue="rewards" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:w-1/3 lg:w-1/4">
-            <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="rewards">Rewards</TabsTrigger>
+            <TabsTrigger value="vouchers">My Vouchers</TabsTrigger>
           </TabsList>
-          <TabsContent value="products">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-              {products.map((product) => (
-                <Card key={product.id} className="pt-0">
+          <TabsContent value="rewards">
+            <div className="flex items-center justify-end mb-4">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <FilterIcon className="w-4 h-4" />
+                    Filter
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-40 p-2">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant={filterType === "all" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setFilterType("all")}
+                    >
+                      All
+                    </Button>
+                    <Button
+                      variant={filterType === "product" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setFilterType("product")}
+                    >
+                      Products
+                    </Button>
+                    <Button
+                      variant={filterType === "reward" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setFilterType("reward")}
+                    >
+                      Rewards
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2">
+              {filteredItems.map((item) => (
+                <Card key={item.id} className="pt-0">
                   <CardHeader className="p-0">
                     <div className="relative aspect-video">
                       <Image
-                        src={product.image_path || "/placeholder.png"}
-                        alt={product.name}
+                        src={item.image_path || "/placeholder.png"}
+                        alt={item.name}
                         fill
                         className="rounded-t-lg object-cover"
                       />
                     </div>
                   </CardHeader>
                   <CardContent className="pt-4">
-                    <CardTitle>{product.name}</CardTitle>
+                    <CardTitle>{item.name}</CardTitle>
                     <CardDescription className="mt-2 h-10">
-                      {product.description}
+                      {item.description}
                     </CardDescription>
                   </CardContent>
                   <CardFooter className="flex justify-between items-center">
-                    <p className="font-semibold">{product.price}</p>
+                    <p className="font-semibold">{item.price}</p>
                     <Button
                       onClick={() =>
                         setRedemptionCandidate({
-                          id: product.id,
-                          name: product.name,
-                          type: "product",
+                          id: item.id,
+                          name: item.name,
+                          type: item.type,
                         })
                       }
-                      disabled={redeemingId === product.id}
+                      disabled={redeemingId === item.id}
                     >
-                      {redeemingId === product.id ? "Redeeming..." : "Redeem"}
+                      {redeemingId === item.id ? "Redeeming..." : "Redeem"}
                     </Button>
                   </CardFooter>
                 </Card>
               ))}
+              {filteredItems.length === 0 && (
+                <div className="text-center text-muted-foreground py-8 col-span-full">
+                  No rewards found.
+                </div>
+              )}
             </div>
           </TabsContent>
-          <TabsContent value="rewards">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-              {rewards.map((reward) => (
-                <Card key={reward.id} className="pt-0">
-                  <CardHeader className="p-0">
-                    <div className="relative aspect-video">
-                      <Image
-                        src={reward.image_path || "/placeholder.png"}
-                        alt={reward.name}
-                        fill
-                        className="rounded-t-lg object-cover"
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-4">
-                    <CardTitle>{reward.name}</CardTitle>
-                    <CardDescription className="mt-2 h-10">
-                      {reward.description}
-                    </CardDescription>
-                  </CardContent>
-                  <CardFooter className="flex justify-between items-center">
-                    <p className="font-semibold">{reward.price}</p>
-                    <Button
-                      onClick={() =>
-                        setRedemptionCandidate({
-                          id: reward.id,
-                          name: reward.name,
-                          type: "reward",
-                        })
-                      }
-                      disabled={redeemingId === reward.id}
-                    >
-                      {redeemingId === reward.id ? "Redeeming..." : "Redeem"}
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
+          <TabsContent value="vouchers">
+            <VoucherDialog />
           </TabsContent>
         </Tabs>
         <BottomBar />

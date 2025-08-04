@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Header from "./components/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
@@ -24,6 +23,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Filter as FilterIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { SortAsc, SortDesc } from "lucide-react";
 
 type RedemptionCandidate = {
   id: string;
@@ -43,6 +44,8 @@ export default function RewardsPage() {
   const [filterType, setFilterType] = useState<"all" | "product" | "reward">(
     "all"
   );
+  const [search, setSearch] = useState<string>("");
+  const [sortAsc, setSortAsc] = useState<boolean>(true);
 
   // Crunch products and rewards into one array
   const allItems = [
@@ -64,23 +67,43 @@ export default function RewardsPage() {
     })),
   ];
 
+  // Search and filter
   const filteredItems =
     filterType === "all"
       ? allItems
       : allItems.filter((item) => item.type === filterType);
 
-  return (
-    <>
-      <Header></Header>
+  const searchedItems = filteredItems.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
 
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+  const sortedItems = [...searchedItems].sort((a, b) =>
+    sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+  );
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <header className="flex h-16 shrink-0 items-center gap-2 z-50 bg-background border-b border-border">
+        <div className="flex items-center gap-2 px-4 w-full">
+          <h1 className="text-xl font-bold tracking-tight">Rewards</h1>
+        </div>
+      </header>
+
+      <main className="flex-1 flex flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-auto pb-24">
         <Tabs defaultValue="rewards" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:w-1/3 lg:w-1/4">
             <TabsTrigger value="rewards">Rewards</TabsTrigger>
             <TabsTrigger value="vouchers">My Vouchers</TabsTrigger>
           </TabsList>
           <TabsContent value="rewards">
-            <div className="flex items-center justify-end mb-4">
+            <div className="flex items-center gap-2 mb-4 w-full">
+              <Input
+                type="search"
+                placeholder="Search rewards..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-1 max-w-xs"
+              />
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -89,7 +112,6 @@ export default function RewardsPage() {
                     className="flex items-center gap-2"
                   >
                     <FilterIcon className="w-4 h-4" />
-                    Filter
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-40 p-2">
@@ -118,9 +140,21 @@ export default function RewardsPage() {
                   </div>
                 </PopoverContent>
               </Popover>
+              <button
+                className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+                onClick={() => setSortAsc((prev) => !prev)}
+                type="button"
+                aria-label="Sort"
+              >
+                {sortAsc ? (
+                  <SortAsc className="w-5 h-5" />
+                ) : (
+                  <SortDesc className="w-5 h-5" />
+                )}
+              </button>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2">
-              {filteredItems.map((item) => (
+              {sortedItems.map((item) => (
                 <Card key={item.id} className="pt-0">
                   <CardHeader className="p-0">
                     <div className="relative aspect-video">
@@ -155,7 +189,7 @@ export default function RewardsPage() {
                   </CardFooter>
                 </Card>
               ))}
-              {filteredItems.length === 0 && (
+              {sortedItems.length === 0 && (
                 <div className="text-center text-muted-foreground py-8 col-span-full">
                   No rewards found.
                 </div>
@@ -166,13 +200,13 @@ export default function RewardsPage() {
             <VoucherDialog />
           </TabsContent>
         </Tabs>
-        <BottomBar />
         <ConfirmRedeemAlertDialog
           redemptionCandidate={redemptionCandidate}
           setRedemptionCandidate={setRedemptionCandidate}
           setRedeemingId={setRedeemingId}
         />
       </main>
-    </>
+      <BottomBar />
+    </div>
   );
 }

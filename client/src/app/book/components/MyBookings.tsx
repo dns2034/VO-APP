@@ -35,6 +35,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Filter as FilterIcon, SortAsc, SortDesc } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 function formatTimeTo12Hour(time: string): string {
   const match = time.match(/^(\d{2}):(\d{2})/);
@@ -54,6 +55,7 @@ export default function MyBookings() {
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [sortAscOrder, setSortAscOrder] = useState<boolean>(true);
+  const [search, setSearch] = useState<string>("");
 
   if (loading) {
     return (
@@ -82,10 +84,27 @@ export default function MyBookings() {
     );
   }
 
+  // Filter bookings by search
+  const searchedBookings = bookings.filter((booking) => {
+    if (!search.trim()) return true;
+    // Search by space name, branch name, or remarks
+    const spaceUnit = spaceUnits.find((su) => su.id === booking.space_unit_id);
+    const space = spaces.find((s) => s.id === spaceUnit?.space_id);
+    const branch = branches.find((b) => b.id === space?.branch_id);
+    const spaceName = spaceUnit?.name || "";
+    const branchName = branch?.name || "";
+    const remarks = booking.remarks || "";
+    return (
+      spaceName.toLowerCase().includes(search.toLowerCase()) ||
+      branchName.toLowerCase().includes(search.toLowerCase()) ||
+      remarks.toLowerCase().includes(search.toLowerCase())
+    );
+  });
+
   const filteredBookings =
     statusFilter === "all"
-      ? bookings
-      : bookings.filter((booking) => booking.status === statusFilter);
+      ? searchedBookings
+      : searchedBookings.filter((booking) => booking.status === statusFilter);
 
   // Sort bookings by date (ascending or descending)
   const sortedBookings = [...filteredBookings].sort((a, b) => {
@@ -98,9 +117,15 @@ export default function MyBookings() {
   return (
     <>
       <main className="flex-1 flex flex-col">
-        {/* Filter and Sort Row */}
-        <div className="flex flex-row items-center justify-end py-2 px-0 gap-2">
-          {/* Filter Popover */}
+        {/* Search, Filter, Sort Row */}
+        <div className="flex flex-row items-center justify-between py-2 px-0 gap-2 w-full">
+          <Input
+            type="search"
+            placeholder="Search bookings..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 max-w-xs"
+          />
           <Popover>
             <PopoverTrigger asChild>
               <button
@@ -130,7 +155,6 @@ export default function MyBookings() {
               </Select>
             </PopoverContent>
           </Popover>
-          {/* Sort Button */}
           <button
             className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
             onClick={() => setSortAscOrder((prev) => !prev)}

@@ -488,13 +488,6 @@ INSERT INTO "public"."spaces" ("id", "created_at", "name", "is_available", "bran
 -- Data for Name: bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."bookings" ("created_at", "booked_by", "start_time", "end_time", "date", "status", "id", "space_id", "remarks") VALUES
-	('2025-07-21 01:50:16.638628+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '02:03:00+08', '15:03:00+08', '2025-07-21', 'booked', '9471c888-fafb-4f4a-b2a3-9b9c91d50ee3', '6ed9b450-425a-453c-bfae-c23727d5c5fe', NULL),
-	('2025-07-21 03:13:40.766581+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '02:03:00+00', '15:00:00+00', '2025-07-21', 'booked', 'f091f82a-980a-4202-9de6-c7ffd9d011e2', '6ed9b450-425a-453c-bfae-c23727d5c5fe', NULL),
-	('2025-07-26 15:51:06.654843+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '10:00:00+00', '12:00:00+00', '2025-07-30', 'booked', '222aa3db-8385-43c2-b13d-3e52d21ac8db', '25d9d93f-44c8-492e-a5af-6a156efe6f3a', NULL),
-	('2025-07-26 15:53:33.42306+00', 'e2039206-f313-49c3-bc16-0596c11e4a5d', '10:00:00+00', '10:00:00+00', '2025-07-08', 'booked', 'fc7717ea-672b-4b9e-a071-0aa1a0b79697', '6ed9b450-425a-453c-bfae-c23727d5c5fe', 'Wala');
-
-
 --
 -- Data for Name: credits; Type: TABLE DATA; Schema: public; Owner: postgres
 --

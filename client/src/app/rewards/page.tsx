@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Header from "./components/Header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
@@ -70,11 +71,7 @@ export default function RewardsPage() {
 
   return (
     <>
-      <header className="flex h-16 shrink-0 items-center gap-2 z-50 bg-background border-b border-border">
-        <div className="flex items-center gap-2 px-4 w-full">
-          <h1 className="text-xl font-bold tracking-tight">Rewards</h1>
-        </div>
-      </header>
+      <Header></Header>
 
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
         <Tabs defaultValue="rewards" className="w-full">

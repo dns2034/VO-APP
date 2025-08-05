@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/popover";
 import { Filter as FilterIcon, SortAsc, SortDesc } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Header from "./components/Header";
 
 type RedemptionCandidate = {
   id: string;
@@ -74,21 +75,7 @@ export default function RewardsPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Header: match booking page style */}
-      <header className="flex flex-row items-center bg-white text-gray-900 p-4 border-b border-border">
-        <div
-          className="flex-shrink-0 flex items-center justify-center"
-          style={{ minWidth: 40 }}
-        >
-          <Image src="/logo_simple.svg" alt="Logo" width={32} height={32} />
-        </div>
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <h1 className="font-bold text-lg">Rewards</h1>
-          <p className="text-xs text-gray-500">
-            Redeem products and rewards with your points.
-          </p>
-        </div>
-      </header>
+      <Header />
       <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
         <Tabs defaultValue="rewards" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:w-1/2 mb-4">

@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
 import BottomBar from "@/components/bottom-bar";
-import VoucherDialog from "./components/VoucherDialog";
+import MyVouchers from "./components/MyVouchers";
 import {
   Popover,
   PopoverContent,
@@ -197,7 +197,7 @@ export default function RewardsPage() {
             </div>
           </TabsContent>
           <TabsContent value="vouchers">
-            <VoucherDialog />
+            <MyVouchers />
           </TabsContent>
         </Tabs>
         <ConfirmRedeemAlertDialog

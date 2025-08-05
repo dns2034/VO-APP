@@ -4,14 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ConfirmRedeemAlertDialog from "./components/ConfirmRedeemAlertDialog";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRewards } from "@/hooks/useRewards";
 import { useProducts } from "@/hooks/useProducts";
@@ -22,9 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Filter as FilterIcon } from "lucide-react";
+import { Filter as FilterIcon, SortAsc, SortDesc } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { SortAsc, SortDesc } from "lucide-react";
 
 type RedemptionCandidate = {
   id: string;
@@ -36,11 +27,11 @@ export default function RewardsPage() {
   const { rewards } = useRewards();
   const { products } = useProducts();
 
+  // Explicitly type state as RedemptionCandidate | null
   const [redemptionCandidate, setRedemptionCandidate] =
     useState<RedemptionCandidate | null>(null);
   const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
-  // Filter state: "all", "product", "reward"
   const [filterType, setFilterType] = useState<"all" | "product" | "reward">(
     "all"
   );
@@ -82,36 +73,46 @@ export default function RewardsPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="flex h-16 shrink-0 items-center gap-2 z-50 bg-background border-b border-border">
-        <div className="flex items-center gap-2 px-4 w-full">
-          <h1 className="text-xl font-bold tracking-tight">Rewards</h1>
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* Header: match booking page style */}
+      <header className="flex flex-row items-center bg-white text-gray-900 p-4 border-b border-border">
+        <div
+          className="flex-shrink-0 flex items-center justify-center"
+          style={{ minWidth: 40 }}
+        >
+          <Image src="/logo_simple.svg" alt="Logo" width={32} height={32} />
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <h1 className="font-bold text-lg">Rewards</h1>
+          <p className="text-xs text-gray-500">
+            Redeem products and rewards with your points.
+          </p>
         </div>
       </header>
-
-      <main className="flex-1 flex flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-auto pb-24">
+      <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
         <Tabs defaultValue="rewards" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:w-1/3 lg:w-1/4">
+          <TabsList className="grid w-full grid-cols-2 md:w-1/2 mb-4">
             <TabsTrigger value="rewards">Rewards</TabsTrigger>
             <TabsTrigger value="vouchers">My Vouchers</TabsTrigger>
           </TabsList>
           <TabsContent value="rewards">
-            <div className="flex items-center gap-2 mb-4 w-full">
+            {/* Search, Filter, Sort Row */}
+            <div className="flex flex-row items-center justify-between gap-2 w-full mb-4">
               <Input
                 type="search"
                 placeholder="Search rewards..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 max-w-xs"
+                className="flex-1 max-w-xs shadow-none"
               />
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="flex items-center gap-2"
+                    size="icon"
+                    className="flex items-center justify-center"
                   >
-                    <FilterIcon className="w-4 h-4" />
+                    <FilterIcon className="w-5 h-5" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-40 p-2">
@@ -153,44 +154,50 @@ export default function RewardsPage() {
                 )}
               </button>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2">
+            {/* Rewards/Product List */}
+            <div className="flex flex-col gap-3">
               {sortedItems.map((item) => (
-                <Card key={item.id} className="pt-0">
-                  <CardHeader className="p-0">
-                    <div className="relative aspect-video">
-                      <Image
-                        src={item.image_path || "/placeholder.png"}
-                        alt={item.name}
-                        fill
-                        className="rounded-t-lg object-cover"
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-4">
-                    <CardTitle>{item.name}</CardTitle>
-                    <CardDescription className="mt-2 h-10">
+                <div
+                  key={item.id}
+                  className="flex flex-row items-center gap-3 bg-white rounded-lg border border-border px-3 py-3"
+                >
+                  <div className="flex-shrink-0 relative w-16 h-16 rounded-md overflow-hidden bg-gray-100">
+                    <Image
+                      src={item.image_path || "/placeholder.png"}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <span className="font-semibold text-base text-primary truncate">
+                      {item.name}
+                    </span>
+                    <span className="text-xs text-muted-foreground truncate">
                       {item.description}
-                    </CardDescription>
-                  </CardContent>
-                  <CardFooter className="flex justify-between items-center">
-                    <p className="font-semibold">{item.price}</p>
-                    <Button
-                      onClick={() =>
-                        setRedemptionCandidate({
-                          id: item.id,
-                          name: item.name,
-                          type: item.type,
-                        })
-                      }
-                      disabled={redeemingId === item.id}
-                    >
-                      {redeemingId === item.id ? "Redeeming..." : "Redeem"}
-                    </Button>
-                  </CardFooter>
-                </Card>
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1 font-medium">
+                      {item.price} points
+                    </span>
+                  </div>
+                  <Button
+                    size="sm"
+                    className="whitespace-nowrap"
+                    onClick={() =>
+                      setRedemptionCandidate({
+                        id: item.id,
+                        name: item.name,
+                        type: item.type,
+                      })
+                    }
+                    disabled={redeemingId === item.id}
+                  >
+                    {redeemingId === item.id ? "Redeeming..." : "Redeem"}
+                  </Button>
+                </div>
               ))}
               {sortedItems.length === 0 && (
-                <div className="text-center text-muted-foreground py-8 col-span-full">
+                <div className="text-center text-muted-foreground py-8">
                   No rewards found.
                 </div>
               )}

@@ -295,10 +295,7 @@ export default function MyVouchers() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <header className="flex h-16 shrink-0 items-center gap-2 z-50 bg-background border-b border-border px-4">
-        <h1 className="text-xl font-bold tracking-tight">My Vouchers</h1>
-      </header>
-      <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
+      <main className="flex-1 flex flex-col gap-0 max-w-2xl w-full mx-auto">
         {/* Search, Filter, Sort Row */}
         <div className="flex flex-row items-center justify-between gap-2 w-full mb-4">
           <Input

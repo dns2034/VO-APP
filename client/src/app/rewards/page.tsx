@@ -78,7 +78,7 @@ export default function RewardsPage() {
       <Header />
       <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
         <Tabs defaultValue="rewards" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:w-1/2 mb-4">
+          <TabsList className="grid w-full grid-cols-2 md:w-1/2 mb-1">
             <TabsTrigger value="rewards">Rewards</TabsTrigger>
             <TabsTrigger value="vouchers">My Vouchers</TabsTrigger>
           </TabsList>

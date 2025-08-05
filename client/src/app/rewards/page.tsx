@@ -98,6 +98,8 @@ export default function RewardsPage() {
                     variant="outline"
                     size="icon"
                     className="flex items-center justify-center"
+                    aria-label="Filter"
+                    type="button"
                   >
                     <FilterIcon className="w-5 h-5" />
                   </Button>
@@ -128,8 +130,10 @@ export default function RewardsPage() {
                   </div>
                 </PopoverContent>
               </Popover>
-              <button
-                className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+              <Button
+                variant="outline"
+                size="icon"
+                className="flex items-center justify-center"
                 onClick={() => setSortAsc((prev) => !prev)}
                 type="button"
                 aria-label="Sort"
@@ -139,7 +143,7 @@ export default function RewardsPage() {
                 ) : (
                   <SortDesc className="w-5 h-5" />
                 )}
-              </button>
+              </Button>
             </div>
             {/* Rewards/Product List */}
             <div className="flex flex-col gap-3">

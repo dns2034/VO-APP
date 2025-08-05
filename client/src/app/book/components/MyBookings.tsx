@@ -136,17 +136,19 @@ export default function MyBookings() {
             placeholder="Search bookings..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 max-w-xs"
+            className="flex-1 max-w-xs shadow-none"
           />
           <Popover>
             <PopoverTrigger asChild>
-              <button
-                className="h-9 w-9 flex items-center justify-center bg-white text-gray-700 hover:bg-gray-100 transition"
+              <Button
+                variant="outline"
+                size="icon"
+                className="flex items-center justify-center"
                 aria-label="Filter"
                 type="button"
               >
                 <FilterIcon className="w-5 h-5" />
-              </button>
+              </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-44 p-2">
               <div className="mb-2 text-xs font-semibold text-gray-700">
@@ -167,8 +169,10 @@ export default function MyBookings() {
               </Select>
             </PopoverContent>
           </Popover>
-          <button
-            className="h-9 w-9 flex items-center justify-center  bg-white text-gray-700 hover:bg-gray-100 transition"
+          <Button
+            variant="outline"
+            size="icon"
+            className="flex items-center justify-center"
             onClick={() => setSortAscOrder((prev) => !prev)}
             type="button"
             aria-label="Sort"
@@ -178,7 +182,7 @@ export default function MyBookings() {
             ) : (
               <SortDesc className="w-5 h-5" />
             )}
-          </button>
+          </Button>
         </div>
         {/* Bookings List */}
         <Accordion type="single" collapsible className="w-full overflow-hidden">

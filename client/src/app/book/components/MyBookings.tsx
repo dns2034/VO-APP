@@ -4,12 +4,10 @@ import { useBookings } from "@/hooks/useBookings";
 import { useSpaces } from "@/hooks/useSpaces";
 import { useBranches } from "@/hooks/useBranches";
 import { useSpaceUnits } from "@/hooks/useSpaceUnits";
-
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
@@ -34,8 +32,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Filter as FilterIcon, SortAsc, SortDesc } from "lucide-react";
+import {
+  Filter as FilterIcon,
+  SortAsc,
+  SortDesc,
+  Calendar,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
+
+const PAGE_SIZE = 6;
 
 function formatTimeTo12Hour(time: string): string {
   const match = time.match(/^(\d{2}):(\d{2})/);
@@ -56,6 +61,7 @@ export default function MyBookings() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [sortAscOrder, setSortAscOrder] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
+  const [page, setPage] = useState(1);
 
   if (loading) {
     return (
@@ -114,11 +120,17 @@ export default function MyBookings() {
       : new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
+  const totalPages = Math.max(1, Math.ceil(sortedBookings.length / PAGE_SIZE));
+  const paginated = sortedBookings.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE
+  );
+
   return (
-    <>
-      <main className="flex-1 flex flex-col">
+    <div className="flex flex-col min-h-screen bg-background">
+      <main className="flex-1 flex flex-col gap-0 lg:p-6 max-w-2xl w-full mx-auto">
         {/* Search, Filter, Sort Row */}
-        <div className="flex flex-row items-center justify-between py-2 px-0 gap-2 w-full">
+        <div className="flex flex-row items-center justify-between gap-2 w-full mb-4">
           <Input
             type="search"
             placeholder="Search bookings..."
@@ -129,7 +141,7 @@ export default function MyBookings() {
           <Popover>
             <PopoverTrigger asChild>
               <button
-                className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+                className="h-9 w-9 flex items-center justify-center bg-white text-gray-700 hover:bg-gray-100 transition"
                 aria-label="Filter"
                 type="button"
               >
@@ -156,7 +168,7 @@ export default function MyBookings() {
             </PopoverContent>
           </Popover>
           <button
-            className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+            className="h-9 w-9 flex items-center justify-center  bg-white text-gray-700 hover:bg-gray-100 transition"
             onClick={() => setSortAscOrder((prev) => !prev)}
             type="button"
             aria-label="Sort"
@@ -168,147 +180,150 @@ export default function MyBookings() {
             )}
           </button>
         </div>
-
-        {/* Bookings List + Pagination */}
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 min-h-0 overflow-y-auto w-full pb-24">
-            {sortedBookings.length === 0 ? (
-              <div className="text-center text-muted-foreground py-16 rounded-lg bg-white">
-                <span className="text-lg font-medium">No bookings found.</span>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-1">
-                {sortedBookings.map((booking) => {
-                  // Use space_unit_id to find the space unit, then the space, then the branch
-                  const spaceUnit = spaceUnits.find(
-                    (su) => su.id === booking.space_unit_id
-                  );
-                  const space = spaces.find(
-                    (s) => s.id === spaceUnit?.space_id
-                  );
-                  const branch = branches.find(
-                    (b) => b.id === space?.branch_id
-                  );
-                  const spaceName = spaceUnit?.name || "Unknown Space Unit";
-                  const branchName = branch?.name || "Unknown Branch";
-
-                  const dateStr = booking.date
-                    ? format(new Date(booking.date), "yyyy-MM-dd")
-                    : "";
-                  const dateStrFull = booking.date
-                    ? format(new Date(booking.date), "PPPP")
-                    : "";
-                  let timeStr = "";
-                  if (booking.start_time && booking.end_time) {
-                    const startMatch =
-                      booking.start_time.match(/^(\d{2}:\d{2})/);
-                    const endMatch = booking.end_time.match(/^(\d{2}:\d{2})/);
-                    if (startMatch && endMatch) {
-                      timeStr = `${formatTimeTo12Hour(
-                        startMatch[1]
-                      )} - ${formatTimeTo12Hour(endMatch[1])}`;
-                    } else {
-                      timeStr = "N/A";
-                    }
-                  } else {
-                    timeStr = "N/A";
-                  }
-                  return (
-                    <Accordion
-                      key={`item-${booking.id}`}
-                      type="single"
-                      collapsible
-                      className="bg-white "
-                    >
-                      <AccordionItem value={`item-${booking.date}`}>
-                        <AccordionTrigger className="py-1 flex items-center w-full rounded-lg">
-                          <div className="flex flex-row flex-1 items-center gap-2">
-                            <div className="flex-1 ">
-                              <div className="font-semibold text-base text-primary ">
-                                {spaceName}
-                              </div>
-                              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
-                                <span className="">
-                                  {dateStr} &middot; {timeStr}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="">
-                          <div className="flex flex-col gap-1 text-xs text-left">
-                            <div>
-                              <span className="font-medium text-muted-foreground">
-                                Date:{" "}
-                              </span>
-                              <span>{dateStrFull}</span>
-                            </div>
-                            <div>
-                              <span className="font-medium text-muted-foreground">
-                                Time:{" "}
-                              </span>
-                              <span>{timeStr}</span>
-                            </div>
-                            <div>
-                              <span className="font-medium text-muted-foreground">
-                                Branch:{" "}
-                              </span>
-                              <span>{branchName}</span>
-                            </div>
-                            <div>
-                              <span className="font-medium text-muted-foreground">
-                                Status:{" "}
-                              </span>
-                              <span className="capitalize">
-                                {booking.status}
-                              </span>
-                            </div>
-                          </div>
-                          {(booking.status === "booked" ||
-                            booking.status === "pending") && (
-                            <div className="flex items-center gap-2 mt-6">
-                              <Button
-                                variant="destructive"
-                                size="sm"
-                                onClick={async () => {
-                                  if (
-                                    confirm(
-                                      "Are you sure you want to cancel this booking?"
-                                    )
-                                  ) {
-                                    await cancelBooking(booking.id);
-                                  }
-                                }}
-                              >
-                                Cancel Booking
-                              </Button>
-                            </div>
-                          )}
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-          <div className="fixed left-0 right-0 bottom-0 w-full bg-white z-50 pb-24">
-            <Pagination className="w-full flex justify-center mt-2 mb-2">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        </div>
+        {/* Bookings List */}
+        <Accordion type="single" collapsible className="w-full overflow-hidden">
+          {paginated.length === 0 && (
+            <div className="text-center text-muted-foreground py-8">
+              No bookings found.
+            </div>
+          )}
+          {paginated.map((booking, idx) => {
+            const spaceUnit = spaceUnits.find(
+              (su) => su.id === booking.space_unit_id
+            );
+            const space = spaces.find((s) => s.id === spaceUnit?.space_id);
+            const branch = branches.find((b) => b.id === space?.branch_id);
+            const spaceName = spaceUnit?.name || "Unknown Space Unit";
+            const branchName = branch?.name || "Unknown Branch";
+            const dateStr = booking.date
+              ? format(new Date(booking.date), "yyyy-MM-dd")
+              : "";
+            const dateStrFull = booking.date
+              ? format(new Date(booking.date), "PPPP")
+              : "";
+            let timeStr = "";
+            if (booking.start_time && booking.end_time) {
+              const startMatch = booking.start_time.match(/^(\d{2}:\d{2})/);
+              const endMatch = booking.end_time.match(/^(\d{2}:\d{2})/);
+              if (startMatch && endMatch) {
+                timeStr = `${formatTimeTo12Hour(
+                  startMatch[1]
+                )} - ${formatTimeTo12Hour(endMatch[1])}`;
+              } else {
+                timeStr = "N/A";
+              }
+            } else {
+              timeStr = "N/A";
+            }
+            return (
+              <AccordionItem
+                key={booking.id}
+                value={booking.id}
+                className={
+                  idx !== paginated.length - 1 ? "border-b border-border" : ""
+                }
+              >
+                <AccordionTrigger className="py-3 px-4 flex items-center w-full rounded-none hover:bg-muted/40 transition-none">
+                  <div className="flex flex-row flex-1 items-center gap-2 min-w-0">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-base text-primary truncate flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        {spaceName}
+                      </div>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
+                        <span className="truncate">
+                          {dateStr} • {timeStr}
+                          {branchName ? ` • ${branchName}` : ""}
+                        </span>
+                        <span className="capitalize">{booking.status}</span>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 pt-2">
+                  <div className="flex flex-col gap-1 text-xs text-left">
+                    <div>
+                      <span className="font-medium text-muted-foreground">
+                        Date:{" "}
+                      </span>
+                      <span>{dateStrFull}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-muted-foreground">
+                        Time:{" "}
+                      </span>
+                      <span>{timeStr}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-muted-foreground">
+                        Branch:{" "}
+                      </span>
+                      <span>{branchName}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-muted-foreground">
+                        Status:{" "}
+                      </span>
+                      <span className="capitalize">{booking.status}</span>
+                    </div>
+                    {booking.remarks && (
+                      <div>
+                        <span className="font-medium text-muted-foreground">
+                          Remarks:{" "}
+                        </span>
+                        <span>{booking.remarks}</span>
+                      </div>
+                    )}
+                  </div>
+                  {(booking.status === "booked" ||
+                    booking.status === "pending") && (
+                    <div className="flex items-center gap-2 mt-6">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={async () => {
+                          if (
+                            confirm(
+                              "Are you sure you want to cancel this booking?"
+                            )
+                          ) {
+                            await cancelBooking(booking.id);
+                          }
+                        }}
+                      >
+                        Cancel Booking
+                      </Button>
+                    </div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+        {totalPages > 1 && (
+          <Pagination className="justify-center mt-4">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  aria-disabled={page === 1}
+                />
+              </PaginationItem>
+              <PaginationItem>
+                <span className="px-2 text-sm">
+                  Page {page} of {totalPages}
+                </span>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  aria-disabled={page === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </main>
-    </>
+    </div>
   );
 }

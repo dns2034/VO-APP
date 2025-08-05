@@ -223,7 +223,7 @@ export default function MyBookings() {
                   idx !== paginated.length - 1 ? "border-b border-border" : ""
                 }
               >
-                <AccordionTrigger className="py-3 px-4 flex items-center w-full rounded-none hover:bg-muted/40 transition-none">
+                <AccordionTrigger className="py-3 px-2 flex items-center w-full rounded-none hover:bg-muted/40 transition-none">
                   <div className="flex flex-row flex-1 items-center gap-2 min-w-0">
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-base text-primary truncate flex items-center gap-2">
@@ -240,7 +240,7 @@ export default function MyBookings() {
                     </div>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="px-4 pb-4 pt-2">
+                <AccordionContent className="px-2 pb-4 pt-2">
                   <div className="flex flex-col gap-1 text-xs text-left">
                     <div>
                       <span className="font-medium text-muted-foreground">
@@ -277,10 +277,9 @@ export default function MyBookings() {
                   </div>
                   {(booking.status === "booked" ||
                     booking.status === "pending") && (
-                    <div className="flex items-center gap-2 mt-6">
+                    <div className="flex items-center gap-2 mt-4">
                       <Button
-                        variant="destructive"
-                        size="sm"
+                        className="bg-primary text-white text-xs"
                         onClick={async () => {
                           if (
                             confirm(
@@ -290,6 +289,7 @@ export default function MyBookings() {
                             await cancelBooking(booking.id);
                           }
                         }}
+                        title="Cancel Booking"
                       >
                         Cancel Booking
                       </Button>

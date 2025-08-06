@@ -295,10 +295,7 @@ export default function MyVouchers() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <header className="flex h-16 shrink-0 items-center gap-2 z-50 bg-background border-b border-border px-4">
-        <h1 className="text-xl font-bold tracking-tight">My Vouchers</h1>
-      </header>
-      <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
+      <main className="flex-1 flex flex-col gap-0 max-w-2xl w-full mx-auto">
         {/* Search, Filter, Sort Row */}
         <div className="flex flex-row items-center justify-between gap-2 w-full mb-4">
           <Input
@@ -306,17 +303,19 @@ export default function MyVouchers() {
             placeholder="Search vouchers..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 max-w-xs"
+            className="flex-1 max-w-xs shadow-none"
           />
           <Popover>
             <PopoverTrigger asChild>
-              <button
-                className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+              <Button
+                variant="outline"
+                size="icon"
+                className="flex items-center justify-center"
                 aria-label="Filter"
                 type="button"
               >
                 <FilterIcon className="w-5 h-5" />
-              </button>
+              </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-40 p-2">
               <div className="flex flex-col gap-2">
@@ -344,8 +343,10 @@ export default function MyVouchers() {
               </div>
             </PopoverContent>
           </Popover>
-          <button
-            className="h-9 w-9 flex items-center justify-center rounded-md bg-white border shadow-sm text-gray-700 hover:bg-gray-100 transition"
+          <Button
+            variant="outline"
+            size="icon"
+            className="flex items-center justify-center"
             onClick={() => setSortAsc((prev) => !prev)}
             type="button"
             aria-label="Sort"
@@ -355,7 +356,7 @@ export default function MyVouchers() {
             ) : (
               <SortDesc className="w-5 h-5" />
             )}
-          </button>
+          </Button>
         </div>
         {/* QR/Print view */}
         {viewVoucher ? (

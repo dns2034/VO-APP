@@ -10,8 +10,8 @@ export default function BookingPage() {
     <>
       <Header />
 
-      <main className="flex flex-col text-center items-center bg-white text-gray-900 m-4">
-        <Tabs defaultValue="book" className="w-full">
+      <main className="flex flex-col text-center items-center bg-white text-gray-900 m-2">
+        <Tabs defaultValue="book" className="w-full p-2">
           <TabsList className="w-full justify-center mb-1">
             <TabsTrigger value="book">Book</TabsTrigger>
             <TabsTrigger value="bookings">My Bookings</TabsTrigger>

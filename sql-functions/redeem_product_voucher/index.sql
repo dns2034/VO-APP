@@ -1,30 +1,26 @@
-CREATE OR REPLACE FUNCTION redeem_product_voucher()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $$
+CREATE OR REPLACE FUNCTION public.redeem_product_voucher()
+RETURNS TRIGGER AS $$
 DECLARE
-  required_credits int;
-  available_credits int;
-  product_name text;
-  remaining int;
-  r record;
+  required_credits INT;
+  available_credits INT;
+  product_name TEXT;
+  remaining INT;
+  r RECORD;
 BEGIN
   -- 1. Get the required credits from the product
-  SELECT price INTO required_credits
-  FROM products
+  SELECT price, name
+  INTO required_credits, product_name
+  FROM public.products
   WHERE id = NEW.product_id;
 
   -- 2. Count how many active credits the user has
   SELECT COUNT(*) INTO available_credits
   FROM public.credits
-  WHERE user_id = NEW.user_id AND status = 'active';
+  WHERE user_id = NEW.user_id AND status = 'active' AND expires_at > NOW();
 
-  SELECT name from products where id = NEW.product_id into product_name;
-  -- 3. Check if user has enough
+  -- 3. Check if the user has enough credits
   IF available_credits < required_credits THEN
-    RAISE EXCEPTION 'You do not have enough credits to redeem %',
-      product_name;
+    RAISE EXCEPTION 'You do not have enough credits to redeem %', product_name;
   END IF;
 
   -- 4. Deduct the required number of credits from the oldest active rows
@@ -33,7 +29,9 @@ BEGIN
   FOR r IN
     SELECT id
     FROM public.credits
-    WHERE user_id = NEW.user_id AND status = 'active'
+    WHERE user_id = NEW.user_id
+      AND status = 'active'
+      AND expires_at > NOW()
     ORDER BY created_at ASC
     FOR UPDATE SKIP LOCKED
   LOOP
@@ -48,4 +46,4 @@ BEGIN
 
   RETURN NEW;
 END;
-$$;
+$$ LANGUAGE plpgsql;

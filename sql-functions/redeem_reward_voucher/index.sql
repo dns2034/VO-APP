@@ -1,39 +1,39 @@
-CREATE OR REPLACE FUNCTION redeem_reward_voucher()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $$
+CREATE OR REPLACE FUNCTION public.redeem_reward_voucher()
+RETURNS TRIGGER AS $$
 DECLARE
-  required_points int;
-  available_points int;
-  remaining int;
-  reward_name text;
-  r record;
+  required_points INT;
+  available_points INT;
+  remaining INT;
+  reward_name TEXT;
+  r RECORD;
 BEGIN
-  -- 1. Get the required points from the reward
-  SELECT price INTO required_points
-  FROM rewards
+  -- 1. Get the required points and reward name
+  SELECT price, name
+  INTO required_points, reward_name
+  FROM public.rewards
   WHERE id = NEW.reward_id;
 
-  SELECT name from rewards where id = NEW.reward_id into reward_name;
-  -- 2. Count how many active points the user has
+  -- 2. Count the user's active, non-expired points
   SELECT COUNT(*) INTO available_points
   FROM public.points
-  WHERE user_id = NEW.user_id AND status = 'active';
+  WHERE user_id = NEW.user_id
+    AND status = 'active'
+    AND expires_at > NOW();
 
-  -- 3. Check if user has enough
+  -- 3. Validate if the user has enough points
   IF available_points < required_points THEN
-    RAISE EXCEPTION 'You do not have enough points to redeem %',
-      reward_name;
+    RAISE EXCEPTION 'You do not have enough points to redeem %', reward_name;
   END IF;
 
-  -- 4. Deduct the required number of points from the oldest active rows
+  -- 4. Deduct points from the oldest active ones
   remaining := required_points;
 
   FOR r IN
     SELECT id
     FROM public.points
-    WHERE user_id = NEW.user_id AND status = 'active'
+    WHERE user_id = NEW.user_id
+      AND status = 'active'
+      AND expires_at > NOW()
     ORDER BY created_at ASC
     FOR UPDATE SKIP LOCKED
   LOOP
@@ -48,4 +48,4 @@ BEGIN
 
   RETURN NEW;
 END;
-$$;
+$$ LANGUAGE plpgsql;

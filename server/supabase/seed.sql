@@ -158,8 +158,8 @@ INSERT INTO "public"."products" ("id", "created_at", "name", "description", "ima
 -- Data for Name: product_vouchers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."product_vouchers" ("id", "created_at", "code", "user_id", "product_id", "expiring_at", "status", "is_refundable") VALUES
-	('714a1128-c56f-44ca-b388-ed83da900926', '2025-08-06 09:36:25.181143+00', '29A10476', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', '88771121-ff21-4dc4-88fe-1701c9ce9667', '2025-09-05 09:36:25.181143+00', 'active', true);
+INSERT INTO "public"."product_vouchers" ("id", "created_at", "code", "user_id", "product_id", "expiring_at", "status", "is_refundable", "updated_at") VALUES
+	('714a1128-c56f-44ca-b388-ed83da900926', '2025-08-06 09:36:25.181143+00', '29A10476', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', '88771121-ff21-4dc4-88fe-1701c9ce9667', '2025-09-05 09:36:25.181143+00', 'active', true, '2025-08-07 01:04:28.374109+00');
 
 
 --
@@ -183,6 +183,26 @@ INSERT INTO "public"."bookings" ("created_at", "booked_by", "start_time", "end_t
 -- Data for Name: booking_cancellations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+
+
+--
+-- Data for Name: businesses; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."businesses" ("id", "created_at", "user_id", "name", "description", "website", "phone", "email", "logo_url") VALUES
+	('2ed0a080-dc24-4158-9c70-9a33186ab3b0', '2025-08-07 01:34:08.852703+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elle''s', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('d3a15c42-ec41-4e23-965d-895ed37b4ede', '2025-08-07 01:37:18.313709+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('12bf5e04-4078-446f-86a0-0b0887a034e0', '2025-08-07 01:37:20.368344+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('9cbac0e4-69f3-458f-970e-0154bcba4cde', '2025-08-07 01:37:20.823465+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('1c8e41de-9ddc-4cbd-ab7d-acb3bfccf208', '2025-08-07 01:37:20.995543+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('857e0d62-057a-41aa-966a-f89028c0a0c5', '2025-08-07 01:37:21.157972+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('ea7ac0de-0351-42c1-a0a4-c7274f49f052', '2025-08-07 01:37:21.311936+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('177839e2-1e31-43f9-8c0d-450e52960835', '2025-08-07 01:37:21.628781+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('aa5b72f0-522e-437d-8fd8-a7474bc130b6', '2025-08-07 01:37:21.783168+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('de291185-c378-4894-a530-660dc779969f', '2025-08-07 01:37:21.935429+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('734d541f-ccda-46e5-b00f-0578c0386efa', '2025-08-07 01:37:22.097016+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('fd1e25a7-029e-4288-b904-bcd58fb75a6c', '2025-08-07 01:37:22.227666+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL),
+	('31ed86cb-c81c-490d-8188-14bccde3ed8c', '2025-08-07 01:37:22.36828+00', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', 'Elles', 'asdsadsa', 'asdsad', '09223232112', 'elle@gmail.com', NULL);
 
 
 --

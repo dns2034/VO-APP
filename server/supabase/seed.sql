@@ -159,7 +159,7 @@ INSERT INTO "public"."products" ("id", "created_at", "name", "description", "ima
 --
 
 INSERT INTO "public"."product_vouchers" ("id", "created_at", "code", "user_id", "product_id", "expiring_at", "status", "is_refundable") VALUES
-	('714a1128-c56f-44ca-b388-ed83da900926', '2025-08-06 09:36:25.181143+00', '29A10476', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', '88771121-ff21-4dc4-88fe-1701c9ce9667', '2025-09-05 09:36:25.181143+00', 'active', 'true');
+	('714a1128-c56f-44ca-b388-ed83da900926', '2025-08-06 09:36:25.181143+00', '29A10476', '5c2b372e-3d02-4f16-9a0b-4bc9491d1d31', '88771121-ff21-4dc4-88fe-1701c9ce9667', '2025-09-05 09:36:25.181143+00', 'active', true);
 
 
 --

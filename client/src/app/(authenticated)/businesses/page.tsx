@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useBusinesses } from "@/hooks/useBusinesses";
 import { Database } from "@/types/supabase";
-import { useUser } from "@/hooks/useUser";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function BusinessesPage() {
   type Business = Database["public"]["Tables"]["businesses"]["Row"];
@@ -23,7 +23,7 @@ export default function BusinessesPage() {
     null
   );
 
-  const { data: user } = useUser();
+  const { user } = useAuthStore();
   const myBusinesses =
     businessesData?.filter((biz) => biz.user_id === user?.id) || [];
 

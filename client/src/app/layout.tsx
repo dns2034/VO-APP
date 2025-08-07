@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,6 +20,8 @@ export const metadata: Metadata = {
     "A virtual office app for managing your booking, referral and rewards.",
 };
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,17 +32,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster
-          closeButton
-          toastOptions={{
-            className: "bg-white",
-            classNames: {
-              closeButton: "text-black bg-gray-200 hover:bg-gray-300",
-              description: "!text-gray-700",
-            },
-          }}
-        />
-        <div className="min-h-screen">{children}</div>
+        <QueryClientProvider client={queryClient}>
+          <Toaster
+            closeButton
+            toastOptions={{
+              className: "bg-white",
+              classNames: {
+                closeButton: "text-black bg-gray-200 hover:bg-gray-300",
+                description: "!text-gray-700",
+              },
+            }}
+          />
+          <div className="min-h-screen">{children}</div>
+        </QueryClientProvider>
       </body>
     </html>
   );

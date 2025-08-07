@@ -12,8 +12,8 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import BusinessesService from "@/services/businesses.service";
 
-// Mock data for businesses
 const businesses = [
   {
     id: 1,

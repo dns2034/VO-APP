@@ -43,8 +43,8 @@ export default function BottomBar() {
         <BarItem href="/profile" label="Profile">
           <Avatar className="size-6">
             <AvatarImage
-              src={user?.app_metadata.avatar_url || "/placeholder.png"}
-              alt={user?.app_metadata.display_name || "User Avatar"}
+              src={user?.user_metadata.profile_pic || "/placeholder.png"}
+              alt={user?.user_metadata.display_name || "User Avatar"}
             />
             <AvatarFallback>
               {"Placeholder Image"

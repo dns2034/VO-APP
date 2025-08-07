@@ -45,6 +45,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useUser } from "@/hooks/useUser";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -64,8 +65,8 @@ const updateUserProfile = async (formValues: z.infer<typeof profileSchema>) => {
 };
 
 export default function ProfilePage() {
+   const { data: user} = useUser();
   const [editing, setEditing] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [dropdownMenuOpen, setDropdownMenuOpen] = useState(false);
   const [avatarUploadDialogVisible, setAvatarUploadDialogVisible] =
     useState(false);
@@ -75,9 +76,9 @@ export default function ProfilePage() {
   // Mock user data (replace with real user data from context or API)
   const profileForm = useForm({
     defaultValues: {
-      name: "test",
-      email: "test@incub8space.com",
-      phone: "+639123456789",
+      name: user?.user_metadata.display_name,
+      email: user?.email,
+      phone: user?.phone,
     },
     resolver: zodResolver(profileSchema),
   });
@@ -136,17 +137,11 @@ export default function ProfilePage() {
                 <Avatar className="h-32 w-32 border-4 border-background shadow-md">
                   <AvatarImage
                     className="object-cover object-center"
-                    src={avatarUrl || "/placeholder.png"}
+                    src={user?.user_metadata.profile_pic || "/placeholder.png"}
                     alt={profileForm.getValues("name")}
                   />
                   <AvatarFallback>
-                    {profileForm
-                      .getValues("name")
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .toUpperCase()
-                      .slice(0, 2)}
+                    User&apos;s avatar
                   </AvatarFallback>
                 </Avatar>
 

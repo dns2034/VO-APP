@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { useUser } from "@/hooks/useUser";
 
 export default function BottomBar() {
+  const { data: user } = useUser();
+  console.log("User in BottomBar:", user);
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background shadow-[0_-2px_4px_rgba(0,0,0,0.1)] px-2 pb-2 pt-2 md:pt-3 md:pb-3">
       <div className="grid grid-cols-5 gap-2 max-w-lg mx-auto">
@@ -22,6 +25,7 @@ export default function BottomBar() {
               className="bg-(--primary) rounded-full shadow-lg border-2 border-primary flex items-center justify-center"
               style={{ width: 60, height: 60, marginTop: -36 }}
             >
+              {" "}
               <BookIcon className="h-7 w-7 text-white" />
             </span>
             {/* Move label below the icon, aligned with other labels */}
@@ -38,7 +42,10 @@ export default function BottomBar() {
         </BarItem>
         <BarItem href="/profile" label="Profile">
           <Avatar className="size-6">
-            <AvatarImage src={"/placeholder.png"} alt={"placeholder"} />
+            <AvatarImage
+              src={user?.app_metadata.avatar_url || "/placeholder.png"}
+              alt={user?.app_metadata.display_name || "User Avatar"}
+            />
             <AvatarFallback>
               {"Placeholder Image"
                 .split(" ")
@@ -147,4 +154,3 @@ function BusinessesIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-

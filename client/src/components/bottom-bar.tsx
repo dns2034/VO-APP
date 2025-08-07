@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { useUser } from "@/hooks/useUser";
 
 export default function BottomBar() {
+  const { data: user } = useUser();
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background shadow-[0_-2px_4px_rgba(0,0,0,0.1)] px-2 pb-2 pt-2 md:pt-3 md:pb-3">
       <div className="grid grid-cols-5 gap-2 max-w-lg mx-auto">
@@ -21,6 +24,7 @@ export default function BottomBar() {
               className="bg-(--primary) rounded-full shadow-lg border-2 border-primary flex items-center justify-center"
               style={{ width: 60, height: 60, marginTop: -36 }}
             >
+              {" "}
               <BookIcon className="h-7 w-7 text-white" />
             </span>
             {/* Move label below the icon, aligned with other labels */}
@@ -36,7 +40,20 @@ export default function BottomBar() {
           <BusinessesIcon className="h-6 w-6" />
         </BarItem>
         <BarItem href="/profile" label="Profile">
-          <ProfileIcon className="h-6 w-6" />
+          <Avatar className="size-6">
+            <AvatarImage
+              src={user?.user_metadata.avatar_url || "/placeholder.png"}
+              alt={user?.user_metadata.display_name || "User Avatar"}
+            />
+            <AvatarFallback>
+              {"Placeholder Image"
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
         </BarItem>
       </div>
     </nav>
@@ -133,23 +150,6 @@ function BusinessesIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <rect x="2" y="7" width="20" height="14" rx="2" />
       <path d="M16 3h-8v4h8V3z" />
-    </svg>
-  );
-}
-
-// Profile icon (user)
-function ProfileIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
     </svg>
   );
 }

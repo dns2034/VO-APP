@@ -1,3 +1,4 @@
+import { type Database } from "@/types/supabase";
 import { createClient } from "@supabase/supabase-js";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -7,4 +8,4 @@ if (!url || !anonKey) {
   throw new Error("Missing Supabase environment variables");
 }
 
-export const supabaseClient = createClient(url, anonKey);
+export const supabaseClient = createClient<Database>(url, anonKey);

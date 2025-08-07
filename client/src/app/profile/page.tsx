@@ -4,7 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BottomBar from "@/components/bottom-bar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Mail, Phone, Save, Edit2, User2, Camera } from "lucide-react";
+import {
+  User,
+  Mail,
+  Phone,
+  Save,
+  Edit2,
+  User2,
+  Camera,
+  Trash,
+  Image as ImageIcon,
+} from "lucide-react";
 import { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +28,15 @@ import {
 } from "@/components/ui/form";
 import { supabaseClient } from "@/services/supabase/client";
 import { useMutation } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import ChangeAvatarDialog from "./components/ChangeAvatarDialog";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -39,7 +58,9 @@ const updateUserProfile = async (formValues: z.infer<typeof profileSchema>) => {
 export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+  const [avatarUploadDialogVisible, setAvatarUploadDialogVisible] =
+    useState(false);
 
   // Mock user data (replace with real user data from context or API)
   const profileForm = useForm({
@@ -78,6 +99,10 @@ export default function ProfilePage() {
     setEditing(false);
   };
 
+  const onRemoveClick = () => {
+    alert("Remove profile picture clicked");
+  };
+
   // const handleLogout = () => {
   //   // Real implementation: logout logic
   //   window.location.href = "/login";
@@ -97,51 +122,66 @@ export default function ProfilePage() {
         </div>
       </header>
       <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
-        <div className="flex flex-col items-center my-4">
+        <div className="flex flex-col items-center">
           <div className="mb-2 relative">
-            <Avatar className="size-20">
-              <AvatarImage
-                src={avatarUrl || "/placeholder.png"}
-                alt={profileForm.getValues("name")}
-              />
-              <AvatarFallback>
-                {profileForm
-                  .getValues("name")
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()
-                  .slice(0, 2)}
-              </AvatarFallback>
-            </Avatar>
+            <div className="relative group mb-6">
+              <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-10 rounded-full transition-all duration-300" />
+              <Avatar className="h-32 w-32 border-4 border-background shadow-md">
+                <AvatarImage
+                  className="object-cover object-center"
+                  src={avatarUrl || "/placeholder.png"}
+                  alt={profileForm.getValues("name")}
+                />
+                <AvatarFallback>
+                  {profileForm
+                    .getValues("name")
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()
+                    .slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
 
-            <button
-              type="button"
-              className="absolute -bottom-1 right-0 bg-white rounded-full border border-border shadow p-2 flex items-center justify-center hover:bg-muted transition"
-              style={{ zIndex: 2 }}
-              onClick={() => fileInputRef.current?.click()}
-              aria-label="Change Photo"
-            >
-              <Camera className="size-4 text-primary" />
-            </button>
+              <DropdownMenu
+                open={dropdownMenuOpen}
+                onOpenChange={setDropdownMenuOpen}
+              >
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="absolute bottom-0 right-0 h-10 w-10 rounded-full shadow-md opacity-90 hover:opacity-100"
+                  >
+                    <Camera className="h-5 w-5" />
+                    <span className="sr-only">Change profile picture</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Profile Picture</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    className="cursor-pointer flex items-center gap-x-2"
+                    onClick={() => setAvatarUploadDialogVisible(true)}
+                  >
+                    <ImageIcon className="size-4" />
+                    Upload photo
+                  </DropdownMenuItem>
+
+                  {1 && (
+                    <DropdownMenuItem
+                      className="cursor-pointer flex items-center gap-x-2"
+                      onClick={() => onRemoveClick()}
+                    >
+                      <Trash className="h-4 w-4" />
+                      Remove
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                  setAvatarUrl(ev.target?.result as string);
-                };
-                reader.readAsDataURL(file);
-              }
-            }}
-          />
         </div>
         <div className="bg-white rounded-lg border border-border p-4">
           <h2 className="font-semibold text-base mb-4 flex items-center gap-2">
@@ -220,7 +260,7 @@ export default function ProfilePage() {
                     disabled={isSavingProfile}
                     onClick={() => {
                       profileForm.reset();
-                      setEditing(false)
+                      setEditing(false);
                     }}
                   >
                     Cancel
@@ -254,6 +294,11 @@ export default function ProfilePage() {
         </div>
       </main>
       <BottomBar />
+
+      <ChangeAvatarDialog
+        open={avatarUploadDialogVisible}
+        onOpenChange={setAvatarUploadDialogVisible}
+      />
     </div>
   );
 }

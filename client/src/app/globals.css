@@ -125,3 +125,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   opacity: 0;
   display: none;
 }
+
+main {
+  @apply mb-[5.5rem];
+}

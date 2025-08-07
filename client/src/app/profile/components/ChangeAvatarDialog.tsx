@@ -12,7 +12,6 @@ import { X, Upload, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { useDropzone } from "react-dropzone";
 import { useState, useCallback } from "react";
-import Image from "next/image";
 import { supabaseClient } from "@/services/supabase/client";
 import { useMutation } from "@tanstack/react-query";
 
@@ -177,7 +176,7 @@ export default function ChangeAvatarDialog({
           {uploadedImage && (
             <div className="flex justify-between items-center border-gray-300 bg-gray-50 p-3 border-dashed rounded-lg border">
               <div className="flex gap-3 w-3/4">
-                <Image
+                <img
                   src={uploadedImage.preview}
                   alt="Uploaded Preview"
                   className="size-14 object-cover rounded-md"

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import BottomBar from "@/components/bottom-bar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Mail, Phone, Save, Edit2, User2 } from "lucide-react";
+import { User, Mail, Phone, Save, Edit2, User2, Camera } from "lucide-react";
 import { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,12 +15,24 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import { supabaseClient } from "@/services/supabase/client";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().optional(),
 });
+
+const updateUserProfile = async (formValues: z.infer<typeof profileSchema>) => {
+  const { data, error } = await supabaseClient.auth.updateUser({
+    data: {
+      display_name: formValues.name,
+    },
+    phone: formValues.phone,
+  });
+
+  return { data, error };
+};
 
 export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
@@ -38,16 +50,18 @@ export default function ProfilePage() {
   });
 
   // Mock handlers (replace with real API calls)
-  const handleSave: SubmitHandler<z.infer<typeof profileSchema>> = (data) => {
-    alert(data);
+  const handleSave: SubmitHandler<z.infer<typeof profileSchema>> = async (
+    data
+  ) => {
+    await updateUserProfile(data);
     setEditing(false);
     // Save logic here
   };
 
-  const handleLogout = () => {
-    // Real implementation: logout logic
-    window.location.href = "/login";
-  };
+  // const handleLogout = () => {
+  //   // Real implementation: logout logic
+  //   window.location.href = "/login";
+  // };
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -63,31 +77,35 @@ export default function ProfilePage() {
         </div>
       </header>
       <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
-        <div className="flex flex-col items-center mb-4 mt-4 relative">
-          <Avatar className="w-20 h-20 mb-2 border-2 border-primary shadow">
-            <AvatarImage
-              src={avatarUrl || "/placeholder.png"}
-              alt={profileForm.getValues("name")}
-            />
-            <AvatarFallback>
-              {profileForm
-                .getValues("name")
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .toUpperCase()
-                .slice(0, 2)}
-            </AvatarFallback>
+        <div className="flex flex-col items-center my-4">
+          <div className="mb-2 relative">
+            <Avatar className="size-20">
+              <AvatarImage
+                src={avatarUrl || "/placeholder.png"}
+                alt={profileForm.getValues("name")}
+              />
+              <AvatarFallback>
+                {profileForm
+                  .getValues("name")
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+
             <button
               type="button"
-              className="absolute bottom-1 right-1 bg-white rounded-full border border-border shadow p-1 flex items-center justify-center hover:bg-muted transition"
+              className="absolute -bottom-1 right-0 bg-white rounded-full border border-border shadow p-2 flex items-center justify-center hover:bg-muted transition"
               style={{ zIndex: 2 }}
               onClick={() => fileInputRef.current?.click()}
               aria-label="Change Photo"
             >
-              <Edit2 className="w-4 h-4 text-primary" />
+              <Camera className="size-4 text-primary" />
             </button>
-          </Avatar>
+          </div>
+
           <input
             ref={fileInputRef}
             type="file"
@@ -144,11 +162,7 @@ export default function ProfilePage() {
                       Email
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        disabled={!editing}
-                        className="w-full"
-                      />
+                      <Input {...field} disabled className="w-full" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -172,37 +186,38 @@ export default function ProfilePage() {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-row gap-2 mt-2">
-                {editing ? (
-                  <>
-                    <Button
-                      type="submit"
-                      className="flex-1 flex items-center gap-1"
-                    >
-                      <Save className="w-4 h-4" /> Save
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => setEditing(false)}
-                    >
-                      Cancel
-                    </Button>
-                  </>
-                ) : (
+              {editing ? (
+                <div className="flex gap-2">
                   <Button
                     type="button"
-                    className="flex-1 flex items-center gap-1"
-                    onClick={() => {
-                      console.log("clicked edit");
-                      setEditing(true);
-                    }}
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => setEditing(false)}
                   >
-                    <Edit2 className="w-4 h-4" /> Edit Profile
+                    Cancel
                   </Button>
-                )}
-              </div>
+                  <Button
+                    disabled={
+                      !profileForm.formState.isValid ||
+                      !profileForm.formState.isDirty
+                    }
+                    type="submit"
+                    className="flex-1 flex items-center gap-1"
+                  >
+                    <Save className="w-4 h-4" /> Save
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  type="button"
+                  className="flex-1 flex items-center gap-1"
+                  onClick={() => {
+                    setEditing(true);
+                  }}
+                >
+                  <Edit2 className="w-4 h-4" /> Edit Profile
+                </Button>
+              )}
             </form>
           </Form>
         </div>

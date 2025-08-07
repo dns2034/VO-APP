@@ -16,6 +16,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { supabaseClient } from "@/services/supabase/client";
+import { useMutation } from "@tanstack/react-query";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -48,6 +49,10 @@ export default function ProfilePage() {
     },
     resolver: zodResolver(profileSchema),
   });
+
+  const {data, error, isPending} = useMutation({
+    mutationFn: updateUserProfile
+  })
 
   // Mock handlers (replace with real API calls)
   const handleSave: SubmitHandler<z.infer<typeof profileSchema>> = async (

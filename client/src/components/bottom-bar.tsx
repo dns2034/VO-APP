@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 export default function BottomBar() {
   return (
@@ -36,7 +37,17 @@ export default function BottomBar() {
           <BusinessesIcon className="h-6 w-6" />
         </BarItem>
         <BarItem href="/profile" label="Profile">
-          <ProfileIcon className="h-6 w-6" />
+          <Avatar className="size-6">
+            <AvatarImage src={"/placeholder.png"} alt={"placeholder"} />
+            <AvatarFallback>
+              {"Placeholder Image"
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
         </BarItem>
       </div>
     </nav>

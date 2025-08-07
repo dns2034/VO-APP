@@ -14,6 +14,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { supabaseClient } from "@/services/supabase/client";
 import { useMutation } from "@tanstack/react-query";
@@ -43,24 +44,38 @@ export default function ProfilePage() {
   // Mock user data (replace with real user data from context or API)
   const profileForm = useForm({
     defaultValues: {
-      name: "John Doe",
-      email: "johndoe@gmail.com",
-      phone: "+1234567890",
+      name: "test",
+      email: "test@incub8space.com",
+      phone: "+639123456789",
     },
     resolver: zodResolver(profileSchema),
   });
 
-  const {data, error, isPending} = useMutation({
-    mutationFn: updateUserProfile
-  })
+  const { mutateAsync: saveProfileMutation, isPending: isSavingProfile } =
+    useMutation({
+      mutationFn: updateUserProfile,
+      onSuccess: (data) => {
+        console.log("Profile updated successfully:", data);
+        profileForm.reset({
+          name:
+            data.data?.user?.user_metadata?.display_name ||
+            profileForm.getValues("name"),
+          email: data.data?.user?.email || profileForm.getValues("email"),
+          phone: data.data?.user?.phone || profileForm.getValues("phone"),
+        });
+        setEditing(false);
+      },
+      onError: (error) => {
+        console.error("Error updating profile:", error);
+        profileForm.reset();
+      },
+    });
 
-  // Mock handlers (replace with real API calls)
   const handleSave: SubmitHandler<z.infer<typeof profileSchema>> = async (
     data
   ) => {
-    await updateUserProfile(data);
+    await saveProfileMutation(data);
     setEditing(false);
-    // Save logic here
   };
 
   // const handleLogout = () => {
@@ -154,6 +169,11 @@ export default function ProfilePage() {
                         className="w-full"
                       />
                     </FormControl>
+                    {profileForm.formState.errors.name && (
+                      <FormMessage className="text-red-500 text-xs">
+                        {profileForm.formState.errors.name.message}
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
               />
@@ -197,19 +217,25 @@ export default function ProfilePage() {
                     type="button"
                     variant="outline"
                     className="flex-1"
-                    onClick={() => setEditing(false)}
+                    disabled={isSavingProfile}
+                    onClick={() => {
+                      profileForm.reset();
+                      setEditing(false)
+                    }}
                   >
                     Cancel
                   </Button>
                   <Button
                     disabled={
                       !profileForm.formState.isValid ||
-                      !profileForm.formState.isDirty
+                      !profileForm.formState.isDirty ||
+                      isSavingProfile
                     }
                     type="submit"
                     className="flex-1 flex items-center gap-1"
                   >
-                    <Save className="w-4 h-4" /> Save
+                    <Save className="w-4 h-4" />{" "}
+                    {isSavingProfile ? "Saving..." : "Save"}
                   </Button>
                 </div>
               ) : (

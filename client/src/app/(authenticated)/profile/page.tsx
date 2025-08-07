@@ -46,8 +46,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -87,7 +87,7 @@ const deleteAvatar = async ({ avatarUrl }: { avatarUrl: string }) => {
 };
 
 export default function ProfilePage() {
-  const { data: user } = useUser();
+  const { user } = useAuthStore();
   const [editing, setEditing] = useState(false);
   const [dropdownMenuOpen, setDropdownMenuOpen] = useState(false);
   const [avatarUploadDialogVisible, setAvatarUploadDialogVisible] =
@@ -95,9 +95,6 @@ export default function ProfilePage() {
   const [removeAvatarDialogVisible, setRemoveAvatarDialogVisible] =
     useState(false);
 
-  console.log(user, "User in ProfilePage");
-
-  // Mock user data (replace with real user data from context or API)
   const profileForm = useForm({
     defaultValues: {
       name: user?.user_metadata.display_name,

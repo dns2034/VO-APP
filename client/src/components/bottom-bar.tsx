@@ -4,7 +4,6 @@ import { useUser } from "@/hooks/useUser";
 
 export default function BottomBar() {
   const { data: user } = useUser();
-  console.log("User in BottomBar:", user);
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background shadow-[0_-2px_4px_rgba(0,0,0,0.1)] px-2 pb-2 pt-2 md:pt-3 md:pb-3">
       <div className="grid grid-cols-5 gap-2 max-w-lg mx-auto">
@@ -43,7 +42,7 @@ export default function BottomBar() {
         <BarItem href="/profile" label="Profile">
           <Avatar className="size-6">
             <AvatarImage
-              src={user?.user_metadata.profile_pic || "/placeholder.png"}
+              src={user?.user_metadata.avatar_url || "/placeholder.png"}
               alt={user?.user_metadata.display_name || "User Avatar"}
             />
             <AvatarFallback>

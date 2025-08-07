@@ -14,6 +14,7 @@ import {
   Camera,
   Trash,
   Image as ImageIcon,
+  Loader,
 } from "lucide-react";
 import { z } from "zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -46,6 +47,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useUser } from "@/hooks/useUser";
+import { toast } from "sonner";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -64,14 +66,36 @@ const updateUserProfile = async (formValues: z.infer<typeof profileSchema>) => {
   return { data, error };
 };
 
+const deleteAvatar = async ({ avatarUrl }: { avatarUrl: string }) => {
+  const { error: metaDataError } = await supabaseClient.auth.updateUser({
+    data: { avatar_url: null },
+  });
+
+  if (metaDataError) throw new Error(metaDataError.message);
+
+  const urlParts = new URL(avatarUrl);
+  const avatarPath = urlParts.pathname.replace(
+    "/storage/v1/object/public/avatars/",
+    ""
+  );
+
+  const { error: storageError } = await supabaseClient.storage
+    .from("avatars")
+    .remove([avatarPath]);
+
+  if (storageError) throw new Error(storageError.message);
+};
+
 export default function ProfilePage() {
-   const { data: user} = useUser();
+  const { data: user } = useUser();
   const [editing, setEditing] = useState(false);
   const [dropdownMenuOpen, setDropdownMenuOpen] = useState(false);
   const [avatarUploadDialogVisible, setAvatarUploadDialogVisible] =
     useState(false);
   const [removeAvatarDialogVisible, setRemoveAvatarDialogVisible] =
     useState(false);
+
+  console.log(user, "User in ProfilePage");
 
   // Mock user data (replace with real user data from context or API)
   const profileForm = useForm({
@@ -83,30 +107,47 @@ export default function ProfilePage() {
     resolver: zodResolver(profileSchema),
   });
 
-  const { mutateAsync: saveProfileMutation, isPending: isSavingProfile } =
-    useMutation({
-      mutationFn: updateUserProfile,
-      onSuccess: (data) => {
-        console.log("Profile updated successfully:", data);
-        profileForm.reset({
-          name:
-            data.data?.user?.user_metadata?.display_name ||
-            profileForm.getValues("name"),
-          email: data.data?.user?.email || profileForm.getValues("email"),
-          phone: data.data?.user?.phone || profileForm.getValues("phone"),
-        });
-        setEditing(false);
-      },
-      onError: (error) => {
-        console.error("Error updating profile:", error);
-        profileForm.reset();
-      },
-    });
+  const {
+    mutateAsync: saveProfileMutateAsync,
+    isPending: saveProfileIsPending,
+  } = useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: (data) => {
+      console.log("Profile updated successfully:", data);
+      profileForm.reset({
+        name:
+          data.data?.user?.user_metadata?.display_name ||
+          profileForm.getValues("name"),
+        email: data.data?.user?.email || profileForm.getValues("email"),
+        phone: data.data?.user?.phone || profileForm.getValues("phone"),
+      });
+      setEditing(false);
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+      profileForm.reset();
+    },
+  });
+
+  const {
+    mutateAsync: deleteAvatarMutateAsync,
+    isPending: deleteAvatarIsPending,
+  } = useMutation({
+    mutationFn: deleteAvatar,
+    onSuccess: () => {
+      setRemoveAvatarDialogVisible(false);
+      toast.success("Avatar deleted successfully");
+    },
+    onError: (error) => {
+      console.error("Error deleting avatar:", error);
+      toast.error("Failed to delete avatar");
+    },
+  });
 
   const handleSave: SubmitHandler<z.infer<typeof profileSchema>> = async (
     data
   ) => {
-    await saveProfileMutation(data);
+    await saveProfileMutateAsync(data);
     setEditing(false);
   };
 
@@ -137,12 +178,10 @@ export default function ProfilePage() {
                 <Avatar className="h-32 w-32 border-4 border-background shadow-md">
                   <AvatarImage
                     className="object-cover object-center"
-                    src={user?.user_metadata.profile_pic || "/placeholder.png"}
+                    src={user?.user_metadata.avatar_url || "/placeholder.png"}
                     alt={profileForm.getValues("name")}
                   />
-                  <AvatarFallback>
-                    User&apos;s avatar
-                  </AvatarFallback>
+                  <AvatarFallback>User&apos;s avatar</AvatarFallback>
                 </Avatar>
 
                 <DropdownMenu
@@ -171,11 +210,10 @@ export default function ProfilePage() {
                       Upload photo
                     </DropdownMenuItem>
 
-                    {1 && (
+                    {user?.user_metadata.avatar_url && (
                       <DropdownMenuItem
                         className="cursor-pointer flex items-center gap-x-2"
                         onClick={() => {
-                          alert("clicked remove");
                           setRemoveAvatarDialogVisible(true);
                         }}
                       >
@@ -262,7 +300,7 @@ export default function ProfilePage() {
                       type="button"
                       variant="outline"
                       className="flex-1"
-                      disabled={isSavingProfile}
+                      disabled={saveProfileIsPending}
                       onClick={() => {
                         profileForm.reset();
                         setEditing(false);
@@ -274,13 +312,13 @@ export default function ProfilePage() {
                       disabled={
                         !profileForm.formState.isValid ||
                         !profileForm.formState.isDirty ||
-                        isSavingProfile
+                        saveProfileIsPending
                       }
                       type="submit"
                       className="flex-1 flex items-center gap-1"
                     >
                       <Save className="w-4 h-4" />{" "}
-                      {isSavingProfile ? "Saving..." : "Save"}
+                      {saveProfileIsPending ? "Saving..." : "Save"}
                     </Button>
                   </div>
                 ) : (
@@ -308,7 +346,7 @@ export default function ProfilePage() {
 
       <AlertDialog
         open={removeAvatarDialogVisible}
-        onOpenChange={(open) => !open && setRemoveAvatarDialogVisible(false)}
+        onOpenChange={(open) => !open && !deleteAvatarIsPending && setRemoveAvatarDialogVisible(false)}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -321,6 +359,7 @@ export default function ProfilePage() {
 
           <AlertDialogFooter className="flex flex-row gap-3 mt-4">
             <Button
+              disabled={deleteAvatarIsPending}
               variant={"outline"}
               onClick={() => setRemoveAvatarDialogVisible(false)}
               className="mt-0 flex-1"
@@ -328,13 +367,25 @@ export default function ProfilePage() {
               Cancel
             </Button>
             <Button
-            className="mt-0 flex-1"
-              onClick={() => {
-                alert("Remove profile picture confirmed");
-                setRemoveAvatarDialogVisible(false);
+              disabled={deleteAvatarIsPending}
+              className="mt-0 flex-1"
+              onClick={async () => {
+                await deleteAvatarMutateAsync({
+                  avatarUrl: user?.user_metadata.avatar_url || "",
+                });
               }}
             >
-              Delete
+              {deleteAvatarIsPending ? (
+                <span className="flex items-center gap-2">
+                  <Loader className="animate-spin h-4 w-4" />
+                  Deleting
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Trash className="h-4 w-4" />
+                  Delete Avatar
+                </span>
+              )}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

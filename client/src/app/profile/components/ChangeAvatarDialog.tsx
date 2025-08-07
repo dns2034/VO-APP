@@ -22,10 +22,10 @@ type TChangeAvatarDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-const getAvatarUrl = (profilePicPath: string) => {
+const getAvatarUrl = (avatarPath: string) => {
   const { data } = supabaseClient.storage
     .from("avatars")
-    .getPublicUrl(profilePicPath);
+    .getPublicUrl(avatarPath);
 
   if (!data) throw new Error("Error fetching avatar URL");
 
@@ -53,12 +53,12 @@ const uploadAvatar = async ({
 };
 
 const updateAvatar = async ({
-  profilePicPath,
+  avatarPath,
 }: {
-  profilePicPath: string | null;
+  avatarPath: string | null;
 }) => {
   const { error } = await supabaseClient.auth.updateUser({
-    data: { profile_pic: profilePicPath },
+    data: { avatar_url: avatarPath },
   });
 
   if (error) throw new Error(error.message);
@@ -117,7 +117,7 @@ export default function ChangeAvatarDialog({
     if (!uploadedImage) return;
 
     // same name for all avatar uploads to overwrite the existing one [just pass the id of the user]
-    const avatarPath = `ID-HERE/profile_pic`;
+    const avatarPath = `ID-HERE`;
 
     await uploadAvatarMutateAsync(
       { path: avatarPath, file: uploadedImage.file },
@@ -130,7 +130,7 @@ export default function ChangeAvatarDialog({
 
           await updateAvatarMutateAsync(
             {
-              profilePicPath: freshUrl,
+              avatarPath: freshUrl,
             },
             {
               onSuccess: () => {
@@ -212,7 +212,7 @@ export default function ChangeAvatarDialog({
 
             <p className="mt-3 mb-0 text-gray-700 text-center hidden md:block">
               <span className="">Drag & drop your avatar here or</span> {""}
-              <span className="text-violet-600 font-bold">Browse</span>
+              <span className="text-primary font-bold">Browse</span>
             </p>
           </div>
           <div className="flex items-center justify-between w-full">

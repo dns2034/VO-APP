@@ -28,11 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <QueryClientProvider client={queryClient}>
           <Toaster
             closeButton
             toastOptions={{
@@ -44,8 +44,8 @@ export default function RootLayout({
             }}
           />
           <div className="min-h-screen">{children}</div>
-        </body>
-      </html>
-    </QueryClientProvider>
+        </QueryClientProvider>
+      </body>
+    </html>
   );
 }

@@ -18,7 +18,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export default function BusinessesPage() {
   type Business = Database["public"]["Tables"]["businesses"]["Row"];
-  const { data: businessesData, isLoading, error } = useBusinesses();
+  const { data: businessesData } = useBusinesses();
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(
     null
   );

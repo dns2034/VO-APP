@@ -71,36 +71,36 @@ export type Database = {
           booked_by: string;
           created_at: string;
           date: string;
-          end_time: string;
+          end_time: string | null;
           id: string;
           product_voucher_id: string | null;
           remarks: string | null;
           space_unit_id: string;
-          start_time: string;
+          start_time: string | null;
           status: Database["public"]["Enums"]["booking_status"];
         };
         Insert: {
           booked_by?: string;
           created_at?: string;
           date: string;
-          end_time: string;
+          end_time?: string | null;
           id?: string;
           product_voucher_id?: string | null;
           remarks?: string | null;
           space_unit_id: string;
-          start_time: string;
+          start_time?: string | null;
           status?: Database["public"]["Enums"]["booking_status"];
         };
         Update: {
           booked_by?: string;
           created_at?: string;
           date?: string;
-          end_time?: string;
+          end_time?: string | null;
           id?: string;
           product_voucher_id?: string | null;
           remarks?: string | null;
           space_unit_id?: string;
-          start_time?: string;
+          start_time?: string | null;
           status?: Database["public"]["Enums"]["booking_status"];
         };
         Relationships: [
@@ -292,7 +292,7 @@ export type Database = {
           created_at?: string;
           expiring_at?: string | null;
           id?: string;
-          is_refundable: boolean;
+          is_refundable?: boolean;
           product_id: string;
           status?: Database["public"]["Enums"]["voucher_status"];
           updated_at?: string | null;
@@ -578,19 +578,30 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
+          organization_id: string;
           subscriptions_type: Database["public"]["Enums"]["subscriptions_type"];
         };
         Insert: {
           created_at?: string;
           id?: string;
+          organization_id: string;
           subscriptions_type: Database["public"]["Enums"]["subscriptions_type"];
         };
         Update: {
           created_at?: string;
           id?: string;
+          organization_id?: string;
           subscriptions_type?: Database["public"]["Enums"]["subscriptions_type"];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       user_organizations: {
         Row: {

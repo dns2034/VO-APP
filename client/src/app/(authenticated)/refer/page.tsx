@@ -77,6 +77,9 @@ export default function ReferPage() {
             </div>
             <div className="bg-white rounded-lg border border-border p-4 text-center mb-4">
               <h2 className="font-semibold text-base mb-2">
+                Invite, earn exclusive spaces!
+              </h2>
+              <h2 className="font-semibold text-base mb-2">
                 Invite your friends!
               </h2>
               <p className="text-sm text-muted-foreground mb-4">
@@ -209,6 +212,19 @@ export default function ReferPage() {
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
+            </div>
+            <div className="bg-white rounded-lg border border-border p-4 text-center mb-4">
+              <h2 className="font-semibold text-base mb-2">
+                Discover more rewards!
+              </h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Unlock additional benefits by engaging with our platform.
+              </p>
+              <img
+                src="/referral-banner.png"
+                alt="Referral Banner"
+                className="w-full rounded-lg mb-4"
+              />
             </div>
           </TabsContent>
           <TabsContent value="my-referrals">

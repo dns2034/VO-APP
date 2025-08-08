@@ -17,12 +17,10 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import {
-  User2,
   Camera,
   ImageIcon,
   Trash,
   Loader,
-  Edit2,
   Mail,
   Phone,
   Save,
@@ -151,7 +149,7 @@ export default function EditProfilePage() {
       <div className="flex flex-col min-h-screen bg-background">
         <header className="flex flex-row items-center bg-white text-gray-900 p-4">
           <div className="grid grid-cols-12 w-full">
-            <Link href={'/profile'} className="col-1">
+            <Link href={"/profile"} className="col-1">
               <ArrowLeft />
             </Link>
             <div className="col-5 col-span-auto">

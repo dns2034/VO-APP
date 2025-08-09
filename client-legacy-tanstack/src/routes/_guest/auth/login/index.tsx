@@ -59,6 +59,9 @@ function RouteComponent() {
 
   const onSubmit: SubmitHandler<LoginSchema> = async (credentials) => {
     console.log("Login credentials:", credentials);
+    toast.success("Login", {
+      description: "Login functionality is not implemented yet.",
+    });
   };
 
   async function handleMagicLinkSubmit(values: MagicLinkSchema) {
@@ -168,80 +171,79 @@ function RouteComponent() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Enter your email"
-                            className="bg-transparent"
-                          />
+                          <Input {...field} placeholder="Enter your email" />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-xs" />
                       </FormItem>
                     )}
                   />
 
-                  <div className="relative">
-                    <FormField
-                      control={loginForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="flex justify-between items-center">
-                            <FormLabel>Password</FormLabel>
-                            <div className="text-right space-y-0 mt-0 pb-2">
-                              <Link
-                                to="/"
-                                className="text-xs text-purple-600 hover:underline"
-                              >
-                                Forgot Password?
-                              </Link>
-                            </div>
+                  <FormField
+                    control={loginForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-between items-center">
+                          <FormLabel>Password</FormLabel>
+                          <div className="text-right space-y-0 mt-0 pb-2">
+                            <Link
+                              to="/"
+                              className="text-xs text-purple-600 hover:underline"
+                            >
+                              Forgot Password?
+                            </Link>
                           </div>
-                          <FormControl>
+                        </div>
+                        <FormControl>
+                          <div className="relative">
                             <Input
                               {...field}
                               type={showPassword ? "password" : "text"}
                               placeholder="Enter your password"
-                              className="bg-transparent"
                             />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-0 top-5 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={() => setShowPassword(!showPassword)}
-                            aria-label={
-                              showPassword ? "Hide password" : "Show password"
-                            }
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <Eye className="h-4 w-4 text-muted-foreground" />
-                            )}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{showPassword ? "show" : "hide"}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    className="absolute right-0 top-1/2 -translate-y-1/2 h-full px-3 py-2 hover:bg-transparent"
+                                    onClick={() =>
+                                      setShowPassword(!showPassword)
+                                    }
+                                    aria-label={
+                                      showPassword
+                                        ? "Hide password"
+                                        : "Show password"
+                                    }
+                                  >
+                                    {showPassword ? (
+                                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                                    ) : (
+                                      <Eye className="h-4 w-4 text-muted-foreground" />
+                                    )}
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{showPassword ? "show" : "hide"}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+                        </FormControl>
+
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
 
                   <Button
                     type="submit"
                     className="w-full bg-[#7643ea] hover:bg-[#5f35c6]"
                     disabled={
                       loginForm.formState.isSubmitting ||
-                      loginForm.getValues("email").length === 0 ||
-                      loginForm.getValues("password").length === 0
+                      !loginForm.formState.isValid
                     }
                   >
                     {loginForm.formState.isSubmitting ? (

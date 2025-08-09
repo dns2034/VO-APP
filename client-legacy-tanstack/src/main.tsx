@@ -6,6 +6,7 @@ import ReactDOM from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
+import { Toaster } from "sonner";
 import reportWebVitals from "./reportWebVitals.ts";
 
 // Create a new router instance
@@ -34,6 +35,7 @@ if (rootElement && !rootElement.innerHTML) {
 	root.render(
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
+				<Toaster richColors closeButton />
 				<RouterProvider router={router} />
 			</QueryClientProvider>
 		</StrictMode>,

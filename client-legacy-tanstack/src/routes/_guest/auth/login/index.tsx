@@ -69,28 +69,24 @@ function RouteComponent() {
   };
 
   async function handleMagicLinkSubmit(values: MagicLinkSchema) {
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: values.email,
-        options: {
-          // set this to false if you do not want the user to be automatically signed up
-          shouldCreateUser: false,
-          emailRedirectTo: window.location.origin,
-        },
-      });
+    const { error } = await supabase.auth.signInWithOtp({
+      email: values.email,
+      options: {
+        // set this to false if you do not want the user to be automatically signed up
+        shouldCreateUser: false,
+        emailRedirectTo: window.location.origin,
+      },
+    });
 
-      if (error) {
-        toast.error(error.name, {
-          description: error.message,
-        });
-      }
-
-      toast.success("Log In", {
-        description: "We have sent the magic link, please check you inbox.",
+    if (error) {
+      toast.error("Can't send magic link", {
+        description: error.message,
       });
-    } catch {
-      toast.error("Login", { description: "Something went wrong!" });
     }
+
+    toast.success("Magic link sent!", {
+      description: "We have sent the magic link, please check your inbox.",
+    });
   }
 
   return (

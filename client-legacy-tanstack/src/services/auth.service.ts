@@ -7,3 +7,9 @@ export const login = async (data: LoginSchema) => {
     password: data.password,
   });
 };
+
+export const sendPasswordResetEmail = async (email: string) => {
+  return await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password`,
+  });
+};

@@ -91,6 +91,7 @@ function RouteComponent() {
 
   return (
     <div className="min-h-screen flex items-center w-full h-full">
+      {/* left panel */}
       <BackgroundGradientAnimation containerClassName="hidden lg:block text-white">
         <div className="h-full min-h-screen flex flex-col items-center justify-center">
           <div className="w-full h-24 rounded-full flex flex-shrink-0 items-center justify-center mb-8 backdrop-blur-sm">
@@ -187,7 +188,7 @@ function RouteComponent() {
                           <FormLabel>Password</FormLabel>
                           <div className="text-right space-y-0 mt-0 pb-2">
                             <Link
-                              to="/"
+                              to="/auth/forgot-password"
                               className="text-xs text-purple-600 hover:underline"
                             >
                               Forgot Password?

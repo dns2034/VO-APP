@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuestAuthLoginIndexRouteImport } from './routes/_guest/auth/login/index'
+import { Route as GuestAuthForgotPasswordIndexRouteImport } from './routes/_guest/auth/forgot-password/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,40 @@ const GuestAuthLoginIndexRoute = GuestAuthLoginIndexRouteImport.update({
   path: '/auth/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuestAuthForgotPasswordIndexRoute =
+  GuestAuthForgotPasswordIndexRouteImport.update({
+    id: '/_guest/auth/forgot-password/',
+    path: '/auth/forgot-password/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_guest/auth/forgot-password/': typeof GuestAuthForgotPasswordIndexRoute
   '/_guest/auth/login/': typeof GuestAuthLoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login'
+  fullPaths: '/' | '/auth/forgot-password' | '/auth/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login'
-  id: '__root__' | '/' | '/_guest/auth/login/'
+  to: '/' | '/auth/forgot-password' | '/auth/login'
+  id: '__root__' | '/' | '/_guest/auth/forgot-password/' | '/_guest/auth/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GuestAuthForgotPasswordIndexRoute: typeof GuestAuthForgotPasswordIndexRoute
   GuestAuthLoginIndexRoute: typeof GuestAuthLoginIndexRoute
 }
 
@@ -65,11 +76,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestAuthLoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_guest/auth/forgot-password/': {
+      id: '/_guest/auth/forgot-password/'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof GuestAuthForgotPasswordIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GuestAuthForgotPasswordIndexRoute: GuestAuthForgotPasswordIndexRoute,
   GuestAuthLoginIndexRoute: GuestAuthLoginIndexRoute,
 }
 export const routeTree = rootRouteImport

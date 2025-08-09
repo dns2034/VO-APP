@@ -37,6 +37,7 @@ import {
   type MagicLinkSchema,
   requestValidator,
 } from "@/lib/zod-schemas";
+import { login } from "@/services/auth.service";
 
 export const Route = createFileRoute("/_guest/auth/login/")({
   component: RouteComponent,
@@ -58,10 +59,13 @@ function RouteComponent() {
   });
 
   const onSubmit: SubmitHandler<LoginSchema> = async (credentials) => {
-    console.log("Login credentials:", credentials);
-    toast.success("Login", {
-      description: "Login functionality is not implemented yet.",
-    });
+    const { error } = await login(credentials);
+
+    if (error) {
+      toast.error("Can't sign you in", {
+        description: error.message,
+      });
+    }
   };
 
   async function handleMagicLinkSubmit(values: MagicLinkSchema) {
@@ -303,7 +307,7 @@ function RouteComponent() {
                     className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-500"
                     disabled={
                       magicLinkForm.formState.isSubmitting ||
-                      magicLinkForm.getValues("email").length === 0
+                      !magicLinkForm.formState.isValid
                     }
                   >
                     {magicLinkForm.formState.isSubmitting ? (

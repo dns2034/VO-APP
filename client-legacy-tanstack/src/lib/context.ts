@@ -1,11 +1,12 @@
 import { QueryClient } from "@tanstack/react-query";
-import { authStore as auth } from "@/store/auth.store";
+import { authStore} from "@/store/auth.store";
 
 const queryClient = new QueryClient();
 
 const context = {
   queryClient,
-  auth,
+  authStore,
 };
 
+export type AppContext = typeof context;
 export default context;

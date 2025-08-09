@@ -1,15 +1,12 @@
 import { create } from "zustand";
 import type { User } from "@/types";
 
-type State = {
+type AuthStore = {
   user: undefined | null | User;
-};
-
-type Actions = {
   setUser: (user: User | null | undefined) => void;
 };
 
-export const authStore = create<State & Actions>((set) => ({
+export const authStore = create<AuthStore>((set) => ({
   user: undefined,
   setUser: (user) => set(() => ({ user })),
 }));

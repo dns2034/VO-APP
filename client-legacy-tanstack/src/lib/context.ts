@@ -8,5 +8,5 @@ const context = {
   authStore,
 };
 
-export type AppContext = typeof context;
+export type AppContext = typeof context
 export default context;

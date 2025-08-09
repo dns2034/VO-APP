@@ -13,3 +13,7 @@ export const sendPasswordResetEmail = async (email: string) => {
     redirectTo: `${window.location.origin}/reset-password`,
   });
 };
+
+export const logout = async () => {
+  return await supabase.auth.signOut({ scope: "local" });
+};

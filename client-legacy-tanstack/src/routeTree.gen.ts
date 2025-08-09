@@ -9,59 +9,102 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as GuestRouteRouteImport } from './routes/_guest/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuestAuthLoginIndexRouteImport } from './routes/_guest/auth/login/index'
 import { Route as GuestAuthForgotPasswordIndexRouteImport } from './routes/_guest/auth/forgot-password/index'
+import { Route as AuthenticatedClientBookIndexRouteImport } from './routes/_authenticated/client/book/index'
 
+const GuestRouteRoute = GuestRouteRouteImport.update({
+  id: '/_guest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuestAuthLoginIndexRoute = GuestAuthLoginIndexRouteImport.update({
-  id: '/_guest/auth/login/',
+  id: '/auth/login/',
   path: '/auth/login/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => GuestRouteRoute,
 } as any)
 const GuestAuthForgotPasswordIndexRoute =
   GuestAuthForgotPasswordIndexRouteImport.update({
-    id: '/_guest/auth/forgot-password/',
+    id: '/auth/forgot-password/',
     path: '/auth/forgot-password/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => GuestRouteRoute,
+  } as any)
+const AuthenticatedClientBookIndexRoute =
+  AuthenticatedClientBookIndexRouteImport.update({
+    id: '/client/book/',
+    path: '/client/book/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/client/book': typeof AuthenticatedClientBookIndexRoute
   '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/client/book': typeof AuthenticatedClientBookIndexRoute
   '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_guest': typeof GuestRouteRouteWithChildren
+  '/_authenticated/client/book/': typeof AuthenticatedClientBookIndexRoute
   '/_guest/auth/forgot-password/': typeof GuestAuthForgotPasswordIndexRoute
   '/_guest/auth/login/': typeof GuestAuthLoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/forgot-password' | '/auth/login'
+  fullPaths: '/' | '/client/book' | '/auth/forgot-password' | '/auth/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/forgot-password' | '/auth/login'
-  id: '__root__' | '/' | '/_guest/auth/forgot-password/' | '/_guest/auth/login/'
+  to: '/' | '/client/book' | '/auth/forgot-password' | '/auth/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/_guest'
+    | '/_authenticated/client/book/'
+    | '/_guest/auth/forgot-password/'
+    | '/_guest/auth/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  GuestAuthForgotPasswordIndexRoute: typeof GuestAuthForgotPasswordIndexRoute
-  GuestAuthLoginIndexRoute: typeof GuestAuthLoginIndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  GuestRouteRoute: typeof GuestRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_guest': {
+      id: '/_guest'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof GuestRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -74,22 +117,54 @@ declare module '@tanstack/react-router' {
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof GuestAuthLoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof GuestRouteRoute
     }
     '/_guest/auth/forgot-password/': {
       id: '/_guest/auth/forgot-password/'
       path: '/auth/forgot-password'
       fullPath: '/auth/forgot-password'
       preLoaderRoute: typeof GuestAuthForgotPasswordIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof GuestRouteRoute
+    }
+    '/_authenticated/client/book/': {
+      id: '/_authenticated/client/book/'
+      path: '/client/book'
+      fullPath: '/client/book'
+      preLoaderRoute: typeof AuthenticatedClientBookIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedClientBookIndexRoute: typeof AuthenticatedClientBookIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedClientBookIndexRoute: AuthenticatedClientBookIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface GuestRouteRouteChildren {
+  GuestAuthForgotPasswordIndexRoute: typeof GuestAuthForgotPasswordIndexRoute
+  GuestAuthLoginIndexRoute: typeof GuestAuthLoginIndexRoute
+}
+
+const GuestRouteRouteChildren: GuestRouteRouteChildren = {
   GuestAuthForgotPasswordIndexRoute: GuestAuthForgotPasswordIndexRoute,
   GuestAuthLoginIndexRoute: GuestAuthLoginIndexRoute,
+}
+
+const GuestRouteRouteWithChildren = GuestRouteRoute._addFileChildren(
+  GuestRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  GuestRouteRoute: GuestRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

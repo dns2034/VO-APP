@@ -1,14 +1,17 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import Header from '../components/Header'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <Header />
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
+	component: () => (
+		<>
+			<Outlet />
+			{import.meta.env.DEV && (
+				<>
+					<ReactQueryDevtools position="right" />
+					<TanStackRouterDevtools position="bottom-left"/>
+				</>
+			)}
+		</>
+	),
+});

@@ -1,5 +1,5 @@
 {
-  "projectName": "client-react",
+  "projectName": "client-legacy-tanstack",
   "mode": "file-router",
   "typescript": true,
   "tailwind": true,

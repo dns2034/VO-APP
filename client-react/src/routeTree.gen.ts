@@ -9,9 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as GuestRouteRouteImport } from './routes/_guest/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRewardsIndexRouteImport } from './routes/_authenticated/rewards/index'
-import { Route as AuthenticatedResetPasswordIndexRouteImport } from './routes/_authenticated/reset-password/index'
 import { Route as AuthenticatedReferIndexRouteImport } from './routes/_authenticated/refer/index'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile/index'
 import { Route as AuthenticatedBusinessesIndexRouteImport } from './routes/_authenticated/businesses/index'
@@ -19,6 +20,14 @@ import { Route as AuthenticatedBookIndexRouteImport } from './routes/_authentica
 import { Route as GuestAuthLoginIndexRouteImport } from './routes/_guest/auth/login/index'
 import { Route as GuestAuthForgotPasswordIndexRouteImport } from './routes/_guest/auth/forgot-password/index'
 
+const GuestRouteRoute = GuestRouteRouteImport.update({
+  id: '/_guest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -26,48 +35,42 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRewardsIndexRoute =
   AuthenticatedRewardsIndexRouteImport.update({
-    id: '/_authenticated/rewards/',
+    id: '/rewards/',
     path: '/rewards/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AuthenticatedResetPasswordIndexRoute =
-  AuthenticatedResetPasswordIndexRouteImport.update({
-    id: '/_authenticated/reset-password/',
-    path: '/reset-password/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedReferIndexRoute = AuthenticatedReferIndexRouteImport.update({
-  id: '/_authenticated/refer/',
+  id: '/refer/',
   path: '/refer/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedProfileIndexRoute =
   AuthenticatedProfileIndexRouteImport.update({
-    id: '/_authenticated/profile/',
+    id: '/profile/',
     path: '/profile/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBusinessesIndexRoute =
   AuthenticatedBusinessesIndexRouteImport.update({
-    id: '/_authenticated/businesses/',
+    id: '/businesses/',
     path: '/businesses/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBookIndexRoute = AuthenticatedBookIndexRouteImport.update({
-  id: '/_authenticated/book/',
+  id: '/book/',
   path: '/book/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const GuestAuthLoginIndexRoute = GuestAuthLoginIndexRouteImport.update({
-  id: '/_guest/auth/login/',
+  id: '/auth/login/',
   path: '/auth/login/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => GuestRouteRoute,
 } as any)
 const GuestAuthForgotPasswordIndexRoute =
   GuestAuthForgotPasswordIndexRouteImport.update({
-    id: '/_guest/auth/forgot-password/',
+    id: '/auth/forgot-password/',
     path: '/auth/forgot-password/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => GuestRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -76,7 +79,6 @@ export interface FileRoutesByFullPath {
   '/businesses': typeof AuthenticatedBusinessesIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/refer': typeof AuthenticatedReferIndexRoute
-  '/reset-password': typeof AuthenticatedResetPasswordIndexRoute
   '/rewards': typeof AuthenticatedRewardsIndexRoute
   '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
@@ -87,7 +89,6 @@ export interface FileRoutesByTo {
   '/businesses': typeof AuthenticatedBusinessesIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/refer': typeof AuthenticatedReferIndexRoute
-  '/reset-password': typeof AuthenticatedResetPasswordIndexRoute
   '/rewards': typeof AuthenticatedRewardsIndexRoute
   '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
@@ -95,11 +96,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_guest': typeof GuestRouteRouteWithChildren
   '/_authenticated/book/': typeof AuthenticatedBookIndexRoute
   '/_authenticated/businesses/': typeof AuthenticatedBusinessesIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/_authenticated/refer/': typeof AuthenticatedReferIndexRoute
-  '/_authenticated/reset-password/': typeof AuthenticatedResetPasswordIndexRoute
   '/_authenticated/rewards/': typeof AuthenticatedRewardsIndexRoute
   '/_guest/auth/forgot-password/': typeof GuestAuthForgotPasswordIndexRoute
   '/_guest/auth/login/': typeof GuestAuthLoginIndexRoute
@@ -112,7 +114,6 @@ export interface FileRouteTypes {
     | '/businesses'
     | '/profile'
     | '/refer'
-    | '/reset-password'
     | '/rewards'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -123,18 +124,18 @@ export interface FileRouteTypes {
     | '/businesses'
     | '/profile'
     | '/refer'
-    | '/reset-password'
     | '/rewards'
     | '/auth/forgot-password'
     | '/auth/login'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/_guest'
     | '/_authenticated/book/'
     | '/_authenticated/businesses/'
     | '/_authenticated/profile/'
     | '/_authenticated/refer/'
-    | '/_authenticated/reset-password/'
     | '/_authenticated/rewards/'
     | '/_guest/auth/forgot-password/'
     | '/_guest/auth/login/'
@@ -142,18 +143,26 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedBookIndexRoute: typeof AuthenticatedBookIndexRoute
-  AuthenticatedBusinessesIndexRoute: typeof AuthenticatedBusinessesIndexRoute
-  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
-  AuthenticatedReferIndexRoute: typeof AuthenticatedReferIndexRoute
-  AuthenticatedResetPasswordIndexRoute: typeof AuthenticatedResetPasswordIndexRoute
-  AuthenticatedRewardsIndexRoute: typeof AuthenticatedRewardsIndexRoute
-  GuestAuthForgotPasswordIndexRoute: typeof GuestAuthForgotPasswordIndexRoute
-  GuestAuthLoginIndexRoute: typeof GuestAuthLoginIndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  GuestRouteRoute: typeof GuestRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_guest': {
+      id: '/_guest'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof GuestRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -166,70 +175,90 @@ declare module '@tanstack/react-router' {
       path: '/rewards'
       fullPath: '/rewards'
       preLoaderRoute: typeof AuthenticatedRewardsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/reset-password/': {
-      id: '/_authenticated/reset-password/'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof AuthenticatedResetPasswordIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/refer/': {
       id: '/_authenticated/refer/'
       path: '/refer'
       fullPath: '/refer'
       preLoaderRoute: typeof AuthenticatedReferIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/profile/': {
       id: '/_authenticated/profile/'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/businesses/': {
       id: '/_authenticated/businesses/'
       path: '/businesses'
       fullPath: '/businesses'
       preLoaderRoute: typeof AuthenticatedBusinessesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/book/': {
       id: '/_authenticated/book/'
       path: '/book'
       fullPath: '/book'
       preLoaderRoute: typeof AuthenticatedBookIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_guest/auth/login/': {
       id: '/_guest/auth/login/'
       path: '/auth/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof GuestAuthLoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof GuestRouteRoute
     }
     '/_guest/auth/forgot-password/': {
       id: '/_guest/auth/forgot-password/'
       path: '/auth/forgot-password'
       fullPath: '/auth/forgot-password'
       preLoaderRoute: typeof GuestAuthForgotPasswordIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof GuestRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBookIndexRoute: typeof AuthenticatedBookIndexRoute
+  AuthenticatedBusinessesIndexRoute: typeof AuthenticatedBusinessesIndexRoute
+  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
+  AuthenticatedReferIndexRoute: typeof AuthenticatedReferIndexRoute
+  AuthenticatedRewardsIndexRoute: typeof AuthenticatedRewardsIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBookIndexRoute: AuthenticatedBookIndexRoute,
   AuthenticatedBusinessesIndexRoute: AuthenticatedBusinessesIndexRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
   AuthenticatedReferIndexRoute: AuthenticatedReferIndexRoute,
-  AuthenticatedResetPasswordIndexRoute: AuthenticatedResetPasswordIndexRoute,
   AuthenticatedRewardsIndexRoute: AuthenticatedRewardsIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface GuestRouteRouteChildren {
+  GuestAuthForgotPasswordIndexRoute: typeof GuestAuthForgotPasswordIndexRoute
+  GuestAuthLoginIndexRoute: typeof GuestAuthLoginIndexRoute
+}
+
+const GuestRouteRouteChildren: GuestRouteRouteChildren = {
   GuestAuthForgotPasswordIndexRoute: GuestAuthForgotPasswordIndexRoute,
   GuestAuthLoginIndexRoute: GuestAuthLoginIndexRoute,
+}
+
+const GuestRouteRouteWithChildren = GuestRouteRoute._addFileChildren(
+  GuestRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  GuestRouteRoute: GuestRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

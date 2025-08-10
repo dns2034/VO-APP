@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import {
   AlertCircle,
   CircleUserRound,
@@ -41,11 +41,17 @@ import { login } from "@/services/auth.service";
 
 export const Route = createFileRoute("/_guest/auth/login/")({
   component: RouteComponent,
+  validateSearch: (search) => {
+    return {
+      redirect: (search.redirect as string) || undefined
+    }
+  }
 });
 
 function RouteComponent() {
   const [showPassword, setShowPassword] = useState(true);
-
+  const router = useRouter();
+  const search = Route.useSearch()
   const loginForm = useForm<LoginSchema>({
     resolver: zodResolver(requestValidator.login),
     defaultValues: { email: "", password: "" },
@@ -66,6 +72,8 @@ function RouteComponent() {
         description: error.message,
       });
     }
+
+    router.navigate({ to: search.redirect || '/' });
   };
 
   async function handleMagicLinkSubmit(values: MagicLinkSchema) {

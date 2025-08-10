@@ -9,7 +9,12 @@ export const requestValidator = {
     email: z.email("Please enter a valid email address"),
   }),
   forgotPassword: z.object({
-    email: z.string().email("Please enter a valid email address"),
+    email: z.email("Please enter a valid email address"),
+  }),
+  profileSchema: z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.email("Invalid email address"),
+    phone: z.string().optional(),
   }),
 };
 
@@ -18,3 +23,4 @@ export type LoginSchema = z.infer<typeof requestValidator.login>;
 export type ForgotPasswordSchema = z.infer<
   typeof requestValidator.forgotPassword
 >;
+export type ProfileSchema = z.infer<typeof requestValidator.profileSchema>;

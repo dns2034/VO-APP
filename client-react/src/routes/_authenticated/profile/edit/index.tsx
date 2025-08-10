@@ -15,7 +15,6 @@ import {
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import z from "zod";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -44,14 +43,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import supabase from "@/config/supabase-client";
+import { type ProfileSchema, requestValidator } from "@/lib/zod-schemas";
 import { useAuthStore } from "@/store/auth.store";
 import ChangeAvatarDialog from "../-components/change-avatar-dialog";
-
-const profileSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.email("Invalid email address"),
-  phone: z.string().optional(),
-});
 
 const deleteAvatar = async ({ avatarUrl }: { avatarUrl: string }) => {
   const { error: metaDataError } = await supabase.auth.updateUser({
@@ -73,7 +67,7 @@ const deleteAvatar = async ({ avatarUrl }: { avatarUrl: string }) => {
   if (storageError) throw new Error(storageError.message);
 };
 
-const updateUserProfile = async (formValues: z.infer<typeof profileSchema>) => {
+const updateUserProfile = async (formValues: ProfileSchema) => {
   const { data, error } = await supabase.auth.updateUser({
     data: {
       display_name: formValues.name,
@@ -102,7 +96,7 @@ function RouteComponent() {
       email: user?.email,
       phone: user?.phone,
     },
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(requestValidator.profileSchema),
   });
 
   const {
@@ -141,7 +135,7 @@ function RouteComponent() {
     },
   });
 
-  const handleSave: SubmitHandler<z.infer<typeof profileSchema>> = async (
+  const handleSave: SubmitHandler<ProfileSchema> = async (
     data
   ) => {
     await saveProfileMutateAsync(data);
@@ -150,15 +144,14 @@ function RouteComponent() {
   return (
     <>
       <div className="flex flex-col min-h-screen bg-background">
-        <header className="flex flex-row items-center bg-white text-gray-900 p-4">
-          <div className="grid grid-cols-12 w-full">
-            <Link to="/profile" className="col-1">
-              <ArrowLeft />
-            </Link>
-            <div className="col-5 col-span-auto">
-              <h1 className="text-lg font-semibold w-max">Edit Profile</h1>
-            </div>
-          </div>
+        <header className="relative flex flex-row items-center justify-center text-gray-900 p-5 max-w-2xl mx-auto w-full">
+          <Link
+            to="/profile"
+            className=" absolute left-0 top-1/2 -translate-y-1/2"
+          >
+            <ArrowLeft />
+          </Link>
+          <h1 className="text-lg font-semibold w-max">Edit Profile</h1>
         </header>
         <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
           <div className="flex flex-col items-center">

@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import BottomTabs from "@/components/bottom-tabs";
 
 export const Route = createFileRoute("/_authenticated")({
   component: RouteComponent,
@@ -16,5 +17,10 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function RouteComponent() {
-  return <Outlet/>;
+  return (
+    <>
+      <Outlet />
+      <BottomTabs />
+    </>
+  );
 }

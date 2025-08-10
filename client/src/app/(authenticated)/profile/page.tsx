@@ -24,7 +24,7 @@ export default function ProfilePage() {
   return (
     <>
       <div className="flex flex-col min-h-screen bg-background">
-        <header className="flex flex-row items-center bg-white text-gray-900 p-4 border-b border-border">
+        <header className="flex flex-row items-center bg-white text-gray-900 p-4">
           <div className="flex-1 flex flex-col items-center justify-center">
             <h1 className="font-bold text-lg flex items-center gap-2">
               Profile

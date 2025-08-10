@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { ChevronRight, LogOut, Pen } from "lucide-react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import supabase from "@/config/supabase-client";
+import { logout } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
 
 export const Route = createFileRoute("/_authenticated/profile/")({
@@ -11,14 +11,15 @@ export const Route = createFileRoute("/_authenticated/profile/")({
 
 function RouteComponent() {
   const { user } = useAuthStore();
+  const router = useRouter();
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut({ scope: "local" });
+    const { error } = await logout();
 
     if (error) {
-      console.error("Error logging out:", error);
       toast.error("Failed to log out");
-      throw new Error(error.message);
+    } else {
+      router.navigate({ to: "/auth/login", search: { redirect: undefined } });
     }
   };
 
@@ -75,7 +76,7 @@ function RouteComponent() {
             <button
               type="button"
               className="w-full flex items-center justify-between py-2 border-t"
-              onClick={() => handleLogout()}
+              onClick={handleLogout}
             >
               <div className="flex items-center gap-3">
                 <div className="flex size-8 rounded-lg bg-red-100 items-center justify-center">

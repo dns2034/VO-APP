@@ -19,6 +19,7 @@ import { Route as AuthenticatedBusinessesIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedBookIndexRouteImport } from './routes/_authenticated/book/index'
 import { Route as GuestAuthLoginIndexRouteImport } from './routes/_guest/auth/login/index'
 import { Route as GuestAuthForgotPasswordIndexRouteImport } from './routes/_guest/auth/forgot-password/index'
+import { Route as AuthenticatedProfileEditIndexRouteImport } from './routes/_authenticated/profile/edit/index'
 
 const GuestRouteRoute = GuestRouteRouteImport.update({
   id: '/_guest',
@@ -72,6 +73,12 @@ const GuestAuthForgotPasswordIndexRoute =
     path: '/auth/forgot-password/',
     getParentRoute: () => GuestRouteRoute,
   } as any)
+const AuthenticatedProfileEditIndexRoute =
+  AuthenticatedProfileEditIndexRouteImport.update({
+    id: '/profile/edit/',
+    path: '/profile/edit/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/refer': typeof AuthenticatedReferIndexRoute
   '/rewards': typeof AuthenticatedRewardsIndexRoute
+  '/profile/edit': typeof AuthenticatedProfileEditIndexRoute
   '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
 }
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/refer': typeof AuthenticatedReferIndexRoute
   '/rewards': typeof AuthenticatedRewardsIndexRoute
+  '/profile/edit': typeof AuthenticatedProfileEditIndexRoute
   '/auth/forgot-password': typeof GuestAuthForgotPasswordIndexRoute
   '/auth/login': typeof GuestAuthLoginIndexRoute
 }
@@ -103,6 +112,7 @@ export interface FileRoutesById {
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/_authenticated/refer/': typeof AuthenticatedReferIndexRoute
   '/_authenticated/rewards/': typeof AuthenticatedRewardsIndexRoute
+  '/_authenticated/profile/edit/': typeof AuthenticatedProfileEditIndexRoute
   '/_guest/auth/forgot-password/': typeof GuestAuthForgotPasswordIndexRoute
   '/_guest/auth/login/': typeof GuestAuthLoginIndexRoute
 }
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/refer'
     | '/rewards'
+    | '/profile/edit'
     | '/auth/forgot-password'
     | '/auth/login'
   fileRoutesByTo: FileRoutesByTo
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/refer'
     | '/rewards'
+    | '/profile/edit'
     | '/auth/forgot-password'
     | '/auth/login'
   id:
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile/'
     | '/_authenticated/refer/'
     | '/_authenticated/rewards/'
+    | '/_authenticated/profile/edit/'
     | '/_guest/auth/forgot-password/'
     | '/_guest/auth/login/'
   fileRoutesById: FileRoutesById
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GuestAuthForgotPasswordIndexRouteImport
       parentRoute: typeof GuestRouteRoute
     }
+    '/_authenticated/profile/edit/': {
+      id: '/_authenticated/profile/edit/'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof AuthenticatedProfileEditIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -228,6 +248,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
   AuthenticatedReferIndexRoute: typeof AuthenticatedReferIndexRoute
   AuthenticatedRewardsIndexRoute: typeof AuthenticatedRewardsIndexRoute
+  AuthenticatedProfileEditIndexRoute: typeof AuthenticatedProfileEditIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -236,6 +257,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
   AuthenticatedReferIndexRoute: AuthenticatedReferIndexRoute,
   AuthenticatedRewardsIndexRoute: AuthenticatedRewardsIndexRoute,
+  AuthenticatedProfileEditIndexRoute: AuthenticatedProfileEditIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

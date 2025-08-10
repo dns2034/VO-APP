@@ -57,7 +57,7 @@ function RouteComponent() {
 
           <div className="bg-white rounded-lg border border-border px-4 py-2">
             <Link
-              to="/"
+              to="/profile/edit"
               className="w-full flex items-center justify-between py-2"
             >
               <div className="flex items-center gap-3">

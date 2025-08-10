@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Briefcase, Calendar, Gift, Users } from "lucide-react";
+import { getAvatarUrl } from "@/services/user.service";
 import { useAuthStore } from "@/store/auth.store";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
@@ -48,7 +49,7 @@ export default function BottomTabs() {
         >
           <Avatar className="size-6">
             <AvatarImage
-              src={user?.user_metadata.avatar_url || "/placeholder.png"}
+              src={user?.user_metadata.avatar_url ? getAvatarUrl(user?.user_metadata.avatar_url).publicUrl : "/placeholder.png"}
               alt={user?.user_metadata.display_name || "User Avatar"}
             />
             <AvatarFallback>

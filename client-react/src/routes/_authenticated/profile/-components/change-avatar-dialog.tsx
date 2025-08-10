@@ -12,52 +12,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import supabase from "@/config/supabase-client";
 import { cn } from "@/lib/utils";
+import {
+  getAvatarUrl,
+  updateAvatar,
+  uploadAvatar,
+} from "@/services/user.service";
+import { useAuthStore } from "@/store/auth.store";
 
 type TUploadedImage = { file: File; preview: string };
 
 type TChangeAvatarDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
-
-const getAvatarUrl = (avatarPath: string) => {
-  const { data } = supabase.storage
-    .from("avatars")
-    .getPublicUrl(avatarPath);
-
-  if (!data) throw new Error("Error fetching avatar URL");
-
-  return data;
-};
-
-const uploadAvatar = async ({
-  path,
-  file,
-  upsert = true,
-}: {
-  path: string;
-  file: File;
-  upsert?: boolean;
-}) => {
-  const { data, error } = await supabase.storage
-    .from("avatars")
-    .upload(path, file, {
-      upsert,
-    });
-
-  if (error) throw new Error(error.message);
-
-  return data;
-};
-
-const updateAvatar = async ({ avatarPath }: { avatarPath: string | null }) => {
-  const { error } = await supabase.auth.updateUser({
-    data: { avatar_url: avatarPath },
-  });
-
-  if (error) throw new Error(error.message);
 };
 
 export default function ChangeAvatarDialog({
@@ -67,6 +34,7 @@ export default function ChangeAvatarDialog({
   const [uploadedImage, setUploadedImage] = useState<null | TUploadedImage>(
     null
   );
+  const { user } = useAuthStore();
 
   const {
     mutateAsync: updateAvatarMutateAsync,
@@ -113,25 +81,20 @@ export default function ChangeAvatarDialog({
     if (!uploadedImage) return;
 
     // same name for all avatar uploads to overwrite the existing one [just pass the id of the user]
-    const avatarPath = `ID-HERE`;
+    const avatarPath = user?.id as string;
 
     await uploadAvatarMutateAsync(
       { path: avatarPath, file: uploadedImage.file },
       {
-        onSuccess: async (data) => {
-          const { publicUrl } = getAvatarUrl(data.path);
-
+        onSuccess: async () => {
           // Append timestamp to force refresh
-          const freshUrl = `${publicUrl}?t=${Date.now()}`;
-
+          const freshPath = `${avatarPath}?t=${Date.now()}`;
           await updateAvatarMutateAsync(
             {
-              avatarPath: freshUrl,
+              avatarPath: freshPath,
             },
             {
               onSuccess: () => {
-                // update the user globally...
-
                 // close the dialog
                 toast.success("Success", {
                   description: "Avatar uploaded successfully!",

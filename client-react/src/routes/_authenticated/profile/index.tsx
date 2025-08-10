@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import AppHeader from "@/components/app-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logout } from "@/services/auth.service";
+import { getAvatarUrl } from "@/services/user.service";
 import { useAuthStore } from "@/store/auth.store";
 
 export const Route = createFileRoute("/_authenticated/profile/")({
@@ -40,7 +41,7 @@ function RouteComponent() {
                 <Avatar className="h-32 w-32 border-4 border-background shadow-md">
                   <AvatarImage
                     className="object-cover object-center"
-                    src={user?.user_metadata.avatar_url || "/placeholder.png"}
+                    src={user?.user_metadata.avatar_url ? getAvatarUrl(user?.user_metadata.avatar_url).publicUrl : "/placeholder.png"}
                     alt={user?.user_metadata.display_name || "User Avatar"}
                   />
                   <AvatarFallback>User&apos;s avatar</AvatarFallback>

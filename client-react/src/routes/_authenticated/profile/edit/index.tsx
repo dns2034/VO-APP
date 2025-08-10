@@ -42,41 +42,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import supabase from "@/config/supabase-client";
 import { type ProfileSchema, requestValidator } from "@/lib/zod-schemas";
+import { deleteAvatar, getAvatarUrl, updateUserProfile } from "@/services/user.service";
 import { useAuthStore } from "@/store/auth.store";
 import ChangeAvatarDialog from "../-components/change-avatar-dialog";
-
-const deleteAvatar = async ({ avatarUrl }: { avatarUrl: string }) => {
-  const { error: metaDataError } = await supabase.auth.updateUser({
-    data: { avatar_url: null },
-  });
-
-  if (metaDataError) throw new Error(metaDataError.message);
-
-  const urlParts = new URL(avatarUrl);
-  const avatarPath = urlParts.pathname.replace(
-    "/storage/v1/object/public/avatars/",
-    ""
-  );
-
-  const { error: storageError } = await supabase.storage
-    .from("avatars")
-    .remove([avatarPath]);
-
-  if (storageError) throw new Error(storageError.message);
-};
-
-const updateUserProfile = async (formValues: ProfileSchema) => {
-  const { data, error } = await supabase.auth.updateUser({
-    data: {
-      display_name: formValues.name,
-    },
-    phone: formValues.phone,
-  });
-
-  return { data, error };
-};
 
 export const Route = createFileRoute("/_authenticated/profile/edit/")({
   component: RouteComponent,
@@ -147,7 +116,7 @@ function RouteComponent() {
         <header className="relative flex flex-row items-center justify-center text-gray-900 p-5 max-w-2xl mx-auto w-full">
           <Link
             to="/profile"
-            className=" absolute left-0 top-1/2 -translate-y-1/2"
+            className=" absolute left-4 top-1/2 -translate-y-1/2"
           >
             <ArrowLeft />
           </Link>
@@ -162,7 +131,7 @@ function RouteComponent() {
                 <Avatar className="h-32 w-32 border-4 border-background shadow-md">
                   <AvatarImage
                     className="object-cover object-center"
-                    src={user?.user_metadata.avatar_url || "/placeholder.png"}
+                    src={user?.user_metadata.avatar_url ? getAvatarUrl(user?.user_metadata.avatar_url).publicUrl : "/placeholder.png"}
                     alt={profileForm.getValues("name")}
                   />
                   <AvatarFallback>User&apos;s avatar</AvatarFallback>

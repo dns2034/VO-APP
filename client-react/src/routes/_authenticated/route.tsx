@@ -1,5 +1,11 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useMatchRoute,
+} from "@tanstack/react-router";
 import BottomTabs from "@/components/bottom-tabs";
+import type { FileRouteTypes } from "@/routeTree.gen";
 
 export const Route = createFileRoute("/_authenticated")({
   component: RouteComponent,
@@ -17,10 +23,18 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function RouteComponent() {
+  const matchRoute = useMatchRoute();
+
+  // add the path if you want to hide the bottom tabs
+  const hideNavRoutes: FileRouteTypes["fullPaths"][] = ["/profile/edit"];
+
+  const matchedNoNavRoutes = hideNavRoutes.some((route) =>
+    matchRoute({ to: route })
+  );
   return (
     <>
       <Outlet />
-      <BottomTabs />
+      {!matchedNoNavRoutes && <BottomTabs />}
     </>
   );
 }

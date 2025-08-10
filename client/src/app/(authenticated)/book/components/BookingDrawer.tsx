@@ -479,12 +479,14 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               Choose the date you want to book the space for.
             </p>
             <div className="flex items-center justify-center rounded-lg border ">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md w-full"
-              />
+              <div className="w-full max-w-xs sm:max-w-sm md:max-w-md overflow-hidden">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md w-full min-w-0 min-h-0 h-auto"
+                />
+              </div>
             </div>
           </div>
 

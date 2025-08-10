@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { ChevronRight, LogOut, Pen } from "lucide-react";
 import { toast } from "sonner";
+import AppHeader from "@/components/app-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logout } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
@@ -26,16 +27,10 @@ function RouteComponent() {
   return (
     <>
       <div className="flex flex-col min-h-screen bg-background">
-        <header className="flex flex-row items-center bg-white text-gray-900 p-4 border-b border-border">
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <h1 className="font-bold text-lg flex items-center gap-2">
-              Profile
-            </h1>
-            <p className="text-xs text-gray-500">
-              Manage your profile and account settings.
-            </p>
-          </div>
-        </header>
+        <AppHeader
+          title="Profile"
+          description="Manage your profile and account settings."
+        />
         <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
           <div className="flex flex-col items-center">
             <div className="relative flex flex-col gap-4 mb-6 items-center justify-center font-semibold">

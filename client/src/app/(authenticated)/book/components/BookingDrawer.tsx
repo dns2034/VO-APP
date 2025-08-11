@@ -494,13 +494,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                     ],
                   }}
                 />
-                {!selectedVoucherId && (
-                  <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded-md">
-                    <span className="text-sm text-muted-foreground">
-                      Select a voucher first
-                    </span>
-                  </div>
-                )}
+                {/* Remove overlay that blocks calendar if no voucher */}
               </div>
             </div>
           </div>
@@ -518,9 +512,8 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               </div>
 
               <p className="text-xs text-muted-foreground mb-3 ml-7">
-                {!selectedVoucherId
-                  ? "Select a voucher to pick a time slot."
-                  : availabilityLoading
+                {/* Always allow picking a time slot */}
+                {availabilityLoading
                   ? "Loading availability..."
                   : availability
                   ? "Pick a time within the available slots below."
@@ -566,7 +559,8 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                       value={startTime}
                       onChange={(e) => setStartTime(e.target.value)}
                       required
-                      disabled={!selectedVoucherId || !date}
+                      // Allow time selection regardless of voucher
+                      disabled={!date}
                       min={
                         date &&
                         new Date(date).toDateString() ===
@@ -592,7 +586,8 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                       value={endTime}
                       onChange={(e) => setEndTime(e.target.value)}
                       required
-                      disabled={!selectedVoucherId || !date || !startTime}
+                      // Allow time selection regardless of voucher
+                      disabled={!date || !startTime}
                       min={startTime}
                     />
                     <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />

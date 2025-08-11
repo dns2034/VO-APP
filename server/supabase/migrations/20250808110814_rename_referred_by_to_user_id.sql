@@ -8,4 +8,3 @@ alter table "public"."referrals" add constraint "referrals_user_id_fkey" FOREIGN
 
 alter table "public"."referrals" validate constraint "referrals_user_id_fkey";
 
-

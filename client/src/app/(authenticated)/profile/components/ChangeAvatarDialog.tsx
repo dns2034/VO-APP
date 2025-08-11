@@ -12,6 +12,7 @@ import { X, Upload, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { useDropzone } from "react-dropzone";
 import { useState, useCallback } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 import { supabaseClient } from "@/services/supabase/client";
 import { useMutation } from "@tanstack/react-query";
 
@@ -52,11 +53,7 @@ const uploadAvatar = async ({
   return data;
 };
 
-const updateAvatar = async ({
-  avatarPath,
-}: {
-  avatarPath: string | null;
-}) => {
+const updateAvatar = async ({ avatarPath }: { avatarPath: string | null }) => {
   const { error } = await supabaseClient.auth.updateUser({
     data: { avatar_url: avatarPath },
   });
@@ -113,11 +110,12 @@ export default function ChangeAvatarDialog({
     }
   };
 
+  const user = useAuthStore((state) => state.user);
   const handleUpload = async () => {
-    if (!uploadedImage) return;
+    if (!uploadedImage || !user?.id) return;
 
-    // same name for all avatar uploads to overwrite the existing one [just pass the id of the user]
-    const avatarPath = `ID-HERE`;
+    // Use the user's id as the avatar path (e.g., 'user-id/avatar')
+    const avatarPath = `${user.id}/avatar`;
 
     await uploadAvatarMutateAsync(
       { path: avatarPath, file: uploadedImage.file },

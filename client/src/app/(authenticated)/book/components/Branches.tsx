@@ -14,7 +14,11 @@ export default function Branches() {
           {branches.map((branch) => (
             <div key={branch.id} className="mb-4 py-0 relative">
               <Image
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL}/branch-images/${branch.image_path}`}
+                src={
+                  branch?.image_path
+                    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/branch-images/${branch.image_path}`
+                    : "/placeholder.png"
+                }
                 alt={branch.name}
                 width={500}
                 height={500}

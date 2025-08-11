@@ -479,12 +479,29 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
               Choose the date you want to book the space for.
             </p>
             <div className="flex items-center justify-center rounded-lg border ">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md w-full"
-              />
+              <div className="w-full max-w-xs sm:max-w-sm md:max-w-md overflow-hidden">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  className="rounded-md w-full min-w-0 min-h-0 h-auto"
+                  disabled={!selectedVoucherId}
+                  fromDate={new Date(new Date().setHours(0, 0, 0, 0))}
+                  toDate={undefined}
+                  modifiers={{
+                    disabled: [
+                      { before: new Date(new Date().setHours(0, 0, 0, 0)) },
+                    ],
+                  }}
+                />
+                {!selectedVoucherId && (
+                  <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded-md">
+                    <span className="text-sm text-muted-foreground">
+                      Select a voucher first
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -534,7 +551,7 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                 </div>
               )}
               {/* Only show manual input for custom times */}
-              <div className="flex gap-4 p-2">
+              <div className="flex flex-col sm:flex-row gap-4 p-2">
                 <div className="flex-1 flex flex-col gap-1.5">
                   <Label
                     htmlFor="start-time"
@@ -549,7 +566,14 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                       value={startTime}
                       onChange={(e) => setStartTime(e.target.value)}
                       required
-                      disabled={!selectedVoucherId}
+                      disabled={!selectedVoucherId || !date}
+                      min={
+                        date &&
+                        new Date(date).toDateString() ===
+                          new Date().toDateString()
+                          ? new Date().toTimeString().slice(0, 5)
+                          : undefined
+                      }
                     />
                     <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   </div>
@@ -568,7 +592,8 @@ export default function BookingDrawer({ branchId }: { branchId: string }) {
                       value={endTime}
                       onChange={(e) => setEndTime(e.target.value)}
                       required
-                      disabled={!!selectedVoucherId}
+                      disabled={!selectedVoucherId || !date || !startTime}
+                      min={startTime}
                     />
                     <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   </div>

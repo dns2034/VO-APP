@@ -16,7 +16,7 @@ export default function Branches() {
               <Image
                 src={
                   branch?.image_path
-                    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/branches/${branch.id}/${branch.image_path}`
+                    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/branches${branch.image_path}`
                     : "/placeholder.png"
                 }
                 alt={branch.name}

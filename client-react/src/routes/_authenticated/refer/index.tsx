@@ -6,34 +6,32 @@ import AppHeader from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { creditsKeys, pointsKeys } from "@/lib/query-keys";
-import { getAllCredits } from "@/services/credits.service";
-import { getAllPoints } from "@/services/points.service";
+import { creditsService } from "@/services/credit.service";
+import { pointsService } from "@/services/point.service";
 
-const creditOptions = queryOptions({
+const creditsQueryOptions = queryOptions({
   queryKey: creditsKeys.all,
-  queryFn: getAllCredits,
+  queryFn: creditsService.getAll,
 });
 
-const pointOptions = queryOptions({
+const pointsQueryOptions = queryOptions({
   queryKey: pointsKeys.all,
-  queryFn: getAllPoints,
+  queryFn: pointsService.getAll,
 });
 
 export const Route = createFileRoute("/_authenticated/refer/")({
   component: RouteComponent,
   loader: async ({ context }) => {
     await Promise.all([
-      context.queryClient?.prefetchQuery(creditOptions),
-      context.queryClient?.prefetchQuery(pointOptions),
+      context.queryClient?.prefetchQuery(creditsQueryOptions),
+      context.queryClient?.prefetchQuery(pointsQueryOptions),
     ]);
   },
 });
 
 function RouteComponent() {
-  const [
-    { data: pointsQueryData, isPending: pointsIsPending },
-    { data: creditsQueryData, isPending: creditsIsPending },
-  ] = useSuspenseQueries({ queries: [pointOptions, creditOptions] });
+  const [{ data: pointsQueryData }, { data: creditsQueryData }] =
+    useSuspenseQueries({ queries: [pointsQueryOptions, creditsQueryOptions] });
 
   // Count active credits and points
   const activeCredits = creditsQueryData.filter(
@@ -70,13 +68,13 @@ function RouteComponent() {
               Active Credits
             </span>
             <span className="text-2xl font-bold text-primary mt-1">
-              {creditsIsPending ? "..." : activeCredits}
+              {activeCredits}
             </span>
           </div>
           <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-lg border border-border py-4">
             <span className="text-xs text-muted-foreground">Active Points</span>
             <span className="text-2xl font-bold text-primary mt-1">
-              {pointsIsPending ? "..." : activePoints}
+              {activePoints}
             </span>
           </div>
         </div>

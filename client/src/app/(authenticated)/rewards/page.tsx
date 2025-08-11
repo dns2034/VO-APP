@@ -156,7 +156,7 @@ export default function RewardsPage() {
                     <img
                       src={
                         item?.image_path
-                          ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/branches/${item.id}/${item.image_path}`
+                          ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public${item.image_path}`
                           : "/placeholder.png"
                       }
                       alt={item.name}
@@ -171,7 +171,8 @@ export default function RewardsPage() {
                       {item.description}
                     </span>
                     <span className="text-xs text-gray-500 mt-1 font-medium">
-                      {item.price} points
+                      {item.price}{" "}
+                      {item.type === "product" ? "credits" : "points"}
                     </span>
                   </div>
                   <Button

@@ -160,7 +160,7 @@ export default function RewardsPage() {
                           : "/placeholder.png"
                       }
                       alt={item.name}
-                      className="object-cover"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0 flex flex-col">

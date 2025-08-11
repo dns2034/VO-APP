@@ -79,7 +79,11 @@ export default function BusinessesPage() {
                   <div className="w-20 h-20 rounded-full overflow-hidden border bg-muted flex items-center justify-center mb-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={selectedBusiness?.logo_url || "/placeholder.png"}
+                      src={
+                        selectedBusiness?.logo_url
+                          ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public${selectedBusiness.logo_url}`
+                          : "/placeholder.png"
+                      }
                       alt={selectedBusiness?.name || "Business logo"}
                       className="object-cover w-full h-full"
                     />

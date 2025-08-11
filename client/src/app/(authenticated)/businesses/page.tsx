@@ -93,7 +93,18 @@ export default function BusinessesPage() {
                         className="object-cover w-full h-full"
                       />
                     </div>
-                    <DialogTitle className="text-2xl font-bold text-center w-full mt-2">
+                    <DialogTitle
+                      className="text-2xl font-bold text-center w-full mt-2 text-black leading-tight line-clamp-2"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "normal",
+                        minHeight: "2.5em",
+                      }}
+                    >
                       {selectedBusiness?.name}
                     </DialogTitle>
                     <DialogDescription className="text-center text-muted-foreground w-full mt-1 px-4">
@@ -212,7 +223,18 @@ export default function BusinessesPage() {
                         className="object-cover w-full h-full"
                       />
                     </div>
-                    <DialogTitle className="text-2xl font-bold text-center w-full mt-2">
+                    <DialogTitle
+                      className="text-2xl font-bold text-center w-full mt-2 text-black leading-tight line-clamp-2"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "normal",
+                        minHeight: "2.5em",
+                      }}
+                    >
                       {selectedBusiness?.name}
                     </DialogTitle>
                     <DialogDescription className="text-center text-muted-foreground w-full mt-1 px-4">

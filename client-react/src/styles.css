@@ -136,4 +136,8 @@ code {
   body {
     @apply bg-background text-foreground;
   }
+
+  main{
+    margin-bottom: 5.25rem;
+  }
 }

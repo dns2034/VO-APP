@@ -16,7 +16,7 @@ export default function ReferPage() {
   const activePoints = points.filter((p) => p.status === "active").length;
 
   // Mock referral link
-  const referralLink = "https://incub8space.com/ref/abc123";
+  const referralLink = "https://incub8space.com/brands/incub8space/";
   const [copied, setCopied] = useState(false);
 
   // Social share handlers
@@ -73,6 +73,7 @@ export default function ReferPage() {
               readOnly
               value={referralLink}
               className="flex-1 max-w-xs text-center"
+              disabled
             />
             <Button
               size="icon"
@@ -83,6 +84,8 @@ export default function ReferPage() {
               }}
               variant="outline"
               aria-label="Copy referral link"
+              disabled
+              className="opacity-60 cursor-not-allowed"
             >
               {copied ? (
                 <Share2 className="w-4 h-4 text-green-600" />
@@ -91,12 +94,14 @@ export default function ReferPage() {
               )}
             </Button>
           </div>
-          <div className="flex flex-row gap-2 items-center justify-center mt-3">
+          <div className="flex flex-row gap-2 items-center justify-center mt-3 opacity-60 pointer-events-none">
             <Button
               asChild
               size="icon"
               variant="outline"
               aria-label="Share on Facebook"
+              disabled
+              className="cursor-not-allowed"
             >
               <a href={fbShareUrl} target="_blank" rel="noopener noreferrer">
                 <Facebook className="w-4 h-4 text-[#1877f3]" />
@@ -107,6 +112,8 @@ export default function ReferPage() {
               size="icon"
               variant="outline"
               aria-label="Share on Twitter"
+              disabled
+              className="cursor-not-allowed"
             >
               <a
                 href={twitterShareUrl}
@@ -121,6 +128,8 @@ export default function ReferPage() {
               size="icon"
               variant="outline"
               aria-label="Share on Instagram"
+              disabled
+              className="cursor-not-allowed"
             >
               <a
                 href={instagramShareUrl}
@@ -135,6 +144,8 @@ export default function ReferPage() {
               size="icon"
               variant="outline"
               aria-label="Share on TikTok"
+              disabled
+              className="cursor-not-allowed"
             >
               <a
                 href={tiktokShareUrl}
@@ -186,9 +197,16 @@ export default function ReferPage() {
                   setTimeout(() => setCopied(false), 1200);
                 }
               }}
+              disabled
+              className="cursor-not-allowed"
             >
               <Send className="w-4 h-4" />
             </Button>
+          </div>
+          <div className="flex justify-center mt-2">
+            <span className="text-xs text-primary font-semibold bg-orange-50 px-3 py-1 rounded">
+              Coming soon!
+            </span>
           </div>
         </div>
         <div className="bg-white rounded-lg border border-border p-4 text-center mb-4">

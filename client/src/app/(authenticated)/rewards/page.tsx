@@ -153,10 +153,13 @@ export default function RewardsPage() {
                   className="flex flex-row items-center gap-3 bg-white rounded-lg border border-border px-3 py-3"
                 >
                   <div className="flex-shrink-0 relative w-16 h-16 rounded-md overflow-hidden bg-gray-100">
-                    <Image
-                      src={item.image_path || "/placeholder.png"}
+                    <img
+                      src={
+                        item?.image_path
+                          ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/branches/${item.id}/${item.image_path}`
+                          : "/placeholder.png"
+                      }
                       alt={item.name}
-                      fill
                       className="object-cover"
                     />
                   </div>

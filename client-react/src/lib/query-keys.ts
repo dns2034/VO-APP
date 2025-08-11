@@ -21,3 +21,7 @@ export const rewardVouchersKeys = {
 export const productVouchersKeys = {
   all: ["productVoucher"],
 };
+
+export const businessesKeys = {
+  all: ["businesses"],
+};

@@ -79,31 +79,32 @@ export default function BusinessesPage() {
               onOpenChange={() => setSelectedBusiness(null)}
             >
               <DialogContent className="max-w-md w-full p-0 overflow-hidden rounded-2xl shadow-xl border bg-background">
-                <DialogHeader className="p-6 pb-2 flex flex-col items-center gap-2">
-                  <div className="w-20 h-20 rounded-full overflow-hidden border bg-muted flex items-center justify-center mb-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={
-                        selectedBusiness?.logo_url
-                          ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public${selectedBusiness.logo_url}`
-                          : "/placeholder.png"
-                      }
-                      alt={selectedBusiness?.name || "Business logo"}
-                      className="object-cover w-full h-full"
-                    />
+                <DialogHeader className="p-0 flex flex-col items-center gap-0">
+                  <div className="w-full flex flex-col items-center bg-gradient-to-b from-primary/10 to-transparent pt-8 pb-4">
+                    <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow bg-muted flex items-center justify-center mb-2">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={
+                          selectedBusiness?.logo_url
+                            ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public${selectedBusiness.logo_url}`
+                            : "/placeholder.png"
+                        }
+                        alt={selectedBusiness?.name || "Business logo"}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    <DialogTitle className="text-2xl font-bold text-center w-full mt-2">
+                      {selectedBusiness?.name}
+                    </DialogTitle>
+                    <DialogDescription className="text-center text-muted-foreground w-full mt-1 px-4">
+                      {selectedBusiness?.description}
+                    </DialogDescription>
                   </div>
-                  <DialogTitle className="text-xl font-bold text-center w-full">
-                    {selectedBusiness?.name}
-                  </DialogTitle>
-                  <DialogDescription className="text-center text-muted-foreground w-full">
-                    {selectedBusiness?.description}
-                  </DialogDescription>
                 </DialogHeader>
-
-                <div className="px-6 pb-6 pt-2 space-y-4">
+                <div className="border-t border-border px-6 py-4 space-y-4">
                   {selectedBusiness?.website && (
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm text-muted-foreground shrink-0">
+                      <span className="font-medium text-sm text-muted-foreground shrink-0 w-16">
                         Website:
                       </span>
                       <a
@@ -116,10 +117,9 @@ export default function BusinessesPage() {
                       </a>
                     </div>
                   )}
-
                   {selectedBusiness?.phone && (
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm text-muted-foreground shrink-0">
+                      <span className="font-medium text-sm text-muted-foreground shrink-0 w-16">
                         Phone:
                       </span>
                       <a
@@ -130,10 +130,9 @@ export default function BusinessesPage() {
                       </a>
                     </div>
                   )}
-
                   {selectedBusiness?.email && (
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-sm text-muted-foreground shrink-0">
+                      <span className="font-medium text-sm text-muted-foreground shrink-0 w-16">
                         Email:
                       </span>
                       <a
@@ -145,7 +144,6 @@ export default function BusinessesPage() {
                     </div>
                   )}
                 </div>
-
                 <div className="px-6 pb-6">
                   <DialogClose asChild>
                     <Button className="w-full" variant="outline">
@@ -171,11 +169,11 @@ export default function BusinessesPage() {
                     <div className="w-full aspect-square rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={`${
-                          process.env.NEXT_PUBLIC_SUPABASE_URL
-                        }/storage/v1/object/public${
-                          biz.logo_url || "/placeholder.png"
-                        }`}
+                        src={
+                          biz.logo_url
+                            ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public${biz.logo_url}`
+                            : "/placeholder.png"
+                        }
                         alt={biz.name}
                         className="object-cover w-full h-full"
                       />
@@ -194,6 +192,86 @@ export default function BusinessesPage() {
                 </p>
               </div>
             )}
+            {/* Business Details Dialog (shared with Explore) */}
+            <Dialog
+              open={!!selectedBusiness}
+              onOpenChange={() => setSelectedBusiness(null)}
+            >
+              <DialogContent className="max-w-md w-full p-0 overflow-hidden rounded-2xl shadow-xl border bg-background">
+                <DialogHeader className="p-0 flex flex-col items-center gap-0">
+                  <div className="w-full flex flex-col items-center bg-gradient-to-b from-primary/10 to-transparent pt-8 pb-4">
+                    <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow bg-muted flex items-center justify-center mb-2">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={
+                          selectedBusiness?.logo_url
+                            ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public${selectedBusiness.logo_url}`
+                            : "/placeholder.png"
+                        }
+                        alt={selectedBusiness?.name || "Business logo"}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    <DialogTitle className="text-2xl font-bold text-center w-full mt-2">
+                      {selectedBusiness?.name}
+                    </DialogTitle>
+                    <DialogDescription className="text-center text-muted-foreground w-full mt-1 px-4">
+                      {selectedBusiness?.description}
+                    </DialogDescription>
+                  </div>
+                </DialogHeader>
+                <div className="border-t border-border px-6 py-4 space-y-4">
+                  {selectedBusiness?.website && (
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-sm text-muted-foreground shrink-0 w-16">
+                        Website:
+                      </span>
+                      <a
+                        href={selectedBusiness.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline break-all text-sm"
+                      >
+                        {selectedBusiness.website}
+                      </a>
+                    </div>
+                  )}
+                  {selectedBusiness?.phone && (
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-sm text-muted-foreground shrink-0 w-16">
+                        Phone:
+                      </span>
+                      <a
+                        href={`tel:${selectedBusiness.phone}`}
+                        className="text-primary underline text-sm"
+                      >
+                        {selectedBusiness.phone}
+                      </a>
+                    </div>
+                  )}
+                  {selectedBusiness?.email && (
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-sm text-muted-foreground shrink-0 w-16">
+                        Email:
+                      </span>
+                      <a
+                        href={`mailto:${selectedBusiness.email}`}
+                        className="text-primary underline break-all text-sm"
+                      >
+                        {selectedBusiness.email}
+                      </a>
+                    </div>
+                  )}
+                </div>
+                <div className="px-6 pb-6">
+                  <DialogClose asChild>
+                    <Button className="w-full" variant="outline">
+                      Close
+                    </Button>
+                  </DialogClose>
+                </div>
+              </DialogContent>
+            </Dialog>
           </TabsContent>
         </Tabs>
       </main>

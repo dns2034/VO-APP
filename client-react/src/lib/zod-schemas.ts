@@ -5,9 +5,6 @@ export const requestValidator = {
     email: z.email("Please enter a valid email address"),
     password: z.string().min(1, "Password is required"),
   }),
-  magicLink: z.object({
-    email: z.email("Please enter a valid email address"),
-  }),
   forgotPassword: z.object({
     email: z.email("Please enter a valid email address"),
   }),
@@ -28,7 +25,6 @@ export const requestValidator = {
   }),
 };
 
-export type MagicLinkSchema = z.infer<typeof requestValidator.magicLink>;
 export type LoginSchema = z.infer<typeof requestValidator.login>;
 export type ForgotPasswordSchema = z.infer<
   typeof requestValidator.forgotPassword

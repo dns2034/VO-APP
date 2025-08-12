@@ -1,13 +1,9 @@
-"use client";
-
+import { useMutation, useSuspenseQueries } from "@tanstack/react-query";
+import { useRouteContext } from "@tanstack/react-router";
 import { format } from "date-fns";
-import {
-  Calendar,
-  Filter as FilterIcon,
-  SortAsc,
-  SortDesc,
-} from "lucide-react";
+import { Calendar, FilterIcon, SortAsc, SortDesc } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   Accordion,
   AccordionContent,
@@ -35,10 +31,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useBookings } from "@/hooks/useBookings";
-import { useBranches } from "@/hooks/useBranches";
-import { useSpaces } from "@/hooks/useSpaces";
-import { useSpaceUnits } from "@/hooks/useSpaceUnits";
+import { bookingsKeys } from "@/lib/query-keys";
+import { bookingsService } from "@/services/booking.service";
+import {
+  bookingsQueryOptions,
+  branchesQueryOptions,
+  spacesQueryOptions,
+  spaceUnitsQueryOptions,
+} from "..";
 
 const PAGE_SIZE = 6;
 
@@ -53,51 +53,63 @@ function formatTimeTo12Hour(time: string): string {
 }
 
 export default function MyBookings() {
-  const { bookings, loading, cancelBooking } = useBookings();
-  const { spaces } = useSpaces();
-  const { branches } = useBranches();
-  const { spaceUnits } = useSpaceUnits();
+  const context = useRouteContext({ from: "/_authenticated/book/" });
+  const [
+    { data: bookingsQueryData },
+    { data: branchesQueryData },
+    { data: spacesQueryData },
+    { data: spaceUnitsQueryData },
+  ] = useSuspenseQueries({
+    queries: [
+      bookingsQueryOptions,
+      branchesQueryOptions,
+      spacesQueryOptions,
+      spaceUnitsQueryOptions,
+    ],
+  });
 
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [sortAscOrder, setSortAscOrder] = useState<boolean>(true);
-  const [search, setSearch] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortAscOrder, setSortAscOrder] = useState(true);
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  if (loading) {
-    return (
-      <div className="flex items-center">
-        <svg
-          className="inline-block h-10 w-10 animate-spin"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <title>Loading</title>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center">
+  //       <svg
+  //         className="inline-block h-10 w-10 animate-spin"
+  //         xmlns="http://www.w3.org/2000/svg"
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //       >
+  //         <circle
+  //           className="opacity-25"
+  //           cx="12"
+  //           cy="12"
+  //           r="10"
+  //           stroke="currentColor"
+  //           strokeWidth="4"
+  //         ></circle>
+  //         <title>Loader</title>
+  //         <path
+  //           className="opacity-75"
+  //           fill="currentColor"
+  //           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+  //         ></path>
+  //       </svg>
+  //     </div>
+  //   );
+  // }
 
   // Filter bookings by search
-  const searchedBookings = bookings.filter((booking) => {
+  const searchedBookings = bookingsQueryData.filter((booking) => {
     if (!search.trim()) return true;
     // Search by space name, branch name, or remarks
-    const spaceUnit = spaceUnits.find((su) => su.id === booking.space_unit_id);
-    const space = spaces.find((s) => s.id === spaceUnit?.space_id);
-    const branch = branches.find((b) => b.id === space?.branch_id);
+    const spaceUnit = spaceUnitsQueryData.find(
+      (su) => su.id === booking.space_unit_id
+    );
+    const space = spacesQueryData.find((s) => s.id === spaceUnit?.space_id);
+    const branch = branchesQueryData.find((b) => b.id === space?.branch_id);
     const spaceName = spaceUnit?.name || "";
     const branchName = branch?.name || "";
     const remarks = booking.remarks || "";
@@ -126,6 +138,16 @@ export default function MyBookings() {
     (page - 1) * PAGE_SIZE,
     page * PAGE_SIZE
   );
+
+  const { mutateAsync: cancelBookingMutateAsync } = useMutation({
+    mutationFn: bookingsService.update,
+    onError: () => {
+      toast.error("Failed to create booking");
+    },
+    onSettled: () => {
+      context.queryClient?.invalidateQueries({ queryKey: bookingsKeys.all });
+    },
+  });
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -193,11 +215,15 @@ export default function MyBookings() {
             </div>
           )}
           {paginated.map((booking, idx) => {
-            const spaceUnit = spaceUnits.find(
+            const spaceUnit = spaceUnitsQueryData.find(
               (su) => su.id === booking.space_unit_id
             );
-            const space = spaces.find((s) => s.id === spaceUnit?.space_id);
-            const branch = branches.find((b) => b.id === space?.branch_id);
+            const space = spacesQueryData.find(
+              (s) => s.id === spaceUnit?.space_id
+            );
+            const branch = branchesQueryData.find(
+              (b) => b.id === space?.branch_id
+            );
             const spaceName = spaceUnit?.name || "Unknown Space Unit";
             const branchName = branch?.name || "Unknown Branch";
             const dateStr = booking.date
@@ -291,7 +317,10 @@ export default function MyBookings() {
                               "Are you sure you want to cancel this booking?"
                             )
                           ) {
-                            await cancelBooking(booking.id);
+                            await cancelBookingMutateAsync({
+                              id: booking.id,
+                              updates: { status: "cancelled" },
+                            });
                           }
                         }}
                         title="Cancel Booking"

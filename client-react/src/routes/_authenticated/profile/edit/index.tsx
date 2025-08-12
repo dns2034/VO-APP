@@ -1,0 +1,317 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  ArrowLeft,
+  Camera,
+  ImageIcon,
+  Loader,
+  Mail,
+  Phone,
+  Save,
+  Trash,
+  User,
+} from "lucide-react";
+import { useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { type ProfileSchema, requestValidator } from "@/lib/zod-schemas";
+import { deleteAvatar, getAvatarUrl, updateUserProfile } from "@/services/user.service";
+import { useAuthStore } from "@/store/auth.store";
+import ChangeAvatarDialog from "../-components/change-avatar-dialog";
+
+export const Route = createFileRoute("/_authenticated/profile/edit/")({
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { user } = useAuthStore();
+  const [dropdownMenuOpen, setDropdownMenuOpen] = useState(false);
+  const [avatarUploadDialogVisible, setAvatarUploadDialogVisible] =
+    useState(false);
+  const [removeAvatarDialogVisible, setRemoveAvatarDialogVisible] =
+    useState(false);
+
+  const profileForm = useForm({
+    defaultValues: {
+      name: user?.user_metadata.display_name,
+      email: user?.email,
+      phone: user?.phone,
+    },
+    resolver: zodResolver(requestValidator.profileSchema),
+  });
+
+  const {
+    mutateAsync: deleteAvatarMutateAsync,
+    isPending: deleteAvatarIsPending,
+  } = useMutation({
+    mutationFn: deleteAvatar,
+    onSuccess: () => {
+      setRemoveAvatarDialogVisible(false);
+      toast.success("Avatar deleted successfully");
+    },
+    onError: (error) => {
+      console.error("Error deleting avatar:", error);
+      toast.error("Failed to delete avatar");
+    },
+  });
+
+  const {
+    mutateAsync: saveProfileMutateAsync,
+    isPending: saveProfileIsPending,
+  } = useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: (data) => {
+      console.log("Profile updated successfully:", data);
+      profileForm.reset({
+        name:
+          data.data?.user?.user_metadata?.display_name ||
+          profileForm.getValues("name"),
+        email: data.data?.user?.email || profileForm.getValues("email"),
+        phone: data.data?.user?.phone || profileForm.getValues("phone"),
+      });
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+      profileForm.reset();
+    },
+  });
+
+  const handleSave: SubmitHandler<ProfileSchema> = async (
+    data
+  ) => {
+    await saveProfileMutateAsync(data);
+  };
+
+  return (
+    <>
+      <div className="flex flex-col min-h-screen bg-background">
+        <header className="relative flex flex-row items-center justify-center text-gray-900 p-5 max-w-2xl mx-auto w-full">
+          <Link
+            to="/profile"
+            className=" absolute left-4 top-1/2 -translate-y-1/2"
+          >
+            <ArrowLeft />
+          </Link>
+          <h1 className="text-lg font-semibold w-max">Edit Profile</h1>
+        </header>
+        <main className="flex-1 flex flex-col gap-0 p-4 lg:p-6 max-w-2xl w-full mx-auto">
+          <div className="flex flex-col items-center">
+            <div className="relative flex flex-col gap-6 mb-6 items-center justify-center font-semibold">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-10 rounded-full transition-all duration-300" />
+
+                <Avatar className="h-32 w-32 border-4 border-background shadow-md">
+                  <AvatarImage
+                    className="object-cover object-center"
+                    src={user?.user_metadata.avatar_url ? getAvatarUrl(user?.user_metadata.avatar_url).publicUrl : "/placeholder.png"}
+                    alt={profileForm.getValues("name")}
+                  />
+                  <AvatarFallback>User&apos;s avatar</AvatarFallback>
+                </Avatar>
+
+                <DropdownMenu
+                  open={dropdownMenuOpen}
+                  onOpenChange={setDropdownMenuOpen}
+                >
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="absolute bottom-0 right-0 h-10 w-10 rounded-full shadow-md opacity-90 hover:opacity-100"
+                    >
+                      <Camera className="h-5 w-5" />
+                      <span className="sr-only">Change profile picture</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Profile Picture</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+
+                    <DropdownMenuItem
+                      className="cursor-pointer flex items-center gap-x-2"
+                      onClick={() => setAvatarUploadDialogVisible(true)}
+                    >
+                      <ImageIcon className="size-4" />
+                      Upload photo
+                    </DropdownMenuItem>
+
+                    {user?.user_metadata.avatar_url && (
+                      <DropdownMenuItem
+                        className="cursor-pointer flex items-center gap-x-2"
+                        onClick={() => {
+                          setRemoveAvatarDialogVisible(true);
+                        }}
+                      >
+                        <Trash className="h-4 w-4" />
+                        Remove
+                      </DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-lg border border-border p-4">
+            <h2 className="font-semibold text-base mb-4 flex items-center gap-2">
+              <User className="w-4 h-4 text-primary" />
+              Profile Details
+            </h2>
+            <Form {...profileForm}>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={profileForm.handleSubmit(handleSave)}
+              >
+                <FormField
+                  name="name"
+                  control={profileForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">
+                        <User className="w-3 h-3 text-muted-foreground" />
+                        Name
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} className="w-full" />
+                      </FormControl>
+                      {profileForm.formState.errors.name && (
+                        <FormMessage className="text-red-500 text-xs">
+                          {profileForm.formState.errors.name.message}
+                        </FormMessage>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="email"
+                  control={profileForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">
+                        <Mail className="w-3 h-3 text-muted-foreground" />
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} disabled className="w-full" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="phone"
+                  control={profileForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">
+                        <Phone className="w-3 h-3 text-muted-foreground" />
+                        Phone
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} className="w-full" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex gap-2">
+                  <Button
+                    disabled={
+                      !profileForm.formState.isValid ||
+                      !profileForm.formState.isDirty ||
+                      saveProfileIsPending
+                    }
+                    type="submit"
+                    className="flex-1 flex items-center gap-1"
+                  >
+                    <Save className="w-4 h-4" />{" "}
+                    {saveProfileIsPending ? "Saving..." : "Save"}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
+        </main>
+      </div>
+
+      <ChangeAvatarDialog
+        open={avatarUploadDialogVisible}
+        onOpenChange={setAvatarUploadDialogVisible}
+      />
+
+      <AlertDialog
+        open={removeAvatarDialogVisible}
+        onOpenChange={(open) =>
+          !open && !deleteAvatarIsPending && setRemoveAvatarDialogVisible(false)
+        }
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              profile picture and remove it from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter className="flex flex-row gap-3 mt-4">
+            <Button
+              disabled={deleteAvatarIsPending}
+              variant={"outline"}
+              onClick={() => setRemoveAvatarDialogVisible(false)}
+              className="mt-0 flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              disabled={deleteAvatarIsPending}
+              className="mt-0 flex-1"
+              onClick={async () => {
+                await deleteAvatarMutateAsync({
+                  avatarUrl: user?.user_metadata.avatar_url || "",
+                });
+              }}
+            >
+              {deleteAvatarIsPending ? (
+                <span className="flex items-center gap-2">
+                  <Loader className="animate-spin h-4 w-4" />
+                  Deleting
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Trash className="h-4 w-4" />
+                  Delete Avatar
+                </span>
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}

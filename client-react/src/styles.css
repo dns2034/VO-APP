@@ -1,7 +1,7 @@
-@import url('non.geist');
-@import 'tailwindcss';
+@import url("non.geist");
+@import "tailwindcss";
 
-@import 'tw-animate-css';
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -13,7 +13,7 @@ body {
 
 code {
   font-family:
-    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 :root {
@@ -137,7 +137,19 @@ code {
     @apply bg-background text-foreground;
   }
 
-  main{
+  main {
     margin-bottom: 5.25rem;
   }
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+input[type="time"] {
+  position: relative;
+  z-index: 10;
 }

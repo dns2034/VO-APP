@@ -10,7 +10,6 @@ import type { FileRouteTypes } from "@/routeTree.gen";
 export const Route = createFileRoute("/_authenticated")({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
-    console.log("user from _authenticated", context.auth?.user);
     if (context.auth?.user === null) {
       throw redirect({
         to: "/auth/login",

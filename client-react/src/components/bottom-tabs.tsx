@@ -10,21 +10,24 @@ export default function BottomTabs() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 w-full bg-background shadow-[0_-2px_4px_rgba(0,0,0,0.1)] px-2 py-2 md:py-3">
       <div className="grid grid-cols-5 gap-2 max-w-lg mx-auto">
         <Link
+          activeProps={{ className: "text-primary" }}
           to="/refer"
-          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary focus:text-primary py-1"
+          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary py-1"
         >
           <Users className="size-6" />
           <span className="truncate w-full text-center block">Refer</span>
         </Link>
         <Link
+          activeProps={{ className: "text-primary" }}
           to="/rewards"
-          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary focus:text-primary py-1"
+          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary py-1"
         >
           <Gift className="size-6" />
           <span className="truncate w-full text-center block">Rewards</span>
         </Link>
         <div className="flex flex-col items-center justify-end">
           <Link
+            activeProps={{ className: "text-primary" }}
             to="/book"
             className="flex flex-col items-center justify-end z-[2]"
           >
@@ -37,20 +40,27 @@ export default function BottomTabs() {
           </Link>
         </div>
         <Link
+          activeProps={{ className: "text-primary" }}
           to="/businesses"
-          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary focus:text-primary py-1"
+          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary py-1"
         >
           <Briefcase className="size-6" />
           <span className="truncate w-full text-center block">Businesses</span>
         </Link>
         <Link
+          activeProps={{ className: "text-primary" }}
           to="/profile"
-          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary focus:text-primary py-1"
+          className="flex flex-col items-center justify-end gap-1 text-xs font-medium text-muted-foreground hover:text-primary py-1"
         >
           <Avatar className="size-6">
             <AvatarImage
-              src={user?.user_metadata.avatar_url ? getAvatarUrl(user?.user_metadata.avatar_url).publicUrl : "/placeholder.png"}
+              src={
+                user?.user_metadata.avatar_url
+                  ? getAvatarUrl(user?.user_metadata.avatar_url).publicUrl
+                  : "/placeholder.png"
+              }
               alt={user?.user_metadata.display_name || "User Avatar"}
+              className="object-cover object-center"
             />
             <AvatarFallback>
               {"Placeholder Image"

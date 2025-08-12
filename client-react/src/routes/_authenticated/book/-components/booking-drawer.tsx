@@ -118,6 +118,8 @@ export default function BookingDrawer({
     },
     onSuccess: () => {
       toast.success("Booking created!");
+      bookingForm.reset();
+      onOpenChange(false);
     },
   });
 

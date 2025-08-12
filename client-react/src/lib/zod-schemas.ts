@@ -20,7 +20,7 @@ export const requestValidator = {
     branchId: z.string().min(1, "Branch ID is required"),
     spaceId: z.string().min(1, "Space ID is required"),
     spaceUnitId: z.string().min(1, "Space unit ID is required"),
-    voucherId: z.string().min(1, "Voucher ID is required"),
+    productVoucherId: z.string().min(1, "Product Voucher ID is required"),
     date: z.date(),
     startTime: z.string().min(1, "Start Time is required"),
     endTime: z.string().min(1, "End Time is required"),

@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarDays, Clock, MapPin, StickyNote } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -29,6 +30,13 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  formatDateLocal,
+  formatTimeAMPM,
+  minutesToTime,
+  timeToMinutes,
+  toFullTimeWithOffset,
+} from "@/lib/format";
 import {
   bookingsKeys,
   productVouchersKeys,
@@ -60,7 +68,7 @@ export default function BookingDrawer({
       branchId: selectedBranch ? selectedBranch.id : "",
       spaceId: "",
       spaceUnitId: "",
-      voucherId: "",
+      productVoucherId: "",
       date: undefined,
       startTime: "",
       endTime: "",
@@ -69,7 +77,21 @@ export default function BookingDrawer({
   });
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const formValues = bookingForm.watch();
+  const [
+    watchedBranchId,
+    watchedDate,
+    watchedProductVoucherId,
+    watchedSpaceId,
+    watchedSpaceUnitId,
+    watchedStartTime,
+  ] = bookingForm.watch([
+    "branchId",
+    "date",
+    "productVoucherId",
+    "spaceId",
+    "spaceUnitId",
+    "startTime",
+  ]);
 
   useEffect(() => {
     if (selectedBranch) {
@@ -77,7 +99,7 @@ export default function BookingDrawer({
         branchId: selectedBranch.id,
         spaceId: "",
         spaceUnitId: "",
-        voucherId: "",
+        productVoucherId: "",
         date: undefined,
         startTime: "",
         endTime: "",
@@ -86,36 +108,59 @@ export default function BookingDrawer({
     }
   }, [selectedBranch, bookingForm]);
 
-  const onCreateBooking = (values: BookingSchema) => {
-    console.log(values);
+  const { mutateAsync: createBookingMutateAsync } = useMutation({
+    mutationFn: bookingsService.create,
+    onError: (err) => {
+      toast.error(
+        "Failed to create booking: " +
+          (err instanceof Error ? err.message : "Unknown error")
+      );
+    },
+    onSuccess: () => {
+      toast.success("Booking created!");
+    },
+  });
+
+  const onCreateBooking = async (values: BookingSchema) => {
+    const { date, endTime, productVoucherId, spaceUnitId, startTime, remarks } =
+      values;
+    const isFullDay = selectedProduct?.duration === 24;
+    await createBookingMutateAsync({
+      date: formatDateLocal(date),
+      start_time: isFullDay ? null : toFullTimeWithOffset(startTime),
+      end_time: isFullDay ? null : toFullTimeWithOffset(endTime),
+      space_unit_id: spaceUnitId,
+      status: "booked",
+      remarks,
+      product_voucher_id: productVoucherId || undefined,
+    });
   };
 
   const { data: branchesQueryData, isPending: branchesQueryIsPending } =
     useQuery(branchesQueryOptions);
 
   const { data: spacesQueryData, isPending: spacesQueryIsPending } = useQuery({
-    queryKey: spacesKeys.list(formValues.branchId),
-    queryFn: () =>
-      spacesService.getByBranchId({ branchId: formValues.branchId }),
-    enabled: !!formValues.branchId,
+    queryKey: spacesKeys.list(watchedBranchId),
+    queryFn: () => spacesService.getByBranchId({ branchId: watchedBranchId }),
+    enabled: !!watchedBranchId,
   });
 
   const { data: spaceUnitsQueryData, isPending: spaceUnitsQueryIsPending } =
     useQuery({
-      queryKey: spaceUnitsKeys.list(formValues.spaceId),
+      queryKey: spaceUnitsKeys.list(watchedSpaceId),
       queryFn: () =>
-        spaceUnitsService.getBySpaceId({ spaceId: formValues.spaceId }),
-      enabled: !!formValues.spaceId,
+        spaceUnitsService.getBySpaceId({ spaceId: watchedSpaceId }),
+      enabled: !!watchedSpaceId,
     });
 
   const {
     data: productVouchersQueryData,
     isPending: productVouchersQueryIsPending,
   } = useQuery({
-    queryKey: productVouchersKeys.list(formValues.spaceId),
+    queryKey: productVouchersKeys.list(watchedSpaceId),
     queryFn: () =>
-      productVouchersService.getBySpaceId({ spaceId: formValues.spaceId }),
-    enabled: !!formValues.spaceId,
+      productVouchersService.getBySpaceId({ spaceId: watchedSpaceId }),
+    enabled: !!watchedSpaceId,
   });
 
   const {
@@ -123,31 +168,87 @@ export default function BookingDrawer({
     isPending: spaceAvailabilityQueryIsPending,
   } = useQuery({
     queryKey: spaceAvailabilityKeys.list({
-      date: formValues.date,
-      spaceId: formValues.spaceId,
+      date: watchedDate,
+      spaceId: watchedSpaceId,
     }),
     queryFn: () =>
       spaceAvailabilityService.getAvailableByDateAndSpaceId({
-        date: format(formValues.date, "yyyy-MM-dd"),
-        spaceId: formValues.spaceId,
+        date: format(watchedDate, "yyyy-MM-dd"),
+        spaceId: watchedSpaceId,
       }),
-    enabled: !!formValues.spaceId && !!formValues.date,
+    enabled: !!watchedSpaceId && !!watchedDate,
   });
 
-  const { data: bookingQueryData} = useQuery(
-    {
-      queryFn: () =>
-        bookingsService.getBySpaceUnitIdAndDate({
-          spaceUnitId: formValues.spaceUnitId,
-          date: format(formValues.date, "yyyy-MM-dd"),
-        }),
-      queryKey: bookingsKeys.list({
-        date: formValues.date,
-        spaceId: formValues.spaceId,
+  const { data: bookingQueryData } = useQuery({
+    queryFn: () =>
+      bookingsService.getBySpaceUnitIdAndDate({
+        spaceUnitId: watchedSpaceUnitId,
+        date: format(watchedDate, "yyyy-MM-dd"),
       }),
-      enabled: !!formValues.spaceUnitId && !!formValues.date,
+    queryKey: bookingsKeys.list({
+      date: watchedDate,
+      spaceId: watchedSpaceId,
+    }),
+    enabled: !!watchedSpaceUnitId && !!watchedDate,
+  });
+
+  const availableSlots = useMemo(() => {
+    if (!spaceAvailabilityQueryData) return [];
+
+    const timeNow = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(new Date());
+    const open = timeToMinutes(timeNow);
+    const close = timeToMinutes(spaceAvailabilityQueryData.closing_time);
+
+    // Sort bookings by start_time
+    const sortedBookings = (bookingQueryData || [])
+      ?.filter(
+        (b) =>
+          typeof b.start_time === "string" && typeof b.end_time === "string"
+      ) // skip bookings with null times
+      .slice()
+      .sort(
+        (a, b) =>
+          timeToMinutes(a.start_time as string) -
+          timeToMinutes(b.start_time as string)
+      );
+
+    const slots: { start: string; end: string }[] = [];
+    let current = open;
+
+    for (const booking of sortedBookings) {
+      const bStart = timeToMinutes(booking.start_time as string);
+      const bEnd = timeToMinutes(booking.end_time as string);
+
+      // Only add slot if current < bStart and bStart > current
+      if (current < bStart) {
+        // Ensure slot is within the availability window and not reversed
+        const slotStart = Math.max(current, open);
+        const slotEnd = Math.min(bStart, close);
+        if (slotStart < slotEnd) {
+          slots.push({
+            start: minutesToTime(slotStart),
+            end: minutesToTime(slotEnd),
+          });
+        }
+      }
+      // Move current pointer forward, but never before the end of this booking
+      current = Math.max(current, bEnd);
     }
-  );
+
+    // Free slot after last booking
+    if (current < close) {
+      slots.push({ start: minutesToTime(current), end: minutesToTime(close) });
+    }
+
+    // Remove zero-length or negative slots (shouldn't happen, but for safety)
+    return slots.filter(
+      (slot) => timeToMinutes(slot.end) > timeToMinutes(slot.start)
+    );
+  }, [spaceAvailabilityQueryData, bookingQueryData]);
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -294,7 +395,7 @@ export default function BookingDrawer({
               {/* VOUCHER SELECTION */}
               <FormField
                 control={bookingForm.control}
-                name="voucherId"
+                name="productVoucherId"
                 render={({ field }) => {
                   return (
                     <FormItem>
@@ -312,14 +413,13 @@ export default function BookingDrawer({
                             }
                           }}
                           disabled={
-                            productVouchersQueryIsPending ||
-                            !formValues.spaceUnitId
+                            productVouchersQueryIsPending || !watchedSpaceUnitId
                           }
                         >
                           <SelectTrigger className="w-full">
                             <SelectValue
                               placeholder={
-                                !formValues.spaceUnitId
+                                !watchedSpaceUnitId
                                   ? "Choose a space unit..."
                                   : "Choose a voucher..."
                               }
@@ -331,7 +431,9 @@ export default function BookingDrawer({
                                 key={productVoucher.id}
                                 value={productVoucher.id}
                               >
-                                {productVoucher.product.name}
+                                {productVoucher.product
+                                  ? productVoucher.product.name
+                                  : "Unknown Product"}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -364,7 +466,7 @@ export default function BookingDrawer({
                             selected={field.value}
                             onSelect={field.onChange}
                             className="rounded-md w-full min-w-0 min-h-0 h-auto"
-                            disabled={!formValues.voucherId}
+                            disabled={!watchedProductVoucherId}
                             fromDate={new Date(new Date().setHours(0, 0, 0, 0))}
                             toDate={undefined}
                             modifiers={{
@@ -396,22 +498,25 @@ export default function BookingDrawer({
                 </div>
 
                 <p className="text-xs text-muted-foreground mb-3 ml-7">
-                  {!formValues.voucherId
+                  {!watchedProductVoucherId
                     ? "Select a voucher to pick a time slot."
                     : spaceAvailabilityQueryIsPending
                       ? "Loading availability..."
-                      : spaceAvailabilityQueryData
+                      : availableSlots
                         ? "Pick a time within the available slots below."
                         : "There's currently no available time slot."}
                 </p>
-                {/* {availableSlots.length > 0 && (
+                {availableSlots.length > 0 && (
                   <div className="my-4">
                     <div className="text-sm font-semibold mb-1 ml-1">
                       Available Slots:
                     </div>
                     <ul className="space-y-1">
                       {availableSlots.map((slot) => (
-                        <li key={slot.start + "-" + slot.end} className="ml-2">
+                        <li
+                          key={`${slot.start} - ${slot.end}`}
+                          className="ml-2"
+                        >
                           <span
                             className="inline-block rounded px-2 py-0.5 text-sm"
                             style={{
@@ -426,7 +531,7 @@ export default function BookingDrawer({
                       ))}
                     </ul>
                   </div>
-                )} */}
+                )}
                 <div className="flex flex-col sm:flex-row gap-4 p-2">
                   <div className="flex-1 flex flex-col gap-1.5">
                     <FormField
@@ -441,14 +546,30 @@ export default function BookingDrawer({
                                 id="start-time"
                                 type="time"
                                 {...field}
-                                disabled={!formValues.date}
-                                min={
-                                  formValues.date &&
-                                  new Date(formValues.date).toDateString() ===
-                                    new Date().toDateString()
-                                    ? new Date().toTimeString().slice(0, 5)
-                                    : undefined
-                                }
+                                onChange={(e) => {
+                                  field.onChange(e);
+                                  const [h, m] = e.target.value
+                                    .split(":")
+                                    .map(Number);
+                                  const endDate = new Date(0, 0, 0, h, m);
+                                  endDate.setHours(
+                                    endDate.getHours() +
+                                      (selectedProduct?.duration ?? 0)
+                                  );
+                                  const endH = endDate
+                                    .getHours()
+                                    .toString()
+                                    .padStart(2, "0");
+                                  const endM = endDate
+                                    .getMinutes()
+                                    .toString()
+                                    .padStart(2, "0");
+                                  bookingForm.setValue(
+                                    "endTime",
+                                    `${endH}:${endM}`
+                                  );
+                                }}
+                                disabled={!watchedDate}
                               />
                             </FormControl>
                           </FormItem>
@@ -469,8 +590,8 @@ export default function BookingDrawer({
                                 id="end-time"
                                 type="time"
                                 {...field}
-                                disabled={!formValues.startTime}
-                                min={formValues.startTime}
+                                disabled={!watchedStartTime}
+                                min={watchedStartTime}
                               />
                             </FormControl>
                           </FormItem>

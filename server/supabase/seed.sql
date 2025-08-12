@@ -535,7 +535,7 @@ INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_a
 	('rewards', 'rewards', NULL, '2025-08-11 00:56:55.352314+00', '2025-08-11 00:56:55.352314+00', true, false, NULL, NULL, NULL),
 	('products', 'products', NULL, '2025-08-11 01:11:56.04885+00', '2025-08-11 01:11:56.04885+00', true, false, NULL, NULL, NULL),
 	('branches', 'branches', NULL, '2025-08-11 03:57:31.630723+00', '2025-08-11 03:57:31.630723+00', true, false, NULL, NULL, NULL),
-	('businesses', 'businesses', NULL, '2025-08-11 06:32:09.575309+00', '2025-08-11 06:32:09.575309+00', true, false, NULL, NULL, NULL);
+	('businesses', 'businesses', NULL, '2025-08-11 06:32:09.575309+00', '2025-08-11 06:32:09.575309+00', true, false, NULL, NULL, NULL) ON CONFLICT (id) DO NOTHING;
 
 
 --

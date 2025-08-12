@@ -31,3 +31,15 @@ export function formatTimeAMPM(time: string) {
     hour12: true,
   });
 }
+
+export function toFullTimeWithOffset(timeHHMM: string) {
+  // Split hours and minutes
+  const [hours, minutes] = timeHHMM.split(":");
+  
+  // Get system timezone offset in minutes (negative if ahead of UTC)
+  const offsetMinutes = -new Date().getTimezoneOffset();
+  const offsetSign = offsetMinutes >= 0 ? "+" : "-";
+  const offsetHours = String(Math.floor(Math.abs(offsetMinutes) / 60)).padStart(2, "0");
+
+  return `${hours}:${minutes}:00${offsetSign}${offsetHours}`;
+}

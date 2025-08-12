@@ -745,8 +745,8 @@ export type Database = {
       get_space_availability: {
         Args: { p_date: string; p_space_unit_id: string }
         Returns: {
-          closing_time: string
           opening_time: string
+          closing_time: string
         }[]
       }
       get_total_active_credits: {
@@ -781,10 +781,10 @@ export type Database = {
         Args: { p_booking_id: string; p_user_id: string }
         Returns: {
           result_start_time: string
+          result_booking_date: string
           result_voucher_id: string
           result_status: string
           result_created_at: string
-          result_booking_date: string
         }[]
       }
       validate_time_within_bounds: {

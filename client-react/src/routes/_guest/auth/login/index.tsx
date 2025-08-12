@@ -43,15 +43,15 @@ export const Route = createFileRoute("/_guest/auth/login/")({
   component: RouteComponent,
   validateSearch: (search) => {
     return {
-      redirect: (search.redirect as string) || undefined
-    }
-  }
+      redirect: (search.redirect as string) || undefined,
+    };
+  },
 });
 
 function RouteComponent() {
   const [showPassword, setShowPassword] = useState(true);
   const router = useRouter();
-  const search = Route.useSearch()
+  const search = Route.useSearch();
   const loginForm = useForm<LoginSchema>({
     resolver: zodResolver(requestValidator.login),
     defaultValues: { email: "", password: "" },
@@ -73,7 +73,7 @@ function RouteComponent() {
       });
     }
 
-    router.navigate({ to: search.redirect || '/' });
+    router.navigate({ to: search.redirect || "/" });
   };
 
   async function handleMagicLinkSubmit(values: MagicLinkSchema) {
@@ -100,40 +100,40 @@ function RouteComponent() {
   return (
     <div className="min-h-screen flex items-center w-full h-full">
       {/* left panel */}
-      <BackgroundGradientAnimation containerClassName="hidden lg:block text-white">
+      <BackgroundGradientAnimation containerClassName="hidden lg:block text-primary-foreground">
         <div className="h-full min-h-screen flex flex-col items-center justify-center">
           <div className="w-full h-24 rounded-full flex flex-shrink-0 items-center justify-center mb-8 backdrop-blur-sm">
             <img src="/icon.webp" alt="Logo" className="h-20" />
           </div>
           <h1 className="text-4xl font-bold mb-4 text-center">Welcome Back</h1>
-          <p className="text-xl text-center mb-8 max-w-md text-white/80">
+          <p className="text-xl text-center mb-8 max-w-md text-primary-foreground/80">
             Sign in to your account to access your virtual space.
           </p>
 
           <div className="space-y-6 w-full max-w-md flex flex-col pl-10">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <span className="text-white font-bold">1</span>
+              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+                <span className="text-primary-foreground font-bold">1</span>
               </div>
-              <p className="text-white/90 text-left text-lg">
+              <p className="text-primary-foreground/90 text-left text-lg">
                 Enter your credentials
               </p>
             </div>
 
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-4">
-                <span className="text-white font-bold">2</span>
+              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center mr-4">
+                <span className="text-primary-foreground font-bold">2</span>
               </div>
-              <p className="text-white/90 text-left text-lg">
+              <p className="text-primary-foreground/90 text-left text-lg">
                 Access your personalized office
               </p>
             </div>
 
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-4">
-                <span className="text-white font-bold">3</span>
+              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center mr-4">
+                <span className="text-primary-foreground font-bold">3</span>
               </div>
-              <p className="text-white/90 text-left text-lg">
+              <p className="text-primary-foreground/90 text-left text-lg">
                 Collab with your team seamlessly
               </p>
             </div>
@@ -197,7 +197,7 @@ function RouteComponent() {
                           <div className="text-right space-y-0 mt-0 pb-2">
                             <Link
                               to="/auth/forgot-password"
-                              className="text-xs text-purple-600 hover:underline"
+                              className="text-xs text-primary hover:underline"
                             >
                               Forgot Password?
                             </Link>
@@ -249,7 +249,7 @@ function RouteComponent() {
 
                   <Button
                     type="submit"
-                    className="w-full bg-[#7643ea] hover:bg-[#5f35c6]"
+                    className="w-full"
                     disabled={
                       loginForm.formState.isSubmitting ||
                       !loginForm.formState.isValid

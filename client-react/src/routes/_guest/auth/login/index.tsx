@@ -76,7 +76,7 @@ function RouteComponent() {
 
           <div className="space-y-6 w-full max-w-md flex flex-col pl-10">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center">
                 <span className="text-primary-foreground font-bold">1</span>
               </div>
               <p className="text-primary-foreground/90 text-left text-lg">
@@ -85,7 +85,7 @@ function RouteComponent() {
             </div>
 
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center mr-4">
+              <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center mr-4">
                 <span className="text-primary-foreground font-bold">2</span>
               </div>
               <p className="text-primary-foreground/90 text-left text-lg">
@@ -94,7 +94,7 @@ function RouteComponent() {
             </div>
 
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center mr-4">
+              <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center mr-4">
                 <span className="text-primary-foreground font-bold">3</span>
               </div>
               <p className="text-primary-foreground/90 text-left text-lg">

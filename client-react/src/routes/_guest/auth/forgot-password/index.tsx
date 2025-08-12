@@ -83,8 +83,8 @@ function RouteComponent() {
     ((cooldownDuration - cooldownTime) / cooldownDuration) * 100;
 
   return (
-    <div className="min-h-screen w-full flex items-center bg-white">
-      <BackgroundGradientAnimation containerClassName="hidden lg:block text-white">
+    <div className="min-h-screen w-full flex items-center">
+      <BackgroundGradientAnimation containerClassName="hidden lg:block text-primary-foreground">
         <div className="h-full min-h-screen flex flex-col items-center justify-center">
           <div className="w-full h-24 rounded-full flex flex-shrink-0 items-center justify-center mb-8 backdrop-blur-sm">
             <img src="/icon.webp" alt="Logo" className="h-20" />
@@ -92,35 +92,35 @@ function RouteComponent() {
           <h1 className="text-4xl font-bold mb-4 text-center">
             Password Recovery
           </h1>
-          <p className="text-xl text-center mb-8 max-w-md text-white/80">
+          <p className="text-xl text-center mb-8 max-w-md text-primary-foreground/80">
             Securely reset your password and regain access to your account in
             just a few steps.
           </p>
 
           <div className="space-y-6 w-full max-w-md flex flex-col pl-10">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <span className="text-white font-bold">1</span>
+              <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center">
+                <span className="text-primary-foreground font-bold">1</span>
               </div>
-              <p className="text-white/90 text-left text-lg">
+              <p className="text-primary-foreground/90 text-left text-lg">
                 Enter your email address
               </p>
             </div>
 
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-4">
-                <span className="text-white font-bold">2</span>
+              <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center mr-4">
+                <span className="text-primary-foreground font-bold">2</span>
               </div>
-              <p className="text-white/90 text-left text-lg">
+              <p className="text-primary-foreground/90 text-left text-lg">
                 Check your inbox for the reset link
               </p>
             </div>
 
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-4">
-                <span className="text-white font-bold">3</span>
+              <div className="w-10 h-10 rounded-full bg-background/20 flex items-center justify-center mr-4">
+                <span className="text-primary-foreground font-bold">3</span>
               </div>
-              <p className="text-white/90 text-left text-lg">
+              <p className="text-primary-foreground/90 text-left text-lg">
                 Create a new secure password
               </p>
             </div>
@@ -128,22 +128,19 @@ function RouteComponent() {
         </div>
       </BackgroundGradientAnimation>
 
-      <MagicCard
-        gradientColor={"#7643ea30"}
-        className="w-full h-screen md:px-0 flex flex-col items-center justify-center"
-      >
+      <div className="w-full h-screen px-4 flex flex-col items-center justify-center">
         <div className="flex justify-center mb-8">
           <Lock className="h-12 w-12" />
         </div>
         {/* <Card className="border-none"> */}
         <h1 className="text-2xl font-bold mb-6 text-center">Reset Password</h1>
-        <p className="text-sm text-gray-500 mb-6 text-center max-w-80">
+        <p className="text-sm text-muted-foreground mb-6 text-center max-w-80">
           Enter your email address and we'll send you a link to reset your
           password.
         </p>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full md:max-w-sm">
             <FormField
               control={form.control}
               name="email"
@@ -151,11 +148,7 @@ function RouteComponent() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Enter your email"
-                      className="bg-transparent"
-                    />
+                    <Input {...field} placeholder="name@example.com" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -165,7 +158,7 @@ function RouteComponent() {
               <div className="space-y-2 animate-in fade-in duration-300">
                 <Progress
                   value={cooldownProgress}
-                  className="h-2 bg-slate-200"
+                  className="h-2 bg-primary-foreground"
                 />
                 <p className="text-xs text-muted-foreground">
                   You can request another reset link in{" "}
@@ -175,7 +168,7 @@ function RouteComponent() {
             )}
             <Button
               type="submit"
-              className="w-full bg-[#7643ea] hover:bg-[#5f35c6] disabled:bg-[#714fc9] disabled:curser-not-allowed"
+              className="w-full"
               disabled={
                 form.formState.isSubmitting ||
                 !form.formState.isValid ||
@@ -207,14 +200,15 @@ function RouteComponent() {
             <div className="text-center mt-4">
               <Link
                 to="/auth/login"
-                className="text-sm text-[#7643ea] hover:underline"
+                search={{ redirect: undefined }}
+                className="text-sm text-primary hover:underline"
               >
                 Back to Login
               </Link>
             </div>
           </form>
         </Form>
-      </MagicCard>
+      </div>
       {/* </Card> */}
     </div>
   );

@@ -68,7 +68,10 @@ function RouteComponent() {
                   <div className="w-full aspect-square rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={biz.logo_url || "/placeholder.png"}
+                      src={storageService.getFileUrl(
+                        "businesses",
+                        biz.logo_url || "/placeholder.png"
+                      )}
                       alt={biz.name}
                       className="object-cover w-full h-full"
                     />
@@ -177,7 +180,10 @@ function RouteComponent() {
                     <div className="w-full aspect-square rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={biz.logo_url || "/placeholder.png"}
+                        src={storageService.getFileUrl(
+                          "businesses",
+                          biz.logo_url || "/placeholder.png"
+                        )}
                         alt={biz.name}
                         className="object-cover w-full h-full"
                       />

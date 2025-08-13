@@ -23,6 +23,7 @@ import { rewardsService } from "@/services/reward.service";
 import { rewardVouchersService } from "@/services/reward-voucher.service";
 import ConfirmRedeemAlertDialog from "./-components/confirm-redeem-alert-dialog";
 import MyVouchers from "./-components/my-vouchers";
+import { storageService } from "@/services/storage.service";
 
 export type RedemptionCandidate = {
   id: string;
@@ -197,9 +198,12 @@ function RouteComponent() {
                 >
                   <div className="flex-shrink-0 relative w-16 h-16 rounded-md overflow-hidden bg-gray-100">
                     <img
-                      src={item.image_path || "/placeholder.png"}
+                      src={storageService.getFileUrl(
+                        item.type == "reward" ? "rewards" : "products",
+                        item.image_path || "/placeholder.png"
+                      )}
                       alt={item.name}
-                      className="object-cover"
+                      className="w-full h-full object-cover" // changed here
                     />
                   </div>
                   <div className="flex-1 min-w-0 flex flex-col">
@@ -210,7 +214,8 @@ function RouteComponent() {
                       {item.description}
                     </span>
                     <span className="text-xs text-gray-500 mt-1 font-medium">
-                      {item.price} points
+                      {item.price}{" "}
+                      {item.type === "product" ? "Credits" : "Points"}
                     </span>
                   </div>
                   <Button

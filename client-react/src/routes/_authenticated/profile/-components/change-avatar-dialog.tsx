@@ -13,8 +13,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { updateAvatar, uploadAvatar } from "@/services/user.service";
+import { updateAvatar } from "@/services/user.service";
 import { useAuthStore } from "@/store/auth.store";
+import { storageService } from "@/services/storage.service";
 
 type TUploadedImage = { file: File; preview: string };
 
@@ -37,13 +38,6 @@ export default function ChangeAvatarDialog({
     isPending: updateAvatarIsPending,
   } = useMutation({
     mutationFn: updateAvatar,
-  });
-
-  const {
-    mutateAsync: uploadAvatarMutateAsync,
-    isPending: uploadAvatarIsPending,
-  } = useMutation({
-    mutationFn: uploadAvatar,
   });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -76,48 +70,46 @@ export default function ChangeAvatarDialog({
   const handleUpload = async () => {
     if (!uploadedImage) return;
 
-    // same name for all avatar uploads to overwrite the existing one [just pass the id of the user]
-    const avatarPath = user?.id as string;
+    // Use the user's id as the folder in the avatar bucket
+    const userId = user?.id as string;
+    const filePath = `${userId}/${uploadedImage.file.name}`;
 
-    await uploadAvatarMutateAsync(
-      { path: avatarPath, file: uploadedImage.file },
-      {
-        onSuccess: async () => {
-          // Append timestamp to force refresh
-          const freshPath = `${avatarPath}?t=${Date.now()}`;
-          await updateAvatarMutateAsync(
-            {
-              avatarPath: freshPath,
-            },
-            {
-              onSuccess: () => {
-                // close the dialog
-                toast.success("Success", {
-                  description: "Avatar uploaded successfully!",
-                });
-                handleOpenChange(false);
-              },
-              onError: (error) => {
-                console.error("Error updating avatar:", error);
-              },
-            }
-          );
-        },
-        onError: (error) => {
-          console.error("Error updating avatar:", error);
-        },
-      }
+    // Upload to 'avatar' bucket using storageService
+    const { error } = await storageService.uploadFile(
+      uploadedImage.file,
+      "avatars",
+      filePath
     );
+
+    if (!error) {
+      // Append timestamp to force refresh
+      const freshPath = `${filePath}?t=${Date.now()}`;
+      await updateAvatarMutateAsync(
+        {
+          avatarPath: freshPath,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Success", {
+              description: "Avatar uploaded successfully!",
+            });
+            handleOpenChange(false);
+          },
+          onError: (error) => {
+            console.error("Error updating avatar:", error);
+          },
+        }
+      );
+    } else {
+      console.error("Error uploading avatar:", error);
+      toast.error("Failed to upload avatar.");
+    }
   };
 
   return (
     <Dialog
       open={open}
-      onOpenChange={(open) =>
-        !updateAvatarIsPending &&
-        !uploadAvatarIsPending &&
-        handleOpenChange(open)
-      }
+      onOpenChange={(open) => !updateAvatarIsPending && handleOpenChange(open)}
     >
       <DialogContent className="w-[90%] sm:max-w-md">
         <DialogHeader>
@@ -188,13 +180,11 @@ export default function ChangeAvatarDialog({
 
         <DialogFooter className="flex items-center justify-end">
           <Button
-            disabled={
-              !uploadedImage || updateAvatarIsPending || uploadAvatarIsPending
-            }
+            disabled={!uploadedImage || updateAvatarIsPending}
             onClick={handleUpload}
             className="bg-primary hover:bg-violet-700 w-full"
           >
-            {updateAvatarIsPending || uploadAvatarIsPending ? (
+            {updateAvatarIsPending ? (
               <>
                 <Loader className="animate-spin size-4" />
                 <span>Uploading</span>

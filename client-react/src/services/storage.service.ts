@@ -1,10 +1,10 @@
 import supabaseClient from "@/lib/supabase-client";
 
 export const storageService = {
-  uploadFile: async (file: File) => {
+  uploadFile: async (file: File, bucket: string, path: string) => {
     const { data, error } = await supabaseClient.storage
-      .from("uploads")
-      .upload(`public/${file.name}`, file);
+      .from(bucket)
+      .upload(path, file, { upsert: true });
     return { data, error };
   },
 

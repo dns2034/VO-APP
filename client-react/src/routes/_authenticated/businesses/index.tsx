@@ -16,6 +16,7 @@ import { businessesKeys } from "@/lib/query-keys";
 import { businessesService } from "@/services/business.service";
 import { useAuthStore } from "@/store/auth.store";
 import type { Business } from "@/types";
+import { storageService } from "@/services/storage.service";
 
 const businessQueryOptions = queryOptions({
   queryKey: businessesKeys.all,
@@ -89,7 +90,10 @@ function RouteComponent() {
                   <div className="w-20 h-20 rounded-full overflow-hidden border bg-muted flex items-center justify-center mb-2">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={selectedBusiness?.logo_url || "/placeholder.png"}
+                      src={storageService.getFileUrl(
+                        "businesses",
+                        selectedBusiness?.logo_url || "/placeholder.png"
+                      )}
                       alt={selectedBusiness?.name || "Business logo"}
                       className="object-cover w-full h-full"
                     />

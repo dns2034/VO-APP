@@ -46,7 +46,7 @@ import {
 } from "@/lib/query-keys";
 import { type BookingSchema, requestValidator } from "@/lib/zod-schemas";
 import { bookingsService } from "@/services/booking.service";
-import { productVouchersService } from "@/services/product-voucher.service";
+import { productVouchersService } from "@/services/product-vouchers.service";
 import { spacesService } from "@/services/space.service";
 import { spaceAvailabilityService } from "@/services/space-availability.service";
 import { spaceUnitsService } from "@/services/space-units.service";

@@ -12,7 +12,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { productsKeys } from "@/lib/query-keys";
-import { productVouchersService } from "@/services/product-voucher.service";
+import { productVouchersService } from "@/services/product-vouchers.service";
 import { rewardVouchersService } from "@/services/reward-voucher.service";
 import type { RedemptionCandidate } from "..";
 

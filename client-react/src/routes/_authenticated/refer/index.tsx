@@ -1,13 +1,14 @@
 import { queryOptions, useSuspenseQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Send, Share2 } from "lucide-react";
-import { useState } from "react";
+import { use, useState } from "react";
 import AppHeader from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { creditsKeys, pointsKeys } from "@/lib/query-keys";
-import { creditsService } from "@/services/credit.service";
+import { creditsService } from "@/services/credits.service";
 import { pointsService } from "@/services/point.service";
+import { useCredits } from "@/hooks/use-credits";
 
 const creditsQueryOptions = queryOptions({
   queryKey: creditsKeys.all,
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/_authenticated/refer/")({
 });
 
 function RouteComponent() {
+  const credits = useCredits();
   const [{ data: pointsQueryData }, { data: creditsQueryData }] =
     useSuspenseQueries({ queries: [pointsQueryOptions, creditsQueryOptions] });
 
@@ -68,7 +70,7 @@ function RouteComponent() {
               Active Credits
             </span>
             <span className="text-2xl font-bold text-primary mt-1">
-              {activeCredits}
+              {credits.data}
             </span>
           </div>
           <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-lg border border-border py-4">

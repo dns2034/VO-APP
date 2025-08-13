@@ -1,5 +1,5 @@
 // credits.service.ts
-import supabaseClient from "@/config/supabase-client";
+import supabaseClient from "@/lib/supabase-client";
 
 export const creditsService = {
   getUserCredits: async (userId: string) => {

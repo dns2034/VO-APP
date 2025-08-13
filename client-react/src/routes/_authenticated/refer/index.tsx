@@ -1,7 +1,7 @@
 import { queryOptions, useSuspenseQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Send, Share2 } from "lucide-react";
-import { use, useState } from "react";
+import { useState } from "react";
 import AppHeader from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,10 +35,6 @@ function RouteComponent() {
   const [{ data: pointsQueryData }, { data: creditsQueryData }] =
     useSuspenseQueries({ queries: [pointsQueryOptions, creditsQueryOptions] });
 
-  // Count active credits and points
-  const activeCredits = creditsQueryData.filter(
-    (c) => c.status === "active"
-  ).length;
   const activePoints = pointsQueryData.filter(
     (p) => p.status === "active"
   ).length;

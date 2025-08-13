@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQueries } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Send, Share2 } from "lucide-react";
 import { useState } from "react";
@@ -6,8 +6,10 @@ import AppHeader from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { creditsKeys, pointsKeys } from "@/lib/query-keys";
-import { creditsService } from "@/services/credit.service";
-import { pointsService } from "@/services/point.service";
+import { creditsService } from "@/services/credits.service";
+import { pointsService } from "@/services/points.service";
+import { useCredits } from "@/hooks/use-credits";
+import { usePoints } from "@/hooks/use-points";
 
 const creditsQueryOptions = queryOptions({
   queryKey: creditsKeys.all,
@@ -30,16 +32,8 @@ export const Route = createFileRoute("/_authenticated/refer/")({
 });
 
 function RouteComponent() {
-  const [{ data: pointsQueryData }, { data: creditsQueryData }] =
-    useSuspenseQueries({ queries: [pointsQueryOptions, creditsQueryOptions] });
-
-  // Count active credits and points
-  const activeCredits = creditsQueryData.filter(
-    (c) => c.status === "active"
-  ).length;
-  const activePoints = pointsQueryData.filter(
-    (p) => p.status === "active"
-  ).length;
+  const credits = useCredits();
+  const points = usePoints();
 
   // Mock referral link
   const referralLink = "https://incub8space.com/ref/abc123";
@@ -68,13 +62,13 @@ function RouteComponent() {
               Active Credits
             </span>
             <span className="text-2xl font-bold text-primary mt-1">
-              {activeCredits}
+              {credits.data}
             </span>
           </div>
           <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-lg border border-border py-4">
             <span className="text-xs text-muted-foreground">Active Points</span>
             <span className="text-2xl font-bold text-primary mt-1">
-              {activePoints}
+              {points.data}
             </span>
           </div>
         </div>

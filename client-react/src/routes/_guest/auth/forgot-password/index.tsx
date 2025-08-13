@@ -4,7 +4,6 @@ import { Loader2, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { MagicCard } from "@/components/magicui/magic-card";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { Button } from "@/components/ui/button";
 import {
@@ -140,7 +139,10 @@ function RouteComponent() {
         </p>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full md:max-w-sm">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-3 w-full md:max-w-sm"
+          >
             <FormField
               control={form.control}
               name="email"

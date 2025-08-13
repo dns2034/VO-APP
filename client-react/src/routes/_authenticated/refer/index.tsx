@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQueries } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Send, Share2 } from "lucide-react";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { creditsKeys, pointsKeys } from "@/lib/query-keys";
 import { creditsService } from "@/services/credits.service";
-import { pointsService } from "@/services/point.service";
+import { pointsService } from "@/services/points.service";
 import { useCredits } from "@/hooks/use-credits";
 
 const creditsQueryOptions = queryOptions({
@@ -32,12 +32,6 @@ export const Route = createFileRoute("/_authenticated/refer/")({
 
 function RouteComponent() {
   const credits = useCredits();
-  const [{ data: pointsQueryData }, { data: creditsQueryData }] =
-    useSuspenseQueries({ queries: [pointsQueryOptions, creditsQueryOptions] });
-
-  const activePoints = pointsQueryData.filter(
-    (p) => p.status === "active"
-  ).length;
 
   // Mock referral link
   const referralLink = "https://incub8space.com/ref/abc123";
@@ -72,7 +66,7 @@ function RouteComponent() {
           <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-lg border border-border py-4">
             <span className="text-xs text-muted-foreground">Active Points</span>
             <span className="text-2xl font-bold text-primary mt-1">
-              {activePoints}
+              {credits.data}
             </span>
           </div>
         </div>

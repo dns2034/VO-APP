@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import type { Branch } from "@/types";
 import { branchesQueryOptions } from "..";
 import BookingDrawer from "./booking-drawer";
+import { storageService } from "@/services/storage.service";
 
 export default function Branches() {
   const { data: branches } = useSuspenseQuery(branchesQueryOptions);
@@ -19,7 +20,10 @@ export default function Branches() {
           {branches.map((branch) => (
             <div key={branch.id} className="mb-4 py-0 relative">
               <img
-                src={branch?.image_path || "/placeholder.png"}
+                src={storageService.getFileUrl(
+                  "branches",
+                  branch?.image_path || "/placeholder.png"
+                )}
                 alt={branch.name}
                 width={500}
                 height={500}

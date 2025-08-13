@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
+          operationName?: string
           query?: string
           variables?: Json
           extensions?: Json
-          operationName?: string
         }
         Returns: Json
       }
@@ -710,11 +710,11 @@ export type Database = {
     Functions: {
       assign_booking_times_by_duration: {
         Args: {
-          p_end: string
           p_duration: number
-          p_close: string
-          p_open: string
           p_start: string
+          p_end: string
+          p_open: string
+          p_close: string
         }
         Returns: {
           end_time: string
@@ -722,7 +722,7 @@ export type Database = {
         }[]
       }
       cancel_booking: {
-        Args: { p_user_id: string; p_remarks: string; p_booking_id: string }
+        Args: { p_user_id: string; p_booking_id: string; p_remarks: string }
         Returns: string
       }
       check_booking_cancellation_window: {
@@ -731,15 +731,15 @@ export type Database = {
       }
       check_booking_overlap: {
         Args: {
-          p_space_unit_id: string
-          p_end: string
           p_start: string
+          p_end: string
+          p_space_unit_id: string
           p_date: string
         }
         Returns: undefined
       }
       generate_booking_voucher: {
-        Args: { p_user_id: string; p_space_unit_id: string }
+        Args: { p_space_unit_id: string; p_user_id: string }
         Returns: string
       }
       generate_voucher_code: {
@@ -749,18 +749,22 @@ export type Database = {
       get_product_info: {
         Args: { p_voucher_id: string }
         Returns: {
-          product_id: string
           product_duration: number
+          product_id: string
         }[]
       }
       get_space_availability: {
-        Args: { p_space_unit_id: string; p_date: string }
+        Args: { p_date: string; p_space_unit_id: string }
         Returns: {
-          closing_time: string
           opening_time: string
+          closing_time: string
         }[]
       }
       get_total_active_credits: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
+      get_total_active_points: {
         Args: { p_user_id: string }
         Returns: number
       }
@@ -789,21 +793,21 @@ export type Database = {
         Returns: undefined
       }
       validate_booking: {
-        Args: { p_user_id: string; p_booking_id: string }
+        Args: { p_booking_id: string; p_user_id: string }
         Returns: {
-          result_voucher_id: string
-          result_status: string
           result_created_at: string
-          result_start_time: string
+          result_status: string
+          result_voucher_id: string
           result_booking_date: string
+          result_start_time: string
         }[]
       }
       validate_time_within_bounds: {
         Args: {
-          p_start: string
-          p_close: string
           p_open: string
           p_end: string
+          p_close: string
+          p_start: string
         }
         Returns: undefined
       }
@@ -813,11 +817,11 @@ export type Database = {
       }
       verify_product_voucher: {
         Args: {
-          p_end_time: string
           p_voucher_id: string
-          p_start_time: string
-          p_space_unit_id: string
           p_user_id: string
+          p_space_unit_id: string
+          p_start_time: string
+          p_end_time: string
         }
         Returns: undefined
       }

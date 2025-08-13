@@ -58,7 +58,11 @@ npx supabase db pull --db-url postgresql://postgres:73R9yNL86b3dZxI8MPrmLMPIOQrB
 **Push local migrations to production**
 
 ```sh
-npx supabase db push --db-url postgresql://postgres:73R9yNL86b3dZxI8MPrmLMPIOQrBKxHt@api.virtualoffice.incub8.space:54324/postgres
+npx supabase db push --db-url postgresql://postgres:E8vfli1DcPtJ73etVXtqKBNh3COIiWOx@api.virtualoffice.incub8.space:54325/postgres
+```
+
+```sh
+npx supabase db diff --db-url postgresql://postgres:E8vfli1DcPtJ73etVXtqKBNh3COIiWOx@api.virtualoffice.incub8.space:54325/postgres
 ```
 
 ---

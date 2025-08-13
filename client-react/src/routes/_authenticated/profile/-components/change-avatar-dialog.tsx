@@ -13,11 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import {
-  getAvatarUrl,
-  updateAvatar,
-  uploadAvatar,
-} from "@/services/user.service";
+import { updateAvatar, uploadAvatar } from "@/services/user.service";
 import { useAuthStore } from "@/store/auth.store";
 
 type TUploadedImage = { file: File; preview: string };

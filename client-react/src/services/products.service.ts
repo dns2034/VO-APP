@@ -54,7 +54,7 @@ export const productsService = {
 
     if (error) throw error;
   },
-  getProductsBySpaceId: async (spaceId: string) => {
+  getBySpaceId: async (spaceId: string) => {
     const { data, error } = await supabase
       .from("products")
       .select("*")

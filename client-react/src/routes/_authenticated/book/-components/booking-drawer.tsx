@@ -39,14 +39,12 @@ import {
 } from "@/lib/format";
 import {
   bookingsKeys,
-  productVouchersKeys,
   spaceAvailabilityKeys,
   spacesKeys,
   spaceUnitsKeys,
 } from "@/lib/query-keys";
 import { type BookingSchema, requestValidator } from "@/lib/zod-schemas";
 import { bookingsService } from "@/services/booking.service";
-import { productVouchersService } from "@/services/product-vouchers.service";
 import { spacesService } from "@/services/space.service";
 import { spaceAvailabilityService } from "@/services/space-availability.service";
 import { spaceUnitsService } from "@/services/space-units.service";
@@ -54,6 +52,7 @@ import type { Branch, Product } from "@/types";
 import { branchesQueryOptions } from "..";
 import RedeemVoucherDialog from "./redeem-voucher-dialog";
 import NoVoucherPrompt from "./no-voucher-prompt";
+import { useProductVouchersBySpaceId } from "@/hooks/use-product-vouchers";
 
 export default function BookingDrawer({
   open,
@@ -157,15 +156,9 @@ export default function BookingDrawer({
       enabled: !!watchedSpaceId,
     });
 
-  const {
-    data: productVouchersQueryData,
-    isPending: productVouchersQueryIsPending,
-  } = useQuery({
-    queryKey: productVouchersKeys.list(watchedSpaceId),
-    queryFn: () =>
-      productVouchersService.getBySpaceId({ spaceId: watchedSpaceId }),
-    enabled: !!watchedSpaceId,
-  });
+  const { productVouchers, isProductVouchersPending } =
+    useProductVouchersBySpaceId(watchedSpaceId);
+  console.log("Product Vouchers:", productVouchers);
 
   const {
     data: spaceAvailabilityQueryData,
@@ -270,16 +263,16 @@ export default function BookingDrawer({
   const handleVoucherSelectOpen = useCallback(() => {
     if (
       watchedSpaceUnitId &&
-      !productVouchersQueryIsPending &&
-      (productVouchersQueryData?.length ?? 0) === 0
+      !isProductVouchersPending &&
+      (productVouchers?.length ?? 0) === 0
     ) {
       setSelectedSpaceForPrompt(selectedSpaceName);
       setShowNoVoucherPrompt(true);
     }
   }, [
     watchedSpaceUnitId,
-    productVouchersQueryIsPending,
-    productVouchersQueryData,
+    isProductVouchersPending,
+    productVouchers,
     selectedSpaceName,
   ]);
 
@@ -450,7 +443,7 @@ export default function BookingDrawer({
                             value={field.value}
                             defaultValue={field.value}
                             onValueChange={(voucherId) => {
-                              const voucher = productVouchersQueryData?.find(
+                              const voucher = productVouchers?.find(
                                 (pv) => pv.id === voucherId
                               );
                               field.onChange(voucherId);
@@ -459,8 +452,7 @@ export default function BookingDrawer({
                               }
                             }}
                             disabled={
-                              productVouchersQueryIsPending ||
-                              !watchedSpaceUnitId
+                              isProductVouchersPending || !watchedSpaceUnitId
                             }
                             onOpenChange={(open) => {
                               if (open) handleVoucherSelectOpen();
@@ -476,18 +468,16 @@ export default function BookingDrawer({
                               />
                             </SelectTrigger>
                             <SelectContent>
-                              {productVouchersQueryData?.map(
-                                (productVoucher) => (
-                                  <SelectItem
-                                    key={productVoucher.id}
-                                    value={productVoucher.id}
-                                  >
-                                    {productVoucher.product
-                                      ? productVoucher.product.name
-                                      : "Unknown Product"}
-                                  </SelectItem>
-                                )
-                              )}
+                              {productVouchers?.map((productVoucher) => (
+                                <SelectItem
+                                  key={productVoucher.id}
+                                  value={productVoucher.id}
+                                >
+                                  {productVoucher.product
+                                    ? productVoucher.product.name
+                                    : "Unknown Product"}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </FormControl>

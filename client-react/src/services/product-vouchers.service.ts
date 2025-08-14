@@ -6,18 +6,17 @@ type ProductInsert = Database["public"]["Tables"]["product_vouchers"]["Insert"];
 type ProductUpdate = Database["public"]["Tables"]["product_vouchers"]["Update"];
 
 export const productVouchersService = {
-  getProductVouchersByProductId: async (productId: string) => {
+  getBySpaceId: async ({ spaceId }: { spaceId: string }) => {
     const { data, error } = await supabaseClient
       .from("product_vouchers")
-      .select(`*, product:products(*)`)
-      .eq("product_id", productId)
+      .select("*, product:products(*)")
       .eq("status", "active")
-      .order("created_at", { ascending: false });
+      .eq("product.space_id", spaceId)
+      .order("expiring_at", { ascending: false });
 
     if (error) throw error;
     return data;
   },
-
   getAll: async () => {
     const { data, error } = await supabase
       .from("product_vouchers")
@@ -74,15 +73,5 @@ export const productVouchersService = {
       .eq("id", id);
 
     if (error) throw error;
-  },
-
-  getBySpaceId: async ({ spaceId }: { spaceId: string }) => {
-    const { data, error } = await supabase
-      .from("product_vouchers")
-      .select("*, product:products(*)")
-      .eq("products.space_id", spaceId);
-
-    if (error) throw error;
-    return data;
   },
 };

@@ -7,11 +7,10 @@ import type { Database } from "@/types/supabase";
 type ProductVoucherInsert =
   Database["public"]["Tables"]["product_vouchers"]["Insert"];
 
-export function useProductVouchers(spaceId: string) {
+export function useProductVouchersBySpaceId(spaceId: string) {
   const query = useQuery({
     queryKey: productVouchersKeys.bySpace(spaceId),
-    queryFn: () =>
-      productVouchersService.getProductVouchersByProductId(spaceId),
+    queryFn: () => productVouchersService.getBySpaceId({ spaceId }),
     enabled: !!spaceId,
   });
 

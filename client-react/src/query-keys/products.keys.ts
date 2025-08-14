@@ -1,4 +1,4 @@
 export const productKeys = {
-  all: ["productVouchers"] as const,
+  all: ["products"] as const,
   bySpace: (spaceId: string) => [...productKeys.all, spaceId] as const,
 };

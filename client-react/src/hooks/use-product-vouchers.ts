@@ -36,7 +36,7 @@ export function useCreateProductVouchers(voucher: ProductVoucherInsert) {
     onSuccess: (voucher) => {
       toast.success("You redeemed a voucher!");
       queryClient.invalidateQueries({
-        queryKey: productVouchersKeys.bySpace(voucher),
+        queryKey: productVouchersKeys.bySpace(voucher.product.space_id),
       });
     },
   });

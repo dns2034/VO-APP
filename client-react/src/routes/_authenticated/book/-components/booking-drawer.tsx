@@ -158,7 +158,6 @@ export default function BookingDrawer({
 
   const { productVouchers, isProductVouchersPending } =
     useProductVouchersBySpaceId(watchedSpaceId);
-  console.log("Product Vouchers:", productVouchers);
 
   const {
     data: spaceAvailabilityQueryData,

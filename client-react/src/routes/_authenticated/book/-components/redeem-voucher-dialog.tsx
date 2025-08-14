@@ -1,43 +1,32 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { productVouchersService } from "@/services/product-vouchers.service";
 import { useState } from "react";
 import type { Product } from "@/types";
 import { toast } from "sonner";
-import { productsService } from "@/services/products.service";
 
 interface RedeemVoucherDialogProps {
   open: boolean;
   setIsOpen: (open: boolean) => void;
   spaceId: string | null;
   onRedeem: () => void;
+  products: Product[]; // Add products as a prop
 }
 
 export default function RedeemVoucherDialog({
   open,
   setIsOpen,
-  spaceId,
   onRedeem,
+  products, // Accept products as a prop
 }: RedeemVoucherDialogProps) {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(
     null
   );
 
-  // Fetch products for the space
-  const { data: products, isPending } = useQuery({
-    queryKey: ["products-for-space", spaceId],
-    queryFn: () =>
-      spaceId
-        ? productsService.getProductsBySpaceId(spaceId)
-        : Promise.resolve([]),
-    enabled: !!spaceId && open,
-  });
-
   // Mutation for voucher redemption (now uses create)
   const {
     mutate: redeemVoucher,
-    isLoading: isRedeeming,
     isError: isRedeemError,
     error: redeemError,
   } = useMutation({
@@ -66,9 +55,7 @@ export default function RedeemVoucherDialog({
         <div>
           <h2 className="text-lg font-semibold mb-2">Redeem Voucher</h2>
           <div className="mb-4">
-            {isPending ? (
-              <div>Loading products...</div>
-            ) : products && products.length > 0 ? (
+            {products && products.length > 0 ? (
               <ul className="space-y-2">
                 {products.map((product: Product) => (
                   <li key={product.id}>
@@ -79,7 +66,6 @@ export default function RedeemVoucherDialog({
                         value={product.id}
                         checked={selectedProductId === product.id}
                         onChange={() => setSelectedProductId(product.id)}
-                        disabled={isRedeeming}
                       />
                       <span>{product.name}</span>
                     </label>
@@ -102,7 +88,6 @@ export default function RedeemVoucherDialog({
               variant="outline"
               onClick={() => setIsOpen(false)}
               type="button"
-              disabled={isRedeeming}
             >
               Cancel
             </Button>
@@ -110,11 +95,10 @@ export default function RedeemVoucherDialog({
               onClick={() => {
                 if (selectedProductId) redeemVoucher(selectedProductId);
               }}
-              disabled={!selectedProductId || isRedeeming}
+              disabled={!selectedProductId}
               type="button"
-              loading={isRedeeming ? "true" : undefined}
             >
-              {isRedeeming ? "Redeeming..." : "Redeem"}
+              Redeem
             </Button>
           </div>
         </div>

@@ -128,6 +128,7 @@ export type Database = {
           location: string | null;
           name: string;
           organization_id: string;
+          pin_location: Json | null;
         };
         Insert: {
           created_at?: string;
@@ -136,6 +137,7 @@ export type Database = {
           location?: string | null;
           name: string;
           organization_id: string;
+          pin_location?: Json | null;
         };
         Update: {
           created_at?: string;
@@ -144,6 +146,7 @@ export type Database = {
           location?: string | null;
           name?: string;
           organization_id?: string;
+          pin_location?: Json | null;
         };
         Relationships: [
           {
@@ -219,17 +222,23 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
+          is_enabled: boolean;
           page_url: string;
+          referral_url: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
+          is_enabled?: boolean;
           page_url: string;
+          referral_url: string;
         };
         Update: {
           created_at?: string;
           id?: string;
+          is_enabled?: boolean;
           page_url?: string;
+          referral_url?: string;
         };
         Relationships: [];
       };
@@ -557,6 +566,7 @@ export type Database = {
         Row: {
           branch_id: string;
           created_at: string;
+          descriptions: string;
           id: string;
           is_available: boolean;
           name: string;
@@ -564,6 +574,7 @@ export type Database = {
         Insert: {
           branch_id: string;
           created_at?: string;
+          descriptions?: string;
           id?: string;
           is_available?: boolean;
           name: string;
@@ -571,6 +582,7 @@ export type Database = {
         Update: {
           branch_id?: string;
           created_at?: string;
+          descriptions?: string;
           id?: string;
           is_available?: boolean;
           name?: string;
@@ -710,10 +722,10 @@ export type Database = {
     Functions: {
       assign_booking_times_by_duration: {
         Args: {
-          p_duration: number;
           p_start: string;
-          p_end: string;
+          p_duration: number;
           p_open: string;
+          p_end: string;
           p_close: string;
         };
         Returns: {
@@ -722,7 +734,7 @@ export type Database = {
         }[];
       };
       cancel_booking: {
-        Args: { p_user_id: string; p_booking_id: string; p_remarks: string };
+        Args: { p_booking_id: string; p_user_id: string; p_remarks: string };
         Returns: string;
       };
       check_booking_cancellation_window: {
@@ -731,11 +743,23 @@ export type Database = {
       };
       check_booking_overlap: {
         Args: {
-          p_start: string;
-          p_end: string;
           p_space_unit_id: string;
+          p_end: string;
+          p_start: string;
           p_date: string;
         };
+        Returns: undefined;
+      };
+      check_booking_status: {
+        Args: { p_booking_id: string };
+        Returns: string;
+      };
+      check_refundable: {
+        Args: { p_is_refundable: boolean };
+        Returns: undefined;
+      };
+      check_used: {
+        Args: { p_status: string };
         Returns: undefined;
       };
       generate_booking_voucher: {
@@ -749,15 +773,15 @@ export type Database = {
       get_product_info: {
         Args: { p_voucher_id: string };
         Returns: {
-          product_duration: number;
           product_id: string;
+          product_duration: number;
         }[];
       };
       get_space_availability: {
-        Args: { p_date: string; p_space_unit_id: string };
+        Args: { p_space_unit_id: string; p_date: string };
         Returns: {
-          opening_time: string;
           closing_time: string;
+          opening_time: string;
         }[];
       };
       get_total_active_credits: {
@@ -772,15 +796,56 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: string;
       };
+      get_voucher_info: {
+        Args: { p_voucher_id: string };
+        Returns: {
+          v_is_refundable: boolean;
+          v_status: string;
+        }[];
+      };
+      handle_subscription_and_voucher: {
+        Args: { new: Database["public"]["Tables"]["bookings"]["Row"] };
+        Returns: {
+          booked_by: string;
+          created_at: string;
+          date: string;
+          end_time: string | null;
+          id: string;
+          product_voucher_id: string | null;
+          remarks: string | null;
+          space_unit_id: string;
+          start_time: string | null;
+          status: Database["public"]["Enums"]["booking_status"];
+        };
+      };
       is_booking_cancellable: {
         Args: { p_status: string };
         Returns: boolean;
       };
       log_cancellation: {
-        Args: { p_booking_id: string; p_user_id: string; p_remarks: string };
+        Args: { p_user_id: string; p_remarks: string; p_booking_id: string };
         Returns: undefined;
       };
-      reactivate_voucher_if_used: {
+      prevent_past_booking: {
+        Args: { new: Database["public"]["Tables"]["bookings"]["Row"] };
+        Returns: {
+          booked_by: string;
+          created_at: string;
+          date: string;
+          end_time: string | null;
+          id: string;
+          product_voucher_id: string | null;
+          remarks: string | null;
+          space_unit_id: string;
+          start_time: string | null;
+          status: Database["public"]["Enums"]["booking_status"];
+        };
+      };
+      reactivate_voucher: {
+        Args: { p_voucher_id: string };
+        Returns: undefined;
+      };
+      refund_voucher: {
         Args: { p_voucher_id: string };
         Returns: undefined;
       };
@@ -795,33 +860,33 @@ export type Database = {
       validate_booking: {
         Args: { p_booking_id: string; p_user_id: string };
         Returns: {
+          result_start_time: string;
           result_created_at: string;
           result_status: string;
           result_voucher_id: string;
           result_booking_date: string;
-          result_start_time: string;
         }[];
       };
       validate_time_within_bounds: {
         Args: {
-          p_open: string;
-          p_end: string;
-          p_close: string;
           p_start: string;
+          p_close: string;
+          p_end: string;
+          p_open: string;
         };
         Returns: undefined;
       };
       validate_voucher_duration: {
-        Args: { p_end: string; p_duration: number; p_start: string };
+        Args: { p_duration: number; p_start: string; p_end: string };
         Returns: undefined;
       };
       verify_product_voucher: {
         Args: {
-          p_voucher_id: string;
           p_user_id: string;
-          p_space_unit_id: string;
-          p_start_time: string;
+          p_voucher_id: string;
           p_end_time: string;
+          p_start_time: string;
+          p_space_unit_id: string;
         };
         Returns: undefined;
       };

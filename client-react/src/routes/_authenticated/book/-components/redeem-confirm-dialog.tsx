@@ -1,6 +1,8 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useCreateProductVouchers } from "@/hooks/use-product-vouchers";
+import { useQueryClient } from "@tanstack/react-query";
+import { productVouchersKeys } from "@/query-keys";
 
 export default function RedeemConfirmDialog({
   open,
@@ -14,7 +16,7 @@ export default function RedeemConfirmDialog({
   const { createProductVoucher } = useCreateProductVouchers({
     product_id: selectedProductId,
   });
-
+  const queryClient = useQueryClient();
   return (
     <Dialog open={open} onOpenChange={setIsOpen}>
       <DialogContent>
@@ -30,6 +32,9 @@ export default function RedeemConfirmDialog({
               variant="default"
               onClick={async () => {
                 await createProductVoucher();
+                queryClient.invalidateQueries({
+                  queryKey: productVouchersKeys.bySpace(selectedProductId),
+                });
                 setIsOpen(false);
               }}
             >

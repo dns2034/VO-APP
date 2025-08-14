@@ -467,7 +467,7 @@ export default function BookingDrawer({
                             mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
-                            className="rounded-md w-full min-w-0 min-h-0 h-auto"
+                            className="w-full max-w-full overflow-x-auto"
                             disabled={!watchedProductVoucherId}
                             fromDate={new Date(new Date().setHours(0, 0, 0, 0))}
                             toDate={undefined}

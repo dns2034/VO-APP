@@ -35,11 +35,16 @@ export function formatTimeAMPM(time: string) {
 export function toFullTimeWithOffset(timeHHMM: string) {
   // Split hours and minutes
   const [hours, minutes] = timeHHMM.split(":");
-  
+
   // Get system timezone offset in minutes (negative if ahead of UTC)
   const offsetMinutes = -new Date().getTimezoneOffset();
   const offsetSign = offsetMinutes >= 0 ? "+" : "-";
-  const offsetHours = String(Math.floor(Math.abs(offsetMinutes) / 60)).padStart(2, "0");
+  const absOffsetMinutes = Math.abs(offsetMinutes);
+  const offsetHours = String(Math.floor(absOffsetMinutes / 60)).padStart(
+    2,
+    "0"
+  );
 
+  // Always include minutes in offset for timetz (e.g., +08:00)
   return `${hours}:${minutes}:00${offsetSign}${offsetHours}`;
 }

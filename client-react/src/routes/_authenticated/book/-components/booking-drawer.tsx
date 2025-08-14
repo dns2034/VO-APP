@@ -196,7 +196,11 @@ export default function BookingDrawer({
       minute: "2-digit",
       hour12: false,
     }).format(new Date());
-    const open = timeToMinutes(timeNow);
+    const open = timeToMinutes(
+      spaceAvailabilityQueryData.opening_time < timeNow
+        ? timeNow
+        : spaceAvailabilityQueryData.opening_time
+    );
     const close = timeToMinutes(spaceAvailabilityQueryData.closing_time);
 
     // Sort bookings by start_time

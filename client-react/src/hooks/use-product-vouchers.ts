@@ -5,7 +5,8 @@ import { productVouchersService } from "@/services/product-vouchers.service";
 export function useProductVouchers(spaceId: string) {
   const query = useQuery({
     queryKey: productVouchersKeys.bySpace(spaceId),
-    queryFn: () => productVouchersService.getProductVouchersBySpaceId(spaceId),
+    queryFn: () =>
+      productVouchersService.getProductVouchersByProductId(spaceId),
     enabled: !!spaceId,
   });
 

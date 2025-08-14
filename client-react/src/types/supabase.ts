@@ -348,7 +348,7 @@ export type Database = {
           image_path: string;
           name: string;
           price: number;
-          space_id: string | null;
+          space_id: string;
         };
         Insert: {
           created_at?: string;
@@ -358,7 +358,7 @@ export type Database = {
           image_path: string;
           name: string;
           price?: number;
-          space_id?: string | null;
+          space_id: string;
         };
         Update: {
           created_at?: string;
@@ -368,7 +368,7 @@ export type Database = {
           image_path?: string;
           name?: string;
           price?: number;
-          space_id?: string | null;
+          space_id?: string;
         };
         Relationships: [
           {
@@ -734,7 +734,7 @@ export type Database = {
         }[];
       };
       cancel_booking: {
-        Args: { p_booking_id: string; p_user_id: string; p_remarks: string };
+        Args: { p_user_id: string; p_remarks: string; p_booking_id: string };
         Returns: string;
       };
       check_booking_cancellation_window: {
@@ -780,8 +780,8 @@ export type Database = {
       get_space_availability: {
         Args: { p_space_unit_id: string; p_date: string };
         Returns: {
-          closing_time: string;
           opening_time: string;
+          closing_time: string;
         }[];
       };
       get_total_active_credits: {

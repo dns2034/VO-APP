@@ -17,7 +17,7 @@ import {
   rewardsKeys,
   rewardVouchersKeys,
 } from "@/lib/query-keys";
-import { productsService } from "@/services/product.service";
+import { productsService } from "@/services/products.service";
 import { productVouchersService } from "@/services/product-vouchers.service";
 import { rewardsService } from "@/services/reward.service";
 import { rewardVouchersService } from "@/services/reward-voucher.service";

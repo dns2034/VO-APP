@@ -33,11 +33,12 @@ export default function App() {
     };
   }, [auth.setUser]);
 
-  if (auth.user === undefined) return <h1 className="text-5xl">Loading from app.tsx...</h1>
+  if (auth.user === undefined)
+    return <h1 className="text-5xl">Loading from app.tsx...</h1>;
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster richColors closeButton />
+      <Toaster closeButton />
       <RouterProvider router={router} context={{ auth, queryClient }} />
     </QueryClientProvider>
   );

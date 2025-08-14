@@ -29,7 +29,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { productsService } from "@/services/product.service";
+import { productsService } from "@/services/products.service";
 import { rewardsService } from "@/services/reward.service";
 import { productVouchersQueryOptions, rewardVouchersQueryOptions } from "..";
 

@@ -13,7 +13,7 @@ import {
 } from "@/lib/query-keys";
 import { bookingsService } from "@/services/booking.service";
 import { branchesService } from "@/services/branch.service";
-import { productsService } from "@/services/product.service";
+import { productsService } from "@/services/products.service";
 import { productVouchersService } from "@/services/product-vouchers.service";
 import { spacesService } from "@/services/space.service";
 import { spaceUnitsService } from "@/services/space-units.service";

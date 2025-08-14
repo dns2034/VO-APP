@@ -8,8 +8,8 @@ export const productVouchersKeys = {
     [...productVouchersKeys.lists(), filters] as const,
 
   byUser: (userId: string) =>
-    [...productVouchersKeys.all, "user", userId] as const,
+    [...productVouchersKeys.all, "users", userId] as const,
 
   bySpace: (spaceId: string) =>
-    [...productVouchersKeys.all, "space", spaceId] as const,
+    [...productVouchersKeys.all, "spaces", spaceId] as const,
 };

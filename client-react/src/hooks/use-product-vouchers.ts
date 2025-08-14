@@ -34,7 +34,7 @@ export function useCreateProductVouchers(voucher: ProductVoucherInsert) {
       );
     },
     onSuccess: () => {
-      toast.success("Product voucher created!");
+      toast.success("You redeemed a voucher!");
     },
   });
 

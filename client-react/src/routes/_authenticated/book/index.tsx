@@ -14,7 +14,7 @@ import {
 import { bookingsService } from "@/services/booking.service";
 import { branchesService } from "@/services/branch.service";
 import { productsService } from "@/services/product.service";
-import { productVouchersService } from "@/services/product-voucher.service";
+import { productVouchersService } from "@/services/product-vouchers.service";
 import { spacesService } from "@/services/space.service";
 import { spaceUnitsService } from "@/services/space-units.service";
 import Branches from "./-components/branches";

@@ -18,7 +18,7 @@ import {
   rewardVouchersKeys,
 } from "@/lib/query-keys";
 import { productsService } from "@/services/product.service";
-import { productVouchersService } from "@/services/product-voucher.service";
+import { productVouchersService } from "@/services/product-vouchers.service";
 import { rewardsService } from "@/services/reward.service";
 import { rewardVouchersService } from "@/services/reward-voucher.service";
 import ConfirmRedeemAlertDialog from "./-components/confirm-redeem-alert-dialog";

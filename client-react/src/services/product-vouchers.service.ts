@@ -1,10 +1,23 @@
 import supabase from "@/config/supabase-client";
+import supabaseClient from "@/lib/supabase-client";
 import type { Database } from "@/types/supabase";
 
 type ProductInsert = Database["public"]["Tables"]["product_vouchers"]["Insert"];
 type ProductUpdate = Database["public"]["Tables"]["product_vouchers"]["Update"];
 
 export const productVouchersService = {
+  getProductVouchersByProductId: async (productId: string) => {
+    const { data, error } = await supabaseClient
+      .from("product_vouchers")
+      .select(`*, product:products(*)`)
+      .eq("product_id", productId)
+      .eq("status", "active")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return data;
+  },
+
   getAll: async () => {
     const { data, error } = await supabase
       .from("product_vouchers")

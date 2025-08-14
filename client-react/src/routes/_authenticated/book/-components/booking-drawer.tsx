@@ -54,7 +54,6 @@ import type { Branch, Product } from "@/types";
 import { branchesQueryOptions } from "..";
 import RedeemVoucherDialog from "./redeem-voucher-dialog";
 import NoVoucherPrompt from "./no-voucher-prompt";
-import RedeemConfirmDialog from "./redeem-confirm-dialog";
 
 export default function BookingDrawer({
   open,
@@ -257,7 +256,6 @@ export default function BookingDrawer({
 
   const [showNoVoucherPrompt, setShowNoVoucherPrompt] = useState(false);
   const [showRedeemVoucherDialog, setShowRedeemVoucherDialog] = useState(false);
-  const [showRedeemConfirmDialog, setShowRedeemConfirmDialog] = useState(false);
 
   // Store selected space for dialog prompt
   const [selectedSpaceForPrompt, setSelectedSpaceForPrompt] = useState<
@@ -291,12 +289,6 @@ export default function BookingDrawer({
     if (result) {
       setShowRedeemVoucherDialog(true);
     }
-  };
-
-  // Handler for redeem confirm
-  const handleRedeemVoucher = () => {
-    setShowRedeemVoucherDialog(false);
-    setShowRedeemConfirmDialog(true);
   };
 
   return (
@@ -721,11 +713,6 @@ export default function BookingDrawer({
         open={showRedeemVoucherDialog}
         setIsOpen={setShowRedeemVoucherDialog}
         spaceId={watchedSpaceId}
-        onRedeem={handleRedeemVoucher}
-      />
-      <RedeemConfirmDialog
-        open={showRedeemConfirmDialog}
-        setIsOpen={setShowRedeemConfirmDialog}
       />
     </>
   );

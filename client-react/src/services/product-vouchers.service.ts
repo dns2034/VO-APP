@@ -44,7 +44,7 @@ export const productVouchersService = {
     const { data, error } = await supabase
       .from("product_vouchers")
       .insert([voucher])
-      .select()
+      .select("*, product:products(*)")
       .single();
 
     if (error) {

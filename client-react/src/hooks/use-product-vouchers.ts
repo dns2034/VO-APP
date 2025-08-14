@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { productVouchersKeys } from "@/query-keys";
 import { productVouchersService } from "@/services/product-vouchers.service";
 import { toast } from "sonner";
@@ -24,6 +24,7 @@ export function useProductVouchersBySpaceId(spaceId: string) {
 }
 
 export function useCreateProductVouchers(voucher: ProductVoucherInsert) {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => productVouchersService.create(voucher),
     onError: (err) => {
@@ -32,8 +33,11 @@ export function useCreateProductVouchers(voucher: ProductVoucherInsert) {
           (err instanceof Error ? err.message : "Unknown error")
       );
     },
-    onSuccess: () => {
+    onSuccess: (voucher) => {
       toast.success("You redeemed a voucher!");
+      queryClient.invalidateQueries({
+        queryKey: productVouchersKeys.bySpace(voucher),
+      });
     },
   });
 

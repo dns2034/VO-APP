@@ -1,9 +1,9 @@
 import supabaseClient from "@/lib/supabase-client";
 
 export const organizationPagesService = {
-  getOrganizationPage: async () => {
+  getLandingPage: async () => {
     const { data, error } = await supabaseClient
-      .from("organization_pages")
+      .from("user_landing_pages")
       .select()
       .single();
     if (error) throw error;

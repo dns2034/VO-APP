@@ -1,35 +1,15 @@
-import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Send, Share2 } from "lucide-react";
 import { useState } from "react";
 import AppHeader from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { creditsKeys, pointsKeys } from "@/lib/query-keys";
-import { creditsService } from "@/services/credits.service";
-import { pointsService } from "@/services/points.service";
 import { useCredits } from "@/hooks/use-credits";
 import { usePoints } from "@/hooks/use-points";
 import { useUserLandingPage } from "@/hooks/use-user-landing-pages";
 
-const creditsQueryOptions = queryOptions({
-  queryKey: creditsKeys.all,
-  queryFn: creditsService.getAll,
-});
-
-const pointsQueryOptions = queryOptions({
-  queryKey: pointsKeys.all,
-  queryFn: pointsService.getAll,
-});
-
 export const Route = createFileRoute("/_authenticated/refer/")({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient?.prefetchQuery(creditsQueryOptions),
-      context.queryClient?.prefetchQuery(pointsQueryOptions),
-    ]);
-  },
 });
 
 function RouteComponent() {
@@ -91,19 +71,27 @@ function RouteComponent() {
             />
             <Button
               size="icon"
-              onClick={() => {
-                navigator.clipboard.writeText(userLandingPageUrl);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 1200);
-              }}
               variant="outline"
-              aria-label="Copy referral link"
+              aria-label="Share via native"
+              onClick={async () => {
+                if (navigator.share) {
+                  try {
+                    await navigator.share({
+                      title: "Join me at Incub8Space!",
+                      text: "Use my referral link:",
+                      url: userLandingPageUrl,
+                    });
+                  } catch {
+                    // ignore
+                  }
+                } else {
+                  navigator.clipboard.writeText(userLandingPageUrl);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1200);
+                }
+              }}
             >
-              {copied ? (
-                <Share2 className="w-4 h-4 text-green-600" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
+              <Send className="w-4 h-4" />
             </Button>
           </div>
           <div className="flex flex-row gap-2 items-center justify-center mt-3">
@@ -164,27 +152,19 @@ function RouteComponent() {
             </Button>
             <Button
               size="icon"
-              variant="outline"
-              aria-label="Share via native"
-              onClick={async () => {
-                if (navigator.share) {
-                  try {
-                    await navigator.share({
-                      title: "Join me at Incub8Space!",
-                      text: "Use my referral link:",
-                      url: userLandingPageUrl,
-                    });
-                  } catch {
-                    // ignore
-                  }
-                } else {
-                  navigator.clipboard.writeText(userLandingPageUrl);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 1200);
-                }
+              onClick={() => {
+                navigator.clipboard.writeText(userLandingPageUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1200);
               }}
+              variant="outline"
+              aria-label="Copy referral link"
             >
-              <Send className="w-4 h-4" />
+              {copied ? (
+                <Share2 className="w-4 h-4 text-green-600" />
+              ) : (
+                <Copy className="w-4 h-4" />
+              )}
             </Button>
           </div>
         </div>

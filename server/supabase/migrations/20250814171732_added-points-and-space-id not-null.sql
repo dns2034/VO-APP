@@ -1,7 +1,7 @@
 alter table "public"."products" alter column "space_id" set not null;
 
 set check_function_bodies = off;
-
+DROP FUNCTION IF EXISTS get_total_active_points(uuid);
 CREATE OR REPLACE FUNCTION public.get_total_active_points(p_user_id uuid)
  RETURNS integer
  LANGUAGE plpgsql

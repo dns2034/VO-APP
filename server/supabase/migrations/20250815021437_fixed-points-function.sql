@@ -1,5 +1,6 @@
 set check_function_bodies = off;
 
+DROP FUNCTION IF EXISTS get_total_active_points();
 CREATE OR REPLACE FUNCTION public.get_total_active_points(p_user_id uuid)
  RETURNS integer
  LANGUAGE plpgsql

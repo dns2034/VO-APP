@@ -91,19 +91,27 @@ function RouteComponent() {
             />
             <Button
               size="icon"
-              onClick={() => {
-                navigator.clipboard.writeText(userLandingPageUrl);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 1200);
-              }}
               variant="outline"
-              aria-label="Copy referral link"
+              aria-label="Share via native"
+              onClick={async () => {
+                if (navigator.share) {
+                  try {
+                    await navigator.share({
+                      title: "Join me at Incub8Space!",
+                      text: "Use my referral link:",
+                      url: userLandingPageUrl,
+                    });
+                  } catch {
+                    // ignore
+                  }
+                } else {
+                  navigator.clipboard.writeText(userLandingPageUrl);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1200);
+                }
+              }}
             >
-              {copied ? (
-                <Share2 className="w-4 h-4 text-green-600" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
+              <Send className="w-4 h-4" />
             </Button>
           </div>
           <div className="flex flex-row gap-2 items-center justify-center mt-3">
@@ -164,27 +172,19 @@ function RouteComponent() {
             </Button>
             <Button
               size="icon"
-              variant="outline"
-              aria-label="Share via native"
-              onClick={async () => {
-                if (navigator.share) {
-                  try {
-                    await navigator.share({
-                      title: "Join me at Incub8Space!",
-                      text: "Use my referral link:",
-                      url: userLandingPageUrl,
-                    });
-                  } catch {
-                    // ignore
-                  }
-                } else {
-                  navigator.clipboard.writeText(userLandingPageUrl);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 1200);
-                }
+              onClick={() => {
+                navigator.clipboard.writeText(userLandingPageUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1200);
               }}
+              variant="outline"
+              aria-label="Copy referral link"
             >
-              <Send className="w-4 h-4" />
+              {copied ? (
+                <Share2 className="w-4 h-4 text-green-600" />
+              ) : (
+                <Copy className="w-4 h-4" />
+              )}
             </Button>
           </div>
         </div>

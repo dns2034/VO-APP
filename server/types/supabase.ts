@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
-          operationName?: string
-          query?: string
           variables?: Json
           extensions?: Json
+          operationName?: string
+          query?: string
         }
         Returns: Json
       }
@@ -215,30 +215,6 @@ export type Database = {
           id?: string
           status?: Database["public"]["Enums"]["currency_status"]
           user_id?: string
-        }
-        Relationships: []
-      }
-      organization_pages: {
-        Row: {
-          created_at: string
-          id: string
-          is_enabled: boolean
-          page_url: string
-          referral_url: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          is_enabled?: boolean
-          page_url: string
-          referral_url: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          is_enabled?: boolean
-          page_url?: string
-          referral_url?: string
         }
         Relationships: []
       }
@@ -626,6 +602,27 @@ export type Database = {
           },
         ]
       }
+      user_landing_pages: {
+        Row: {
+          created_at: string
+          id: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_organizations: {
         Row: {
           created_at: string
@@ -722,15 +719,15 @@ export type Database = {
     Functions: {
       assign_booking_times_by_duration: {
         Args: {
-          p_start: string
-          p_duration: number
+          p_close: string
           p_open: string
           p_end: string
-          p_close: string
+          p_start: string
+          p_duration: number
         }
         Returns: {
-          end_time: string
           start_time: string
+          end_time: string
         }[]
       }
       cancel_booking: {
@@ -743,9 +740,9 @@ export type Database = {
       }
       check_booking_overlap: {
         Args: {
+          p_start: string
           p_space_unit_id: string
           p_end: string
-          p_start: string
           p_date: string
         }
         Returns: undefined
@@ -763,7 +760,7 @@ export type Database = {
         Returns: undefined
       }
       generate_booking_voucher: {
-        Args: { p_space_unit_id: string; p_user_id: string }
+        Args: { p_user_id: string; p_space_unit_id: string }
         Returns: string
       }
       generate_voucher_code: {
@@ -799,8 +796,8 @@ export type Database = {
       get_voucher_info: {
         Args: { p_voucher_id: string }
         Returns: {
-          v_is_refundable: boolean
           v_status: string
+          v_is_refundable: boolean
         }[]
       }
       handle_subscription_and_voucher: {
@@ -860,33 +857,33 @@ export type Database = {
       validate_booking: {
         Args: { p_booking_id: string; p_user_id: string }
         Returns: {
-          result_start_time: string
-          result_created_at: string
-          result_status: string
-          result_voucher_id: string
           result_booking_date: string
+          result_start_time: string
+          result_voucher_id: string
+          result_status: string
+          result_created_at: string
         }[]
       }
       validate_time_within_bounds: {
         Args: {
-          p_start: string
-          p_close: string
           p_end: string
           p_open: string
+          p_close: string
+          p_start: string
         }
         Returns: undefined
       }
       validate_voucher_duration: {
-        Args: { p_duration: number; p_start: string; p_end: string }
+        Args: { p_start: string; p_duration: number; p_end: string }
         Returns: undefined
       }
       verify_product_voucher: {
         Args: {
-          p_user_id: string
-          p_voucher_id: string
-          p_end_time: string
           p_start_time: string
           p_space_unit_id: string
+          p_user_id: string
+          p_end_time: string
+          p_voucher_id: string
         }
         Returns: undefined
       }

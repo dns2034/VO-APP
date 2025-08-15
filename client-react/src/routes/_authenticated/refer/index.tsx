@@ -10,6 +10,7 @@ import { creditsService } from "@/services/credits.service";
 import { pointsService } from "@/services/points.service";
 import { useCredits } from "@/hooks/use-credits";
 import { usePoints } from "@/hooks/use-points";
+import { useUserLandingPage } from "@/hooks/use-user-landing-pages";
 
 const creditsQueryOptions = queryOptions({
   queryKey: creditsKeys.all,
@@ -36,18 +37,19 @@ function RouteComponent() {
   const points = usePoints();
 
   // Mock referral link
-  const referralLink = "https://incub8space.com/ref/abc123";
   const [copied, setCopied] = useState(false);
+
+  const userLandingPageUrl =
+    useUserLandingPage().data?.url ||
+    "https://incub8space.com/campaigns/welcome-to-dasma";
 
   // Social share handlers
   const shareText = encodeURIComponent(
     "Join me at Incub8Space! Use my referral link:"
   );
-  const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-    referralLink
-  )}`;
+  const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(userLandingPageUrl)}`;
   const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${encodeURIComponent(
-    referralLink
+    userLandingPageUrl
   )}`;
   const instagramShareUrl = "https://www.instagram.com/"; // Instagram does not support direct share links
   const tiktokShareUrl = "https://www.tiktok.com/"; // TikTok does not support direct share links
@@ -84,13 +86,13 @@ function RouteComponent() {
           <div className="flex flex-row gap-2 items-center justify-center">
             <Input
               readOnly
-              value={referralLink}
+              value={userLandingPageUrl}
               className="flex-1 max-w-xs text-center"
             />
             <Button
               size="icon"
               onClick={() => {
-                navigator.clipboard.writeText(referralLink);
+                navigator.clipboard.writeText(userLandingPageUrl);
                 setCopied(true);
                 setTimeout(() => setCopied(false), 1200);
               }}
@@ -170,13 +172,13 @@ function RouteComponent() {
                     await navigator.share({
                       title: "Join me at Incub8Space!",
                       text: "Use my referral link:",
-                      url: referralLink,
+                      url: userLandingPageUrl,
                     });
                   } catch {
                     // ignore
                   }
                 } else {
-                  navigator.clipboard.writeText(referralLink);
+                  navigator.clipboard.writeText(userLandingPageUrl);
                   setCopied(true);
                   setTimeout(() => setCopied(false), 1200);
                 }

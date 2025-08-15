@@ -1,35 +1,15 @@
-import { queryOptions } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Send, Share2 } from "lucide-react";
 import { useState } from "react";
 import AppHeader from "@/components/app-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { creditsKeys, pointsKeys } from "@/lib/query-keys";
-import { creditsService } from "@/services/credits.service";
-import { pointsService } from "@/services/points.service";
 import { useCredits } from "@/hooks/use-credits";
 import { usePoints } from "@/hooks/use-points";
 import { useUserLandingPage } from "@/hooks/use-user-landing-pages";
 
-const creditsQueryOptions = queryOptions({
-  queryKey: creditsKeys.all,
-  queryFn: creditsService.getAll,
-});
-
-const pointsQueryOptions = queryOptions({
-  queryKey: pointsKeys.all,
-  queryFn: pointsService.getAll,
-});
-
 export const Route = createFileRoute("/_authenticated/refer/")({
   component: RouteComponent,
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient?.prefetchQuery(creditsQueryOptions),
-      context.queryClient?.prefetchQuery(pointsQueryOptions),
-    ]);
-  },
 });
 
 function RouteComponent() {

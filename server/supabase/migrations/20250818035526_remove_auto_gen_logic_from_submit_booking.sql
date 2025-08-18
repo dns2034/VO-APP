@@ -36,6 +36,10 @@ alter table "public"."user_subscriptions" validate constraint "user_subscription
 
 alter table "public"."user_subscriptions" add constraint "user_subscriptions_user_id_key" UNIQUE using index "user_subscriptions_user_id_key";
 
+ALTER TABLE public.user_subscriptions
+ALTER COLUMN user_id DROP NOT NULL,
+ALTER COLUMN user_id DROP DEFAULT;
+
 set check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION public.submit_booking()

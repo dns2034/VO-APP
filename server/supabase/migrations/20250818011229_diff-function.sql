@@ -2,8 +2,6 @@ drop policy "Clients can view businesses inside their organization" on "public".
 
 drop policy "Clients can view their reward vouchers" on "public"."reward_vouchers";
 
-alter table "public"."spaces" drop column "access_type";
-
 create policy "Clients can view businesses inside their organization"
 on "public"."businesses"
 as permissive

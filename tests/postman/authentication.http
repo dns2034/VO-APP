@@ -1,0 +1,301 @@
+"{  
+#### 	"info": {  
+#### 		"_postman_id": "6c800763-e555-44d8-aee2-0cd583e1120d",  
+#### 		"name": "Authentication",  
+#### 		"description": "**DO THIS STEPS EVERYTIME YOU START A TEST**\n\n1. Create an account on Supabase\n    \n    1. Authentication > Users > Add user > Input email + password > Create user\n        \n    2. Save the email + pass that you've created\n        \n2. Go to POST Auth - Login (Password grant) > Body > Paste your email and password > SEND\n    \n3. Copy the refresh_token below\n    \n4. Go to POST Auth - Refresh Token > Body > Paste your refresh token > SEND\n    \n\nWhen your JWT Expires (Expires every 30 minutes), just run **Auth - Refresh Token** again to refresh your access token and you're good to go.",  
+#### 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",  
+#### 		"_exporter_id": "47581661",  
+#### 		"_collection_link": "https://mhelric-2744223.postman.co/workspace/Mhel's-Workspace~2437d776-f7c7-46ed-8388-a19550a92bd6/collection/47300424-6c800763-e555-44d8-aee2-0cd583e1120d?action=share&source=collection_link&creator=47581661"  
+#### 	},  
+#### 	"item": [  
+#### 		{  
+#### 			"name": "Auth - Login (Password Grant)",  
+#### 			"event": [  
+#### 				{  
+#### 					"listen": "test",  
+#### 					"script": {  
+#### 						"exec": [  
+#### 							"const data = pm.response.json();\r",  
+#### 							"\r",  
+#### 							"// Save tokens\r",  
+#### 							"pm.environment.set(\"access_token\", data.access_token);\r",  
+#### 							"pm.environment.set(\"refresh_token\", data.refresh_token);\r",  
+#### 							"\r",  
+#### 							"// Extract user_id from the JWT and save it\r",  
+#### 							"try {\r",  
+#### 							"    const payload = JSON.parse(Buffer.from(data.access_token.split('.')[1], 'base64').toString('utf8'));\r",  
+#### 							"    if (payload && payload.sub) {\r",  
+#### 							"        pm.environment.set(\"user_id\", payload.sub);\r",  
+#### 							"    }\r",  
+#### 							"} catch(e) {\r",  
+#### 							"    console.log(\"Could not parse JWT for user_id\", e);\r",  
+#### 							"}"  
+#### 						],  
+#### 						"type": "text/javascript",  
+#### 						"packages": {}  
+#### 					}  
+#### 				}  
+#### 			],  
+#### 			"request": {  
+#### 				"method": "POST",  
+#### 				"header": [  
+#### 					{  
+#### 						"key": "apikey",  
+#### 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"  
+#### 					},  
+#### 					{  
+#### 						"key": "Content-Type",  
+#### 						"value": "application/json"  
+#### 					}  
+#### 				],  
+#### 				"body": {  
+#### 					"mode": "raw",  
+#### 					"raw": "{\n    \"email\": \"mhel@gmail.com\",\n    \"password\": \"1234\"\n}",  
+#### 					"options": {  
+#### 						"raw": {  
+#### 							"language": "json"  
+#### 						}  
+#### 					}  
+#### 				},  
+#### 				"url": {  
+#### 					"raw": "http://127.0.0.1:54321/auth/v1/token?grant_type=password",  
+#### 					"protocol": "http",  
+#### 					"host": [  
+#### 						"127",  
+#### 						"0",  
+#### 						"0",  
+#### 						"1"  
+#### 					],  
+#### 					"port": "54321",  
+#### 					"path": [  
+#### 						"auth",  
+#### 						"v1",  
+#### 						"token"  
+#### 					],  
+#### 					"query": [  
+#### 						{  
+#### 							"key": "grant_type",  
+#### 							"value": "password"  
+#### 						}  
+#### 					]  
+#### 				},  
+#### 				"description": "Generated from cURL: \r\ncurl 'http://127.0.0.1:54321/rest/v1/bookings?select=*' \\\r\n-H \"apikey: SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Authorization: Bearer SUPABASE_CLIENT_ANON_KEY\"\r\n          "  
+#### 			},  
+#### 			"response": []  
+#### 		},  
+#### 		{  
+#### 			"name": "Auth - Refresh Token",  
+#### 			"event": [  
+#### 				{  
+#### 					"listen": "test",  
+#### 					"script": {  
+#### 						"exec": [  
+#### 							"let data = pm.response.json();\r",  
+#### 							"pm.environment.set(\"access_token\", data.access_token);\r",  
+#### 							""  
+#### 						],  
+#### 						"type": "text/javascript",  
+#### 						"packages": {}  
+#### 					}  
+#### 				}  
+#### 			],  
+#### 			"request": {  
+#### 				"method": "POST",  
+#### 				"header": [  
+#### 					{  
+#### 						"key": "apikey",  
+#### 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"  
+#### 					},  
+#### 					{  
+#### 						"key": "Content-Type",  
+#### 						"value": "application/json"  
+#### 					}  
+#### 				],  
+#### 				"body": {  
+#### 					"mode": "raw",  
+#### 					"raw": "{\n    \"refresh_token\": \"ojvtdlcy4ew5\"\n  }",  
+#### 					"options": {  
+#### 						"raw": {  
+#### 							"language": "json"  
+#### 						}  
+#### 					}  
+#### 				},  
+#### 				"url": {  
+#### 					"raw": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",  
+#### 					"protocol": "http",  
+#### 					"host": [  
+#### 						"127",  
+#### 						"0",  
+#### 						"0",  
+#### 						"1"  
+#### 					],  
+#### 					"port": "54321",  
+#### 					"path": [  
+#### 						"auth",  
+#### 						"v1",  
+#### 						"token"  
+#### 					],  
+#### 					"query": [  
+#### 						{  
+#### 							"key": "grant_type",  
+#### 							"value": "refresh_token"  
+#### 						}  
+#### 					]  
+#### 				},  
+#### 				"description": "Generated from cURL: \r\ncurl 'http://127.0.0.1:54321/rest/v1/bookings?select=*' \\\r\n-H \"apikey: SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Authorization: Bearer SUPABASE_CLIENT_ANON_KEY\"\r\n          "  
+#### 			},  
+#### 			"response": []  
+#### 		}  
+#### 	]  
+#### }"  
+
+#### convert the JSON file to Jetbrains HTTP client commands: "{  
+#### 	"info": {  
+#### 		"_postman_id": "6c800763-e555-44d8-aee2-0cd583e1120d",  
+#### 		"name": "Authentication",  
+#### 		"description": "**DO THIS STEPS EVERYTIME YOU START A TEST**\n\n1. Create an account on Supabase\n    \n    1. Authentication > Users > Add user > Input email + password > Create user\n        \n    2. Save the email + pass that you've created\n        \n2. Go to POST Auth - Login (Password grant) > Body > Paste your email and password > SEND\n    \n3. Copy the refresh_token below\n    \n4. Go to POST Auth - Refresh Token > Body > Paste your refresh token > SEND\n    \n\nWhen your JWT Expires (Expires every 30 minutes), just run **Auth - Refresh Token** again to refresh your access token and you're good to go.",  
+#### 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",  
+#### 		"_exporter_id": "47581661",  
+#### 		"_collection_link": "https://mhelric-2744223.postman.co/workspace/Mhel's-Workspace~2437d776-f7c7-46ed-8388-a19550a92bd6/collection/47300424-6c800763-e555-44d8-aee2-0cd583e1120d?action=share&source=collection_link&creator=47581661"  
+#### 	},  
+#### 	"item": [  
+#### 		{  
+#### 			"name": "Auth - Login (Password Grant)",  
+#### 			"event": [  
+#### 				{  
+#### 					"listen": "test",  
+#### 					"script": {  
+#### 						"exec": [  
+#### 							"const data = pm.response.json();\r",  
+#### 							"\r",  
+#### 							"// Save tokens\r",  
+#### 							"pm.environment.set(\"access_token\", data.access_token);\r",  
+#### 							"pm.environment.set(\"refresh_token\", data.refresh_token);\r",  
+#### 							"\r",  
+#### 							"// Extract user_id from the JWT and save it\r",  
+#### 							"try {\r",  
+#### 							"    const payload = JSON.parse(Buffer.from(data.access_token.split('.')[1], 'base64').toString('utf8'));\r",  
+#### 							"    if (payload && payload.sub) {\r",  
+#### 							"        pm.environment.set(\"user_id\", payload.sub);\r",  
+#### 							"    }\r",  
+#### 							"} catch(e) {\r",  
+#### 							"    console.log(\"Could not parse JWT for user_id\", e);\r",  
+#### 							"}"  
+#### 						],  
+#### 						"type": "text/javascript",  
+#### 						"packages": {}  
+#### 					}  
+#### 				}  
+#### 			],  
+#### 			"request": {  
+#### 				"method": "POST",  
+#### 				"header": [  
+#### 					{  
+#### 						"key": "apikey",  
+#### 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"  
+#### 					},  
+#### 					{  
+#### 						"key": "Content-Type",  
+#### 						"value": "application/json"  
+#### 					}  
+#### 				],  
+#### 				"body": {  
+#### 					"mode": "raw",  
+#### 					"raw": "{\n    \"email\": \"mhel@gmail.com\",\n    \"password\": \"1234\"\n}",  
+#### 					"options": {  
+#### 						"raw": {  
+#### 							"language": "json"  
+#### 						}  
+#### 					}  
+#### 				},  
+#### 				"url": {  
+#### 					"raw": "http://127.0.0.1:54321/auth/v1/token?grant_type=password",  
+#### 					"protocol": "http",  
+#### 					"host": [  
+#### 						"127",  
+#### 						"0",  
+#### 						"0",  
+#### 						"1"  
+#### 					],  
+#### 					"port": "54321",  
+#### 					"path": [  
+#### 						"auth",  
+#### 						"v1",  
+#### 						"token"  
+#### 					],  
+#### 					"query": [  
+#### 						{  
+#### 							"key": "grant_type",  
+#### 							"value": "password"  
+#### 						}  
+#### 					]  
+#### 				},  
+#### 				"description": "Generated from cURL: \r\ncurl 'http://127.0.0.1:54321/rest/v1/bookings?select=*' \\\r\n-H \"apikey: SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Authorization: Bearer SUPABASE_CLIENT_ANON_KEY\"\r\n          "  
+#### 			},  
+#### 			"response": []  
+#### 		},  
+#### 		{  
+#### 			"name": "Auth - Refresh Token",  
+#### 			"event": [  
+#### 				{  
+#### 					"listen": "test",  
+#### 					"script": {  
+#### 						"exec": [  
+#### 							"let data = pm.response.json();\r",  
+#### 							"pm.environment.set(\"access_token\", data.access_token);\r",  
+#### 							""  
+#### 						],  
+#### 						"type": "text/javascript",  
+#### 						"packages": {}  
+#### 					}  
+#### 				}  
+#### 			],  
+#### 			"request": {  
+#### 				"method": "POST",  
+#### 				"header": [  
+#### 					{  
+#### 						"key": "apikey",  
+#### 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"  
+#### 					},  
+#### 					{  
+#### 						"key": "Content-Type",  
+#### 						"value": "application/json"  
+#### 					}  
+#### 				],  
+#### 				"body": {  
+#### 					"mode": "raw",  
+#### 					"raw": "{\n    \"refresh_token\": \"ojvtdlcy4ew5\"\n  }",  
+#### 					"options": {  
+#### 						"raw": {  
+#### 							"language": "json"  
+#### 						}  
+#### 					}  
+#### 				},  
+#### 				"url": {  
+#### 					"raw": "http://127.0.0.1:54321/auth/v1/token?grant_type=refresh_token",  
+#### 					"protocol": "http",  
+#### 					"host": [  
+#### 						"127",  
+#### 						"0",  
+#### 						"0",  
+#### 						"1"  
+#### 					],  
+#### 					"port": "54321",  
+#### 					"path": [  
+#### 						"auth",  
+#### 						"v1",  
+#### 						"token"  
+#### 					],  
+#### 					"query": [  
+#### 						{  
+#### 							"key": "grant_type",  
+#### 							"value": "refresh_token"  
+#### 						}  
+#### 					]  
+#### 				},  
+#### 				"description": "Generated from cURL: \r\ncurl 'http://127.0.0.1:54321/rest/v1/bookings?select=*' \\\r\n-H \"apikey: SUPABASE_CLIENT_ANON_KEY\" \\\r\n-H \"Authorization: Bearer SUPABASE_CLIENT_ANON_KEY\"\r\n          "  
+#### 			},  
+#### 			"response": []  
+#### 		}  
+#### 	]  
+#### }"

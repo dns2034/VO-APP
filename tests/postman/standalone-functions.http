@@ -1,0 +1,231 @@
+
+### Voucher / Booking Utilities
+
+#### Generate Voucher Code
+POST http://127.0.0.1:54321/rest/v1/rpc/generate_voucher_code
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{}
+
+#### Generate Booking Voucher
+POST http://127.0.0.1:54321/rest/v1/rpc/generate_booking_voucher
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{
+  "p_user_id": "{{user_id}}",
+  "p_space_unit_id": "SPACE_UNIT_ID"
+}
+
+#### Get Product Info
+POST http://127.0.0.1:54321/rest/v1/rpc/get_product_info
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{
+  "p_voucher_id": "VOUCHER_ID"
+}
+
+#### Get Voucher Info
+POST {{base_url}}/rest/v1/rpc/get_voucher_info
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_voucher_id": "80a02f89-4a66-4333-84b0-1b13666497ad"
+}
+
+#### Validate Booking
+POST http://127.0.0.1:54321/rest/v1/rpc/validate_booking
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_booking_id": "BOOKING_UUID",
+  "p_user_id": "{{user_id}}"
+}
+
+#### Validate Time Within Bounds
+POST http://127.0.0.1:54321/rest/v1/rpc/validate_time_within_bounds
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{
+  "p_start": "07:00:00+08",
+  "p_end": "10:00:00+08",
+  "p_open": "08:00:00+08",
+  "p_close": "18:00:00+08"
+}
+
+#### Validate Voucher Duration
+POST {{base_url}}/rest/v1/rpc/validate_voucher_duration
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_start": "09:00:00+08:00",
+  "p_end": "1:00:00+08:00",
+  "p_duration": 3
+}
+
+#### Check Booking Status
+POST {{base_url}}/rest/v1/rpc/check_booking_status
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_booking_id": "2e1f651b-ff35-47e5-85c8-ff51680bee55"
+}
+
+### Availability / Stats
+
+#### Get Space Availability
+POST http://127.0.0.1:54321/rest/v1/rpc/get_space_availability
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{
+  "p_space_unit_id": "SPACE_UNIT_ID",
+  "p_date": "2025-08-15"
+}
+
+#### Get Total Active Credits
+POST http://127.0.0.1:54321/rest/v1/rpc/get_total_active_credits
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_user_id": "{{user_id}}"
+}
+
+#### Get Total Active Points
+POST http://127.0.0.1:54321/rest/v1/rpc/get_total_active_points
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_user_id": "{{user_id}}"
+}
+
+#### Get User Subscription Type
+POST http://127.0.0.1:54321/rest/v1/rpc/get_user_subscription_type
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{
+  "p_user_id": "{{user_id}}"
+}
+
+### Other Checks
+
+#### Check Voucher If Refundable
+POST {{base_url}}/rest/v1/rpc/check_refundable
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_is_refundable": false
+}
+
+#### Check Voucher If Used
+POST {{base_url}}/rest/v1/rpc/check_used
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_status": "used"
+}
+
+#### Check Booking Cancellation Window
+POST http://127.0.0.1:54321/rest/v1/rpc/check_booking_cancellation_window
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_created_at": "2025-08-14"
+}
+
+#### Check Booking Overlap
+POST http://127.0.0.1:54321/rest/v1/rpc/check_booking_overlap
+Content-Type: application/json
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+
+{
+  "p_space_unit_id": "SPACE_UNIT_UUID",
+  "p_date": "2025-08-15",
+  "p_start": "09:00:00+08",
+  "p_end": "10:00:00+08"
+}
+
+#### Check Booking If Cancellable
+POST http://127.0.0.1:54321/rest/v1/rpc/is_booking_cancellable
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_status": "BOOKING_ID_STATUS"
+}
+
+#### Prevent Booking For Past Date/Time
+POST http://127.0.0.1:54321/rest/v1/rpc/prevent_past_booking
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "new": {
+    "date": "2025-08-13",
+    "start_time": "10:00:00+08",
+    "end_time": "12:00:00+08"
+  }
+}
+
+#### Reactivate Voucher
+POST http://127.0.0.1:54321/rest/v1/rpc/reactivate_voucher
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_voucher_id": "b05eb0c2-8c03-4076-9956-0c52791dbb95"
+}
+
+#### Log Cancellation
+POST http://127.0.0.1:54321/rest/v1/rpc/log_cancellation
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_booking_id": "BOOKING_UUID",
+  "p_user_id": "{{user_id}}",
+  "p_remarks": "User requested cancellation"
+}
+
+#### Set Product Voucher To Used
+POST http://127.0.0.1:54321/rest/v1/rpc/set_product_voucher_used
+apikey: {{apikey}}
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "p_voucher_id": "REPLACE_WITH_VOUCHER_UUID"
+}

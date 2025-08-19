@@ -6,8 +6,6 @@ alter table "public"."space_units" drop column "status";
 
 alter table "public"."spaces" drop column "descriptions";
 
-alter table "public"."spaces" drop column "is_available";
-
 create or replace view "public"."available_products" as  SELECT p.id,
     p.name,
     p.description,

@@ -1,7 +1,5 @@
 drop policy "Clients can view amenities in their organization" on "public"."amenities";
 
-drop policy "Managers can manage amenities" on "public"."amenities";
-
 revoke delete on table "public"."amenities" from "anon";
 
 revoke insert on table "public"."amenities" from "anon";

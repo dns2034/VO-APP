@@ -17,10 +17,10 @@ export type Database = {
     Functions: {
       graphql: {
         Args: {
-          query?: string;
+          variables?: Json;
           extensions?: Json;
           operationName?: string;
-          variables?: Json;
+          query?: string;
         };
         Returns: Json;
       };
@@ -63,7 +63,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "bookings";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       bookings: {
@@ -117,7 +117,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "space_units";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       branches: {
@@ -128,6 +128,7 @@ export type Database = {
           location: string | null;
           name: string;
           organization_id: string;
+          pin_location: Json | null;
         };
         Insert: {
           created_at?: string;
@@ -136,6 +137,7 @@ export type Database = {
           location?: string | null;
           name: string;
           organization_id: string;
+          pin_location?: Json | null;
         };
         Update: {
           created_at?: string;
@@ -144,6 +146,7 @@ export type Database = {
           location?: string | null;
           name?: string;
           organization_id?: string;
+          pin_location?: Json | null;
         };
         Relationships: [
           {
@@ -152,7 +155,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "organizations";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       businesses: {
@@ -215,24 +218,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      organization_pages: {
-        Row: {
-          created_at: string;
-          id: string;
-          page_url: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          page_url: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          page_url?: string;
-        };
-        Relationships: [];
-      };
       organizations: {
         Row: {
           created_at: string;
@@ -253,6 +238,7 @@ export type Database = {
       };
       points: {
         Row: {
+          booking_id: string | null;
           created_at: string;
           expires_at: string;
           id: string;
@@ -260,6 +246,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          booking_id?: string | null;
           created_at?: string;
           expires_at?: string;
           id?: string;
@@ -267,21 +254,30 @@ export type Database = {
           user_id?: string;
         };
         Update: {
+          booking_id?: string | null;
           created_at?: string;
           expires_at?: string;
           id?: string;
           status?: Database["public"]["Enums"]["currency_status"];
           user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "points_booking_id_fkey";
+            columns: ["booking_id"];
+            isOneToOne: true;
+            referencedRelation: "bookings";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       product_vouchers: {
         Row: {
           code: string | null;
           created_at: string;
-          expiring_at: string | null;
+          expiring_at: string;
           id: string;
-          is_refundable: boolean;
+          is_refundable: boolean | null;
           product_id: string;
           status: Database["public"]["Enums"]["voucher_status"];
           updated_at: string | null;
@@ -290,9 +286,9 @@ export type Database = {
         Insert: {
           code?: string | null;
           created_at?: string;
-          expiring_at?: string | null;
+          expiring_at?: string;
           id?: string;
-          is_refundable?: boolean;
+          is_refundable?: boolean | null;
           product_id: string;
           status?: Database["public"]["Enums"]["voucher_status"];
           updated_at?: string | null;
@@ -301,9 +297,9 @@ export type Database = {
         Update: {
           code?: string | null;
           created_at?: string;
-          expiring_at?: string | null;
+          expiring_at?: string;
           id?: string;
-          is_refundable?: boolean;
+          is_refundable?: boolean | null;
           product_id?: string;
           status?: Database["public"]["Enums"]["voucher_status"];
           updated_at?: string | null;
@@ -316,7 +312,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "products";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       products: {
@@ -328,7 +324,7 @@ export type Database = {
           image_path: string;
           name: string;
           price: number;
-          space_id: string | null;
+          space_id: string;
         };
         Insert: {
           created_at?: string;
@@ -338,7 +334,7 @@ export type Database = {
           image_path: string;
           name: string;
           price?: number;
-          space_id?: string | null;
+          space_id: string;
         };
         Update: {
           created_at?: string;
@@ -348,7 +344,7 @@ export type Database = {
           image_path?: string;
           name?: string;
           price?: number;
-          space_id?: string | null;
+          space_id?: string;
         };
         Relationships: [
           {
@@ -357,7 +353,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "spaces";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       profiles: {
@@ -437,7 +433,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "rewards";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       rewards: {
@@ -475,7 +471,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "organizations";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       space_availability: {
@@ -510,7 +506,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "spaces";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       space_units: {
@@ -539,13 +535,14 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "spaces";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       spaces: {
         Row: {
           branch_id: string;
           created_at: string;
+          descriptions: string;
           id: string;
           is_available: boolean;
           name: string;
@@ -553,6 +550,7 @@ export type Database = {
         Insert: {
           branch_id: string;
           created_at?: string;
+          descriptions?: string;
           id?: string;
           is_available?: boolean;
           name: string;
@@ -560,6 +558,7 @@ export type Database = {
         Update: {
           branch_id?: string;
           created_at?: string;
+          descriptions?: string;
           id?: string;
           is_available?: boolean;
           name?: string;
@@ -571,7 +570,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "branches";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       subscriptions: {
@@ -600,8 +599,29 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "organizations";
             referencedColumns: ["id"];
-          }
+          },
         ];
+      };
+      user_landing_pages: {
+        Row: {
+          created_at: string;
+          id: string;
+          url: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          url: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          url?: string;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       user_organizations: {
         Row: {
@@ -629,7 +649,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "organizations";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       user_roles: {
@@ -689,7 +709,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "subscriptions";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
     };
@@ -699,11 +719,11 @@ export type Database = {
     Functions: {
       assign_booking_times_by_duration: {
         Args: {
+          p_close: string;
+          p_open: string;
+          p_end: string;
           p_start: string;
           p_duration: number;
-          p_end: string;
-          p_open: string;
-          p_close: string;
         };
         Returns: {
           start_time: string;
@@ -711,7 +731,7 @@ export type Database = {
         }[];
       };
       cancel_booking: {
-        Args: { p_remarks: string; p_user_id: string; p_booking_id: string };
+        Args: { p_user_id: string; p_remarks: string; p_booking_id: string };
         Returns: string;
       };
       check_booking_cancellation_window: {
@@ -720,12 +740,28 @@ export type Database = {
       };
       check_booking_overlap: {
         Args: {
-          p_end: string;
-          p_space_unit_id: string;
-          p_date: string;
           p_start: string;
+          p_space_unit_id: string;
+          p_end: string;
+          p_date: string;
         };
         Returns: undefined;
+      };
+      check_booking_status: {
+        Args: { p_booking_id: string };
+        Returns: string;
+      };
+      check_refundable: {
+        Args: { p_is_refundable: boolean };
+        Returns: undefined;
+      };
+      check_used: {
+        Args: { p_status: string };
+        Returns: undefined;
+      };
+      generate_booking_voucher: {
+        Args: { p_user_id: string; p_space_unit_id: string };
+        Returns: string;
       };
       generate_voucher_code: {
         Args: Record<PropertyKey, never>;
@@ -735,7 +771,7 @@ export type Database = {
         Args: { p_voucher_id: string };
         Returns: {
           product_id: string;
-          duration: number;
+          product_duration: number;
         }[];
       };
       get_space_availability: {
@@ -749,19 +785,64 @@ export type Database = {
         Args: { p_user_id: string };
         Returns: number;
       };
+      get_total_active_points: {
+        Args: { p_user_id: string };
+        Returns: number;
+      };
       get_user_subscription_type: {
         Args: { p_user_id: string };
         Returns: string;
+      };
+      get_voucher_info: {
+        Args: { p_voucher_id: string };
+        Returns: {
+          v_status: string;
+          v_is_refundable: boolean;
+        }[];
+      };
+      handle_subscription_and_voucher: {
+        Args: { new: Database["public"]["Tables"]["bookings"]["Row"] };
+        Returns: {
+          booked_by: string;
+          created_at: string;
+          date: string;
+          end_time: string | null;
+          id: string;
+          product_voucher_id: string | null;
+          remarks: string | null;
+          space_unit_id: string;
+          start_time: string | null;
+          status: Database["public"]["Enums"]["booking_status"];
+        };
       };
       is_booking_cancellable: {
         Args: { p_status: string };
         Returns: boolean;
       };
       log_cancellation: {
-        Args: { p_user_id: string; p_booking_id: string; p_remarks: string };
+        Args: { p_user_id: string; p_remarks: string; p_booking_id: string };
         Returns: undefined;
       };
-      reactivate_voucher_if_used: {
+      prevent_past_booking: {
+        Args: { new: Database["public"]["Tables"]["bookings"]["Row"] };
+        Returns: {
+          booked_by: string;
+          created_at: string;
+          date: string;
+          end_time: string | null;
+          id: string;
+          product_voucher_id: string | null;
+          remarks: string | null;
+          space_unit_id: string;
+          start_time: string | null;
+          status: Database["public"]["Enums"]["booking_status"];
+        };
+      };
+      reactivate_voucher: {
+        Args: { p_voucher_id: string };
+        Returns: undefined;
+      };
+      refund_voucher: {
         Args: { p_voucher_id: string };
         Returns: undefined;
       };
@@ -776,33 +857,33 @@ export type Database = {
       validate_booking: {
         Args: { p_booking_id: string; p_user_id: string };
         Returns: {
-          result_voucher_id: string;
-          result_start_time: string;
           result_booking_date: string;
+          result_start_time: string;
+          result_voucher_id: string;
           result_status: string;
           result_created_at: string;
         }[];
       };
       validate_time_within_bounds: {
         Args: {
-          p_start: string;
           p_end: string;
           p_open: string;
           p_close: string;
+          p_start: string;
         };
         Returns: undefined;
       };
       validate_voucher_duration: {
-        Args: { p_duration: number; p_start: string; p_end: string };
+        Args: { p_start: string; p_duration: number; p_end: string };
         Returns: undefined;
       };
       verify_product_voucher: {
         Args: {
+          p_start_time: string;
+          p_space_unit_id: string;
+          p_user_id: string;
           p_end_time: string;
           p_voucher_id: string;
-          p_user_id: string;
-          p_space_unit_id: string;
-          p_start_time: string;
         };
         Returns: undefined;
       };
@@ -845,7 +926,7 @@ export type Tables<
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -856,14 +937,14 @@ export type Tables<
     ? R
     : never
   : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])
-  ? (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
-    : never
-  : never;
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
@@ -873,7 +954,7 @@ export type TablesInsert<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -883,12 +964,12 @@ export type TablesInsert<
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Insert: infer I;
-    }
-    ? I
-    : never
-  : never;
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
@@ -898,7 +979,7 @@ export type TablesUpdate<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
@@ -908,12 +989,12 @@ export type TablesUpdate<
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Update: infer U;
-    }
-    ? U
-    : never
-  : never;
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
@@ -923,14 +1004,14 @@ export type Enums<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-  : never;
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
@@ -940,14 +1021,14 @@ export type CompositeTypes<
     schema: keyof DatabaseWithoutInternals;
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-  : never;
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never;
 
 export const Constants = {
   graphql_public: {

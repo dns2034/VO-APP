@@ -1,24 +1,22 @@
-import { supabaseClient } from "@/services/supabase/client";
+import supabase from "@/config/supabase-client";
+import type { Database } from "@/types/supabase";
 
-import { Database } from "@/types/supabase";
-
-type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 type ProductInsert = Database["public"]["Tables"]["products"]["Insert"];
 type ProductUpdate = Database["public"]["Tables"]["products"]["Update"];
 
-export class ProductsService {
-  static async getAll(): Promise<ProductRow[]> {
-    const { data, error } = await supabaseClient
+export const productsService = {
+  getAll: async () => {
+    const { data, error } = await supabase
       .from("products")
       .select("*")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data as ProductRow[];
-  }
+    return data;
+  },
 
-  static async getById(id: string): Promise<ProductRow | null> {
-    const { data, error } = await supabaseClient
+  getById: async (id: string) => {
+    const { data, error } = await supabase
       .from("products")
       .select("*")
       .eq("id", id)
@@ -26,10 +24,10 @@ export class ProductsService {
 
     if (error) throw error;
     return data;
-  }
+  },
 
-  static async create(reward: ProductInsert): Promise<ProductRow> {
-    const { data, error } = await supabaseClient
+  async create(reward: ProductInsert) {
+    const { data, error } = await supabase
       .from("products")
       .insert([reward])
       .select()
@@ -37,10 +35,10 @@ export class ProductsService {
 
     if (error) throw error;
     return data;
-  }
+  },
 
-  static async update(id: string, updates: ProductUpdate): Promise<ProductRow> {
-    const { data, error } = await supabaseClient
+  update: async (id: string, updates: ProductUpdate) => {
+    const { data, error } = await supabase
       .from("products")
       .update(updates)
       .eq("id", id)
@@ -49,14 +47,20 @@ export class ProductsService {
 
     if (error) throw error;
     return data;
-  }
+  },
 
-  static async delete(id: string): Promise<void> {
-    const { error } = await supabaseClient
-      .from("products")
-      .delete()
-      .eq("id", id);
+  delete: async (id: string) => {
+    const { error } = await supabase.from("products").delete().eq("id", id);
 
     if (error) throw error;
-  }
-}
+  },
+  getBySpaceId: async (spaceId: string) => {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("space_id", spaceId);
+
+    if (error) throw error;
+    return data;
+  },
+};

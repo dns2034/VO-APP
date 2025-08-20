@@ -1,20 +1,30 @@
-import { supabaseClient } from "./supabase/client";
-import { Database } from "@/types/supabase";
+// credits.service.ts
+import supabaseClient from "@/lib/supabase-client";
 
-type CreditRow = Database["public"]["Tables"]["credits"]["Row"];
+export const creditsService = {
+  getUserCredits: async (userId: string) => {
+    const { data, error } = await supabaseClient.rpc(
+      "get_total_active_credits",
+      {
+        p_user_id: userId,
+      }
+    );
 
-const CreditsService = {
-  async getAll(): Promise<CreditRow[]> {
+    if (error) throw error;
+    return data;
+  },
+
+  getAll: async () => {
     const { data, error } = await supabaseClient
       .from("credits")
       .select("*")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data as CreditRow[];
+    return data;
   },
 
-  async getById(id: string): Promise<CreditRow | null> {
+  getById: async (id: string) => {
     const { data, error } = await supabaseClient
       .from("credits")
       .select("*")
@@ -25,5 +35,3 @@ const CreditsService = {
     return data;
   },
 };
-
-export default CreditsService;

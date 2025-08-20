@@ -1,20 +1,28 @@
-import { supabaseClient } from "./supabase/client";
-import { Database } from "@/types/supabase";
+import supabaseClient from "@/lib/supabase-client";
 
-type PointRow = Database["public"]["Tables"]["points"]["Row"];
+export const pointsService = {
+  getUserPoints: async (userId: string) => {
+    const { data, error } = await supabaseClient.rpc(
+      "get_total_active_points",
+      {
+        p_user_id: userId,
+      }
+    );
 
-const PointsService = {
-  async getAll(): Promise<PointRow[]> {
+    if (error) throw error;
+    return data;
+  },
+
+  getAll: async () => {
     const { data, error } = await supabaseClient
       .from("points")
       .select("*")
       .order("created_at", { ascending: false });
 
     if (error) throw error;
-    return data as PointRow[];
+    return data;
   },
-
-  async getById(id: string): Promise<PointRow | null> {
+  getById: async (id: string) => {
     const { data, error } = await supabaseClient
       .from("points")
       .select("*")
@@ -25,5 +33,3 @@ const PointsService = {
     return data;
   },
 };
-
-export default PointsService;

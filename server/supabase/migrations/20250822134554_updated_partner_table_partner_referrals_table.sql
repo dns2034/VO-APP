@@ -2,13 +2,17 @@ alter table "public"."partner_referrals" drop column "referred_ by";
 
 alter table "public"."partner_referrals" add column "partner_id" bigint;
 
-alter table "public"."partners" drop column "partner_id";
+-- Drop the existing partners table
+DROP TABLE IF EXISTS public.partners CASCADE;
 
-alter table "public"."partners" add column "email" text;
-
-alter table "public"."partners" alter column "id" drop default;
-
-alter table "public"."partners" alter column "id" set data type bigint using "id"::bigint;
+-- Recreate partners table
+CREATE TABLE public.partners (
+  id BIGINT NOT NULL,
+  name TEXT NULL,
+  email TEXT NULL,
+  partner_type public.partner_type NOT NULL,
+  CONSTRAINT partners_pkey PRIMARY KEY (id)
+) TABLESPACE pg_default;
 
 alter table "public"."partner_referrals" add constraint "partner_referrals_partner_id_fkey" FOREIGN KEY (partner_id) REFERENCES partners(id) not valid;
 

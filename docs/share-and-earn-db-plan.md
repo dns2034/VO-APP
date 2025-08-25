@@ -1,37 +1,43 @@
 # Share & Earn Database Plan
 
 ## 1. Purpose
-Simplify schema by removing redundant tables.  
-Unify all audit/logging into a single `logs` table.  
-Make `referrals` the single source of truth for all referral types (business partners and fans).
+- Simplify schema by removing redundant tables.  
+- Unify all audit/logging into a single `logs` table.  
+- Make `partners` the single source of truth for all **referrers** (business partners, fans, and VO clients).  
 
 ## 2. Canonical Tables (kept)
-- `users`
-- `referrals` (replaces `partners` + `partner_referrals`)
-- `cash_vouchers`
+- `users` (Supabase auth)  
+- `partners` (registry of all referrers)  
+- `cash_vouchers`  
 
 ## 3. To Be Merged Into `logs`
-- `submissions_audit`
-- `dead_letter`
-- `ap_runs`
-- `email_events`
-- `voucher_claims`
-- `odoo_won_events`
+- `submissions_audit` (LP/AP lead submissions)  
+- `dead_letter`  
+- `ap_runs` (ActivePieces steps)  
+- `email_events` (Listmonk events)  
+- `voucher_claims`  
+- `odoo_won_events`  
 
 ## 4. Roles
-- **fan**  
-  - Replaces “individual partner” concept.  
+- **fan (individual partner)**  
   - Created only via the Share & Earn signup page.  
   - Can generate/share referral codes.  
-  - Can earn credits/vouchers when referrals convert.  
+  - Can earn coworking vouchers when referrals convert.  
   - Cannot log in to VO app or access management features.  
 
-- **client**  
-  - Business entities with full app access.  
+- **business partner**  
+  - Registered as a partner in the system.  
+  - Can share referral codes.  
+  - Earns cash vouchers when referrals convert.  
+  - Cannot log in to VO app.  
+
+- **client (VO app user)**  
+  - Business entities or individuals with full app access.  
   - Can manage referrals, spaces, products, etc.  
+  - Earn credits when referrals convert.  
 
 - **staff/admin/service_role**  
-  - Internal operators with full access to reporting and management.
+  - Internal operators with full access to reporting and management.  
 
 ## 5. Logs Table Structure
 **Columns**  
@@ -84,20 +90,7 @@ Make `referrals` the single source of truth for all referral types (business par
 }
 ```
 
-## 6. Migration Strategy
-- Create new `logs` table.
-- Backfill old rows from:
-  - submissions_audit
-  - dead_letter
-  - ap_runs
-  - email_events
-  - voucher_claims
-  - odoo_won_events
-- Provide compatibility views for old tables (temporary).
-- Switch new writes to `logs`.
-- Deprecate old tables after cutover.
-
-## 7. RLS Outline
+## 6. RLS Outline
 - `logs`
   - staff/admin/service_role: full access
   - partners/fans: no access

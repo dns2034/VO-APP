@@ -78,6 +78,7 @@ Make `referrals` the single source of truth for all referral types (business par
   "claimed_by": "fan@example.com",
   "payout_method": "gcash"
 }
+```
 
 ## 6. Migration Strategy
 - Create new `logs` table.

@@ -26,7 +26,7 @@ Make `referrals` the single source of truth for all referral types (business par
   - Can earn credits/vouchers when referrals convert.  
   - Cannot log in to VO app or access management features.  
 
-- **partner/client**  
+- **client**  
   - Business entities with full app access.  
   - Can manage referrals, spaces, products, etc.  
 
@@ -50,28 +50,32 @@ Make `referrals` the single source of truth for all referral types (business par
   "lead_email": "lead@example.com",
   "utm": { "source": "fb", "campaign": "q3" }
 }
-
+```
+```
 {
   "op": "ap_run",
   "ap_run_id": "ap_456",
   "status": "success",
   "logs": { "steps": ["submission_received", "odoo_created"] }
 }
-
+```
+```
 {
   "op": "odoo_won",
   "odoo_id": "lead_789",
   "status": "processed",
   "voucher_id": "uuid-456"
 }
-
+```
+```
 {
   "op": "email_event",
   "msg_id": "listmonk_123",
   "recipient": "partner@example.com",
   "event_type": "bounced"
 }
-
+```
+```
 {
   "op": "claim",
   "voucher_id": "uuid-456",

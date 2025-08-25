@@ -1,27 +1,54 @@
 @startuml
-actor Fan
-participant "System" as Sys
-participant "Logs" as L
+!theme plain
+hide methods
+hide stereotypes
+skinparam linetype ortho
+left to right direction
+skinparam ranksep 240
+skinparam nodesep 50
 
-Fan -> Sys: Register via Share & Earn
-Sys -> L: Log registration
+entity "user_roles" as ur {
+  user_id: uuid
+  role: roles  ' includes fan, partner, staff, admin
+}
 
-Fan -> Sys: Share referral link
-Sys -> L: Log link share
+entity "referrals" as rf {
+  *id: uuid
+  ref_code: text
+  referred_email: text
+  referred_name: text
+  status: text
+  created_by: uuid  ' links to auth.users.id
+}
 
-Fan -> Sys: Lead submits form
-Sys -> L: Log submission
-Sys -> Sys: Create Odoo Lead
-Sys -> L: Log ap_run
+entity "cash_vouchers" as cv {
+  *id: uuid
+  referral_id: uuid
+  lead_id: text
+  lead_email: text
+  partner_name: text
+  partner_email: text
+  sent_at: timestamptz
+  claimed_at: timestamptz
+  paid_at: timestamptz
+  paid_via: text
+  notes: text
+  listmonk_msg_id: text
+  ap_run_id: text
+}
 
-Sys -> Sys: Odoo Lead Marked WON
-Sys -> L: Log odoo_won
+entity "logs" as lg {
+  *id: uuid
+  created_at: timestamptz
+  source: text
+  event_type: text
+  ref_id: text
+  payload: jsonb
+}
 
-Sys -> Sys: Create Voucher
-Sys -> L: Log voucher_issued
-Sys -> Sys: Send Voucher Email
-Sys -> L: Log email_event
-
-Fan -> Sys: Claim Voucher
-Sys -> L: Log claim
+' Relationships with spacing
+ur ||--o{ rf : "  creates referral  "
+rf ||--o{ cv : "  triggers voucher  "
+rf ||--o{ lg : "  logged in  "
+cv ||--o{ lg : "  logged in  "
 @enduml

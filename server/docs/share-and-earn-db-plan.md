@@ -78,3 +78,27 @@ Make `referrals` the single source of truth for all referral types (business par
   "claimed_by": "fan@example.com",
   "payout_method": "gcash"
 }
+
+## 6. Migration Strategy
+- Create new `logs` table.
+- Backfill old rows from:
+  - submissions_audit
+  - dead_letter
+  - ap_runs
+  - email_events
+  - voucher_claims
+  - odoo_won_events
+- Provide compatibility views for old tables (temporary).
+- Switch new writes to `logs`.
+- Deprecate old tables after cutover.
+
+## 7. RLS Outline
+- `logs`
+  - staff/admin/service_role: full access
+  - partners/fans: no access
+- `cash_vouchers`
+  - partners/fans: only their rows
+  - staff/admin/service_role: full access
+- `referrals`
+  - partners/fans: only their row
+  - staff/admin/service_role: full access

@@ -1,0 +1,27 @@
+@startuml
+actor Fan
+participant "System" as Sys
+participant "Logs" as L
+
+Fan -> Sys: Register via Share & Earn
+Sys -> L: Log registration
+
+Fan -> Sys: Share referral link
+Sys -> L: Log link share
+
+Fan -> Sys: Lead submits form
+Sys -> L: Log submission
+Sys -> Sys: Create Odoo Lead
+Sys -> L: Log ap_run
+
+Sys -> Sys: Odoo Lead Marked WON
+Sys -> L: Log odoo_won
+
+Sys -> Sys: Create Voucher
+Sys -> L: Log voucher_issued
+Sys -> Sys: Send Voucher Email
+Sys -> L: Log email_event
+
+Fan -> Sys: Claim Voucher
+Sys -> L: Log claim
+@enduml

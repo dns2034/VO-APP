@@ -1,0 +1,5834 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "title": "standard public schema",
+    "version": "12.2.12"
+  },
+  "host": "0.0.0.0:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "consumes": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "produces": [
+    "application/json",
+    "application/vnd.pgrst.object+json;nulls=stripped",
+    "application/vnd.pgrst.object+json",
+    "text/csv"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "produces": ["application/openapi+json", "application/json"],
+        "responses": { "200": { "description": "OK" } },
+        "summary": "OpenAPI description (this document)",
+        "tags": ["Introspection"]
+      }
+    },
+    "/referrals": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.referrals.created_at" },
+          { "$ref": "#/parameters/rowFilter.referrals.metadata" },
+          { "$ref": "#/parameters/rowFilter.referrals.id" },
+          { "$ref": "#/parameters/rowFilter.referrals.referred_by" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/referrals" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["referrals"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.referrals" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["referrals"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.referrals.created_at" },
+          { "$ref": "#/parameters/rowFilter.referrals.metadata" },
+          { "$ref": "#/parameters/rowFilter.referrals.id" },
+          { "$ref": "#/parameters/rowFilter.referrals.referred_by" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["referrals"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.referrals.created_at" },
+          { "$ref": "#/parameters/rowFilter.referrals.metadata" },
+          { "$ref": "#/parameters/rowFilter.referrals.id" },
+          { "$ref": "#/parameters/rowFilter.referrals.referred_by" },
+          { "$ref": "#/parameters/body.referrals" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["referrals"]
+      }
+    },
+    "/user_landing_pages": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.id" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.user_id" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.url" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/user_landing_pages" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["user_landing_pages"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.user_landing_pages" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["user_landing_pages"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.id" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.user_id" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.url" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_landing_pages"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.id" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.user_id" },
+          { "$ref": "#/parameters/rowFilter.user_landing_pages.url" },
+          { "$ref": "#/parameters/body.user_landing_pages" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_landing_pages"]
+      }
+    },
+    "/points": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.points.created_at" },
+          { "$ref": "#/parameters/rowFilter.points.user_id" },
+          { "$ref": "#/parameters/rowFilter.points.expires_at" },
+          { "$ref": "#/parameters/rowFilter.points.status" },
+          { "$ref": "#/parameters/rowFilter.points.id" },
+          { "$ref": "#/parameters/rowFilter.points.booking_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/points" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["points"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.points" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["points"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.points.created_at" },
+          { "$ref": "#/parameters/rowFilter.points.user_id" },
+          { "$ref": "#/parameters/rowFilter.points.expires_at" },
+          { "$ref": "#/parameters/rowFilter.points.status" },
+          { "$ref": "#/parameters/rowFilter.points.id" },
+          { "$ref": "#/parameters/rowFilter.points.booking_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["points"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.points.created_at" },
+          { "$ref": "#/parameters/rowFilter.points.user_id" },
+          { "$ref": "#/parameters/rowFilter.points.expires_at" },
+          { "$ref": "#/parameters/rowFilter.points.status" },
+          { "$ref": "#/parameters/rowFilter.points.id" },
+          { "$ref": "#/parameters/rowFilter.points.booking_id" },
+          { "$ref": "#/parameters/body.points" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["points"]
+      }
+    },
+    "/dead_letters": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.dead_letters.id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.received_at" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.raw_payload" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.clean_snapshot" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.lead_email" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.partner_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.utm" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.lp_slug" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.landing_page_url" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.referrer" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.first_visit_at" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.session_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.consent" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.status" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.odoo_lead_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.visitor_tx_msg_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.partner_tx_msg_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.request_ip" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/dead_letters" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["dead_letters"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.dead_letters" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["dead_letters"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.dead_letters.id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.received_at" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.raw_payload" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.clean_snapshot" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.lead_email" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.partner_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.utm" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.lp_slug" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.landing_page_url" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.referrer" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.first_visit_at" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.session_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.consent" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.status" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.odoo_lead_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.visitor_tx_msg_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.partner_tx_msg_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.request_ip" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["dead_letters"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.dead_letters.id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.received_at" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.raw_payload" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.clean_snapshot" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.lead_email" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.partner_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.utm" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.lp_slug" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.landing_page_url" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.referrer" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.first_visit_at" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.session_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.consent" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.status" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.odoo_lead_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.visitor_tx_msg_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.partner_tx_msg_id" },
+          { "$ref": "#/parameters/rowFilter.dead_letters.request_ip" },
+          { "$ref": "#/parameters/body.dead_letters" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["dead_letters"]
+      }
+    },
+    "/businesses": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.businesses.id" },
+          { "$ref": "#/parameters/rowFilter.businesses.created_at" },
+          { "$ref": "#/parameters/rowFilter.businesses.user_id" },
+          { "$ref": "#/parameters/rowFilter.businesses.name" },
+          { "$ref": "#/parameters/rowFilter.businesses.description" },
+          { "$ref": "#/parameters/rowFilter.businesses.website" },
+          { "$ref": "#/parameters/rowFilter.businesses.phone" },
+          { "$ref": "#/parameters/rowFilter.businesses.email" },
+          { "$ref": "#/parameters/rowFilter.businesses.logo_url" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/businesses" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["businesses"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.businesses" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["businesses"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.businesses.id" },
+          { "$ref": "#/parameters/rowFilter.businesses.created_at" },
+          { "$ref": "#/parameters/rowFilter.businesses.user_id" },
+          { "$ref": "#/parameters/rowFilter.businesses.name" },
+          { "$ref": "#/parameters/rowFilter.businesses.description" },
+          { "$ref": "#/parameters/rowFilter.businesses.website" },
+          { "$ref": "#/parameters/rowFilter.businesses.phone" },
+          { "$ref": "#/parameters/rowFilter.businesses.email" },
+          { "$ref": "#/parameters/rowFilter.businesses.logo_url" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["businesses"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.businesses.id" },
+          { "$ref": "#/parameters/rowFilter.businesses.created_at" },
+          { "$ref": "#/parameters/rowFilter.businesses.user_id" },
+          { "$ref": "#/parameters/rowFilter.businesses.name" },
+          { "$ref": "#/parameters/rowFilter.businesses.description" },
+          { "$ref": "#/parameters/rowFilter.businesses.website" },
+          { "$ref": "#/parameters/rowFilter.businesses.phone" },
+          { "$ref": "#/parameters/rowFilter.businesses.email" },
+          { "$ref": "#/parameters/rowFilter.businesses.logo_url" },
+          { "$ref": "#/parameters/body.businesses" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["businesses"]
+      }
+    },
+    "/subscriptions": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.subscriptions.id" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.created_at" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.subscriptions_type" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.organization_id" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.duration" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/subscriptions" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["subscriptions"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.subscriptions" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["subscriptions"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.subscriptions.id" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.created_at" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.subscriptions_type" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.organization_id" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.duration" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["subscriptions"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.subscriptions.id" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.created_at" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.subscriptions_type" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.organization_id" },
+          { "$ref": "#/parameters/rowFilter.subscriptions.duration" },
+          { "$ref": "#/parameters/body.subscriptions" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["subscriptions"]
+      }
+    },
+    "/partners": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.partners.name" },
+          { "$ref": "#/parameters/rowFilter.partners.partner_type" },
+          { "$ref": "#/parameters/rowFilter.partners.id" },
+          { "$ref": "#/parameters/rowFilter.partners.email" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/partners" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["partners"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.partners" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["partners"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.partners.name" },
+          { "$ref": "#/parameters/rowFilter.partners.partner_type" },
+          { "$ref": "#/parameters/rowFilter.partners.id" },
+          { "$ref": "#/parameters/rowFilter.partners.email" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["partners"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.partners.name" },
+          { "$ref": "#/parameters/rowFilter.partners.partner_type" },
+          { "$ref": "#/parameters/rowFilter.partners.id" },
+          { "$ref": "#/parameters/rowFilter.partners.email" },
+          { "$ref": "#/parameters/body.partners" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["partners"]
+      }
+    },
+    "/partner_referrals": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.partner_referrals.id" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.created_at" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.metadata" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.partner_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/partner_referrals" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["partner_referrals"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.partner_referrals" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["partner_referrals"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.partner_referrals.id" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.created_at" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.metadata" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.partner_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["partner_referrals"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.partner_referrals.id" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.created_at" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.metadata" },
+          { "$ref": "#/parameters/rowFilter.partner_referrals.partner_id" },
+          { "$ref": "#/parameters/body.partner_referrals" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["partner_referrals"]
+      }
+    },
+    "/user_subscriptions": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.id" },
+          {
+            "$ref": "#/parameters/rowFilter.user_subscriptions.subscription_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.user_subscriptions.organization_id"
+          },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.started_at" },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.expires_at" },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.user_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/user_subscriptions" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["user_subscriptions"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.user_subscriptions" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["user_subscriptions"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.id" },
+          {
+            "$ref": "#/parameters/rowFilter.user_subscriptions.subscription_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.user_subscriptions.organization_id"
+          },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.started_at" },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.expires_at" },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.user_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_subscriptions"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.id" },
+          {
+            "$ref": "#/parameters/rowFilter.user_subscriptions.subscription_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.user_subscriptions.organization_id"
+          },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.started_at" },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.expires_at" },
+          { "$ref": "#/parameters/rowFilter.user_subscriptions.user_id" },
+          { "$ref": "#/parameters/body.user_subscriptions" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_subscriptions"]
+      }
+    },
+    "/reward_vouchers": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.user_id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.status" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.reward_id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.expiring_at" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/reward_vouchers" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["reward_vouchers"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.reward_vouchers" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["reward_vouchers"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.user_id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.status" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.reward_id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.expiring_at" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["reward_vouchers"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.user_id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.status" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.reward_id" },
+          { "$ref": "#/parameters/rowFilter.reward_vouchers.expiring_at" },
+          { "$ref": "#/parameters/body.reward_vouchers" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["reward_vouchers"]
+      }
+    },
+    "/product_vouchers": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.product_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.user_id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.product_id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.expiring_at" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.status" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.is_refundable" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.updated_at" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/product_vouchers" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["product_vouchers"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.product_vouchers" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["product_vouchers"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.product_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.user_id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.product_id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.expiring_at" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.status" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.is_refundable" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.updated_at" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["product_vouchers"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.product_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.user_id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.product_id" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.expiring_at" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.status" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.is_refundable" },
+          { "$ref": "#/parameters/rowFilter.product_vouchers.updated_at" },
+          { "$ref": "#/parameters/body.product_vouchers" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["product_vouchers"]
+      }
+    },
+    "/profiles": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.profiles.id" },
+          { "$ref": "#/parameters/rowFilter.profiles.created_at" },
+          { "$ref": "#/parameters/rowFilter.profiles.avatar_url" },
+          { "$ref": "#/parameters/rowFilter.profiles.role" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/profiles" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["profiles"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.profiles" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["profiles"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.profiles.id" },
+          { "$ref": "#/parameters/rowFilter.profiles.created_at" },
+          { "$ref": "#/parameters/rowFilter.profiles.avatar_url" },
+          { "$ref": "#/parameters/rowFilter.profiles.role" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["profiles"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.profiles.id" },
+          { "$ref": "#/parameters/rowFilter.profiles.created_at" },
+          { "$ref": "#/parameters/rowFilter.profiles.avatar_url" },
+          { "$ref": "#/parameters/rowFilter.profiles.role" },
+          { "$ref": "#/parameters/body.profiles" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["profiles"]
+      }
+    },
+    "/space_units": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.space_units.id" },
+          { "$ref": "#/parameters/rowFilter.space_units.created_at" },
+          { "$ref": "#/parameters/rowFilter.space_units.name" },
+          { "$ref": "#/parameters/rowFilter.space_units.space_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/space_units" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["space_units"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.space_units" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["space_units"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.space_units.id" },
+          { "$ref": "#/parameters/rowFilter.space_units.created_at" },
+          { "$ref": "#/parameters/rowFilter.space_units.name" },
+          { "$ref": "#/parameters/rowFilter.space_units.space_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["space_units"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.space_units.id" },
+          { "$ref": "#/parameters/rowFilter.space_units.created_at" },
+          { "$ref": "#/parameters/rowFilter.space_units.name" },
+          { "$ref": "#/parameters/rowFilter.space_units.space_id" },
+          { "$ref": "#/parameters/body.space_units" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["space_units"]
+      }
+    },
+    "/credits": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.credits.id" },
+          { "$ref": "#/parameters/rowFilter.credits.created_at" },
+          { "$ref": "#/parameters/rowFilter.credits.user_id" },
+          { "$ref": "#/parameters/rowFilter.credits.expires_at" },
+          { "$ref": "#/parameters/rowFilter.credits.status" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/credits" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["credits"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.credits" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["credits"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.credits.id" },
+          { "$ref": "#/parameters/rowFilter.credits.created_at" },
+          { "$ref": "#/parameters/rowFilter.credits.user_id" },
+          { "$ref": "#/parameters/rowFilter.credits.expires_at" },
+          { "$ref": "#/parameters/rowFilter.credits.status" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["credits"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.credits.id" },
+          { "$ref": "#/parameters/rowFilter.credits.created_at" },
+          { "$ref": "#/parameters/rowFilter.credits.user_id" },
+          { "$ref": "#/parameters/rowFilter.credits.expires_at" },
+          { "$ref": "#/parameters/rowFilter.credits.status" },
+          { "$ref": "#/parameters/body.credits" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["credits"]
+      }
+    },
+    "/bookings": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.bookings.created_at" },
+          { "$ref": "#/parameters/rowFilter.bookings.booked_by" },
+          { "$ref": "#/parameters/rowFilter.bookings.start_time" },
+          { "$ref": "#/parameters/rowFilter.bookings.end_time" },
+          { "$ref": "#/parameters/rowFilter.bookings.date" },
+          { "$ref": "#/parameters/rowFilter.bookings.status" },
+          { "$ref": "#/parameters/rowFilter.bookings.id" },
+          { "$ref": "#/parameters/rowFilter.bookings.remarks" },
+          { "$ref": "#/parameters/rowFilter.bookings.product_voucher_id" },
+          { "$ref": "#/parameters/rowFilter.bookings.space_unit_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/bookings" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["bookings"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.bookings" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["bookings"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.bookings.created_at" },
+          { "$ref": "#/parameters/rowFilter.bookings.booked_by" },
+          { "$ref": "#/parameters/rowFilter.bookings.start_time" },
+          { "$ref": "#/parameters/rowFilter.bookings.end_time" },
+          { "$ref": "#/parameters/rowFilter.bookings.date" },
+          { "$ref": "#/parameters/rowFilter.bookings.status" },
+          { "$ref": "#/parameters/rowFilter.bookings.id" },
+          { "$ref": "#/parameters/rowFilter.bookings.remarks" },
+          { "$ref": "#/parameters/rowFilter.bookings.product_voucher_id" },
+          { "$ref": "#/parameters/rowFilter.bookings.space_unit_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["bookings"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.bookings.created_at" },
+          { "$ref": "#/parameters/rowFilter.bookings.booked_by" },
+          { "$ref": "#/parameters/rowFilter.bookings.start_time" },
+          { "$ref": "#/parameters/rowFilter.bookings.end_time" },
+          { "$ref": "#/parameters/rowFilter.bookings.date" },
+          { "$ref": "#/parameters/rowFilter.bookings.status" },
+          { "$ref": "#/parameters/rowFilter.bookings.id" },
+          { "$ref": "#/parameters/rowFilter.bookings.remarks" },
+          { "$ref": "#/parameters/rowFilter.bookings.product_voucher_id" },
+          { "$ref": "#/parameters/rowFilter.bookings.space_unit_id" },
+          { "$ref": "#/parameters/body.bookings" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["bookings"]
+      }
+    },
+    "/available_spaces": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.available_spaces.id" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.name" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.created_at" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.branch_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/available_spaces" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["available_spaces"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.available_spaces" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["available_spaces"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.available_spaces.id" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.name" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.created_at" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.branch_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["available_spaces"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.available_spaces.id" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.name" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.created_at" },
+          { "$ref": "#/parameters/rowFilter.available_spaces.branch_id" },
+          { "$ref": "#/parameters/body.available_spaces" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["available_spaces"]
+      }
+    },
+    "/rewards": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.rewards.id" },
+          { "$ref": "#/parameters/rowFilter.rewards.created_at" },
+          { "$ref": "#/parameters/rowFilter.rewards.name" },
+          { "$ref": "#/parameters/rowFilter.rewards.description" },
+          { "$ref": "#/parameters/rowFilter.rewards.price" },
+          { "$ref": "#/parameters/rowFilter.rewards.image_path" },
+          { "$ref": "#/parameters/rowFilter.rewards.organization_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/rewards" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["rewards"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.rewards" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["rewards"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.rewards.id" },
+          { "$ref": "#/parameters/rowFilter.rewards.created_at" },
+          { "$ref": "#/parameters/rowFilter.rewards.name" },
+          { "$ref": "#/parameters/rowFilter.rewards.description" },
+          { "$ref": "#/parameters/rowFilter.rewards.price" },
+          { "$ref": "#/parameters/rowFilter.rewards.image_path" },
+          { "$ref": "#/parameters/rowFilter.rewards.organization_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["rewards"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.rewards.id" },
+          { "$ref": "#/parameters/rowFilter.rewards.created_at" },
+          { "$ref": "#/parameters/rowFilter.rewards.name" },
+          { "$ref": "#/parameters/rowFilter.rewards.description" },
+          { "$ref": "#/parameters/rowFilter.rewards.price" },
+          { "$ref": "#/parameters/rowFilter.rewards.image_path" },
+          { "$ref": "#/parameters/rowFilter.rewards.organization_id" },
+          { "$ref": "#/parameters/body.rewards" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["rewards"]
+      }
+    },
+    "/branches": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.branches.created_at" },
+          { "$ref": "#/parameters/rowFilter.branches.name" },
+          { "$ref": "#/parameters/rowFilter.branches.organization_id" },
+          { "$ref": "#/parameters/rowFilter.branches.id" },
+          { "$ref": "#/parameters/rowFilter.branches.image_path" },
+          { "$ref": "#/parameters/rowFilter.branches.location" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/branches" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["branches"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.branches" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["branches"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.branches.created_at" },
+          { "$ref": "#/parameters/rowFilter.branches.name" },
+          { "$ref": "#/parameters/rowFilter.branches.organization_id" },
+          { "$ref": "#/parameters/rowFilter.branches.id" },
+          { "$ref": "#/parameters/rowFilter.branches.image_path" },
+          { "$ref": "#/parameters/rowFilter.branches.location" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["branches"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.branches.created_at" },
+          { "$ref": "#/parameters/rowFilter.branches.name" },
+          { "$ref": "#/parameters/rowFilter.branches.organization_id" },
+          { "$ref": "#/parameters/rowFilter.branches.id" },
+          { "$ref": "#/parameters/rowFilter.branches.image_path" },
+          { "$ref": "#/parameters/rowFilter.branches.location" },
+          { "$ref": "#/parameters/body.branches" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["branches"]
+      }
+    },
+    "/products": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.products.id" },
+          { "$ref": "#/parameters/rowFilter.products.created_at" },
+          { "$ref": "#/parameters/rowFilter.products.name" },
+          { "$ref": "#/parameters/rowFilter.products.description" },
+          { "$ref": "#/parameters/rowFilter.products.image_path" },
+          { "$ref": "#/parameters/rowFilter.products.price" },
+          { "$ref": "#/parameters/rowFilter.products.space_id" },
+          { "$ref": "#/parameters/rowFilter.products.duration" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/products" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["products"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.products" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["products"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.products.id" },
+          { "$ref": "#/parameters/rowFilter.products.created_at" },
+          { "$ref": "#/parameters/rowFilter.products.name" },
+          { "$ref": "#/parameters/rowFilter.products.description" },
+          { "$ref": "#/parameters/rowFilter.products.image_path" },
+          { "$ref": "#/parameters/rowFilter.products.price" },
+          { "$ref": "#/parameters/rowFilter.products.space_id" },
+          { "$ref": "#/parameters/rowFilter.products.duration" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["products"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.products.id" },
+          { "$ref": "#/parameters/rowFilter.products.created_at" },
+          { "$ref": "#/parameters/rowFilter.products.name" },
+          { "$ref": "#/parameters/rowFilter.products.description" },
+          { "$ref": "#/parameters/rowFilter.products.image_path" },
+          { "$ref": "#/parameters/rowFilter.products.price" },
+          { "$ref": "#/parameters/rowFilter.products.space_id" },
+          { "$ref": "#/parameters/rowFilter.products.duration" },
+          { "$ref": "#/parameters/body.products" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["products"]
+      }
+    },
+    "/available_products": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.available_products.id" },
+          { "$ref": "#/parameters/rowFilter.available_products.name" },
+          { "$ref": "#/parameters/rowFilter.available_products.description" },
+          { "$ref": "#/parameters/rowFilter.available_products.image_path" },
+          { "$ref": "#/parameters/rowFilter.available_products.price" },
+          { "$ref": "#/parameters/rowFilter.available_products.duration" },
+          { "$ref": "#/parameters/rowFilter.available_products.space_id" },
+          { "$ref": "#/parameters/rowFilter.available_products.space_name" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/available_products" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["available_products"]
+      }
+    },
+    "/user_roles": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_roles.id" },
+          { "$ref": "#/parameters/rowFilter.user_roles.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_roles.role" },
+          { "$ref": "#/parameters/rowFilter.user_roles.user_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/user_roles" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["user_roles"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.user_roles" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["user_roles"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_roles.id" },
+          { "$ref": "#/parameters/rowFilter.user_roles.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_roles.role" },
+          { "$ref": "#/parameters/rowFilter.user_roles.user_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_roles"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_roles.id" },
+          { "$ref": "#/parameters/rowFilter.user_roles.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_roles.role" },
+          { "$ref": "#/parameters/rowFilter.user_roles.user_id" },
+          { "$ref": "#/parameters/body.user_roles" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_roles"]
+      }
+    },
+    "/space_availability": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.space_availability.id" },
+          { "$ref": "#/parameters/rowFilter.space_availability.created_at" },
+          { "$ref": "#/parameters/rowFilter.space_availability.date" },
+          { "$ref": "#/parameters/rowFilter.space_availability.opening_time" },
+          { "$ref": "#/parameters/rowFilter.space_availability.closing_time" },
+          { "$ref": "#/parameters/rowFilter.space_availability.space_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/space_availability" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["space_availability"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.space_availability" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["space_availability"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.space_availability.id" },
+          { "$ref": "#/parameters/rowFilter.space_availability.created_at" },
+          { "$ref": "#/parameters/rowFilter.space_availability.date" },
+          { "$ref": "#/parameters/rowFilter.space_availability.opening_time" },
+          { "$ref": "#/parameters/rowFilter.space_availability.closing_time" },
+          { "$ref": "#/parameters/rowFilter.space_availability.space_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["space_availability"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.space_availability.id" },
+          { "$ref": "#/parameters/rowFilter.space_availability.created_at" },
+          { "$ref": "#/parameters/rowFilter.space_availability.date" },
+          { "$ref": "#/parameters/rowFilter.space_availability.opening_time" },
+          { "$ref": "#/parameters/rowFilter.space_availability.closing_time" },
+          { "$ref": "#/parameters/rowFilter.space_availability.space_id" },
+          { "$ref": "#/parameters/body.space_availability" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["space_availability"]
+      }
+    },
+    "/booking_cancellations": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.id" },
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.booking_id" },
+          {
+            "$ref": "#/parameters/rowFilter.booking_cancellations.cancelled_by"
+          },
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.remarks" },
+          {
+            "$ref": "#/parameters/rowFilter.booking_cancellations.cancelled_at"
+          },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/booking_cancellations" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["booking_cancellations"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.booking_cancellations" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["booking_cancellations"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.id" },
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.booking_id" },
+          {
+            "$ref": "#/parameters/rowFilter.booking_cancellations.cancelled_by"
+          },
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.remarks" },
+          {
+            "$ref": "#/parameters/rowFilter.booking_cancellations.cancelled_at"
+          },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["booking_cancellations"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.id" },
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.booking_id" },
+          {
+            "$ref": "#/parameters/rowFilter.booking_cancellations.cancelled_by"
+          },
+          { "$ref": "#/parameters/rowFilter.booking_cancellations.remarks" },
+          {
+            "$ref": "#/parameters/rowFilter.booking_cancellations.cancelled_at"
+          },
+          { "$ref": "#/parameters/body.booking_cancellations" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["booking_cancellations"]
+      }
+    },
+    "/organizations": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.organizations.id" },
+          { "$ref": "#/parameters/rowFilter.organizations.created_at" },
+          { "$ref": "#/parameters/rowFilter.organizations.name" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/organizations" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["organizations"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.organizations" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["organizations"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.organizations.id" },
+          { "$ref": "#/parameters/rowFilter.organizations.created_at" },
+          { "$ref": "#/parameters/rowFilter.organizations.name" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["organizations"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.organizations.id" },
+          { "$ref": "#/parameters/rowFilter.organizations.created_at" },
+          { "$ref": "#/parameters/rowFilter.organizations.name" },
+          { "$ref": "#/parameters/body.organizations" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["organizations"]
+      }
+    },
+    "/submissions_audit": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.submissions_audit.id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.received_at" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.raw_payload" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.clean_snapshot" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.lead_email" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.partner_id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.utm" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.lp_slug" },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.landing_page_url"
+          },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.referrer" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.first_visit_at" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.session_id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.consent" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.status" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.odoo_lead_id" },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.visitor_tx_msg_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.partner_tx_msg_id"
+          },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.request_ip" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/submissions_audit" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["submissions_audit"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.submissions_audit" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["submissions_audit"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.submissions_audit.id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.received_at" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.raw_payload" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.clean_snapshot" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.lead_email" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.partner_id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.utm" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.lp_slug" },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.landing_page_url"
+          },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.referrer" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.first_visit_at" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.session_id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.consent" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.status" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.odoo_lead_id" },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.visitor_tx_msg_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.partner_tx_msg_id"
+          },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.request_ip" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["submissions_audit"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.submissions_audit.id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.received_at" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.raw_payload" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.clean_snapshot" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.lead_email" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.partner_id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.utm" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.lp_slug" },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.landing_page_url"
+          },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.referrer" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.first_visit_at" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.session_id" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.consent" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.status" },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.odoo_lead_id" },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.visitor_tx_msg_id"
+          },
+          {
+            "$ref": "#/parameters/rowFilter.submissions_audit.partner_tx_msg_id"
+          },
+          { "$ref": "#/parameters/rowFilter.submissions_audit.request_ip" },
+          { "$ref": "#/parameters/body.submissions_audit" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["submissions_audit"]
+      }
+    },
+    "/subscription_products": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.subscription_products.id" },
+          {
+            "$ref": "#/parameters/rowFilter.subscription_products.subscription_id"
+          },
+          { "$ref": "#/parameters/rowFilter.subscription_products.product_id" },
+          { "$ref": "#/parameters/rowFilter.subscription_products.amount" },
+          { "$ref": "#/parameters/rowFilter.subscription_products.frequency" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/subscription_products" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["subscription_products"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.subscription_products" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["subscription_products"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.subscription_products.id" },
+          {
+            "$ref": "#/parameters/rowFilter.subscription_products.subscription_id"
+          },
+          { "$ref": "#/parameters/rowFilter.subscription_products.product_id" },
+          { "$ref": "#/parameters/rowFilter.subscription_products.amount" },
+          { "$ref": "#/parameters/rowFilter.subscription_products.frequency" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["subscription_products"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.subscription_products.id" },
+          {
+            "$ref": "#/parameters/rowFilter.subscription_products.subscription_id"
+          },
+          { "$ref": "#/parameters/rowFilter.subscription_products.product_id" },
+          { "$ref": "#/parameters/rowFilter.subscription_products.amount" },
+          { "$ref": "#/parameters/rowFilter.subscription_products.frequency" },
+          { "$ref": "#/parameters/body.subscription_products" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["subscription_products"]
+      }
+    },
+    "/cash_vouchers": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.partner_id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.amount" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.expires_at" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.msg_tx_id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.status" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/cash_vouchers" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["cash_vouchers"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.cash_vouchers" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["cash_vouchers"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.partner_id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.amount" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.expires_at" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.msg_tx_id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.status" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["cash_vouchers"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.created_at" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.partner_id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.code" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.amount" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.expires_at" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.msg_tx_id" },
+          { "$ref": "#/parameters/rowFilter.cash_vouchers.status" },
+          { "$ref": "#/parameters/body.cash_vouchers" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["cash_vouchers"]
+      }
+    },
+    "/user_organizations": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_organizations.id" },
+          { "$ref": "#/parameters/rowFilter.user_organizations.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_organizations.user_id" },
+          {
+            "$ref": "#/parameters/rowFilter.user_organizations.organization_id"
+          },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/user_organizations" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["user_organizations"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.user_organizations" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["user_organizations"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_organizations.id" },
+          { "$ref": "#/parameters/rowFilter.user_organizations.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_organizations.user_id" },
+          {
+            "$ref": "#/parameters/rowFilter.user_organizations.organization_id"
+          },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_organizations"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.user_organizations.id" },
+          { "$ref": "#/parameters/rowFilter.user_organizations.created_at" },
+          { "$ref": "#/parameters/rowFilter.user_organizations.user_id" },
+          {
+            "$ref": "#/parameters/rowFilter.user_organizations.organization_id"
+          },
+          { "$ref": "#/parameters/body.user_organizations" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["user_organizations"]
+      }
+    },
+    "/spaces": {
+      "get": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.spaces.id" },
+          { "$ref": "#/parameters/rowFilter.spaces.created_at" },
+          { "$ref": "#/parameters/rowFilter.spaces.name" },
+          { "$ref": "#/parameters/rowFilter.spaces.is_available" },
+          { "$ref": "#/parameters/rowFilter.spaces.branch_id" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/order" },
+          { "$ref": "#/parameters/range" },
+          { "$ref": "#/parameters/rangeUnit" },
+          { "$ref": "#/parameters/offset" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/preferCount" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": { "$ref": "#/definitions/spaces" },
+              "type": "array"
+            }
+          },
+          "206": { "description": "Partial Content" }
+        },
+        "tags": ["spaces"]
+      },
+      "post": {
+        "parameters": [
+          { "$ref": "#/parameters/body.spaces" },
+          { "$ref": "#/parameters/select" },
+          { "$ref": "#/parameters/preferPost" }
+        ],
+        "responses": { "201": { "description": "Created" } },
+        "tags": ["spaces"]
+      },
+      "delete": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.spaces.id" },
+          { "$ref": "#/parameters/rowFilter.spaces.created_at" },
+          { "$ref": "#/parameters/rowFilter.spaces.name" },
+          { "$ref": "#/parameters/rowFilter.spaces.is_available" },
+          { "$ref": "#/parameters/rowFilter.spaces.branch_id" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["spaces"]
+      },
+      "patch": {
+        "parameters": [
+          { "$ref": "#/parameters/rowFilter.spaces.id" },
+          { "$ref": "#/parameters/rowFilter.spaces.created_at" },
+          { "$ref": "#/parameters/rowFilter.spaces.name" },
+          { "$ref": "#/parameters/rowFilter.spaces.is_available" },
+          { "$ref": "#/parameters/rowFilter.spaces.branch_id" },
+          { "$ref": "#/parameters/body.spaces" },
+          { "$ref": "#/parameters/preferReturn" }
+        ],
+        "responses": { "204": { "description": "No Content" } },
+        "tags": ["spaces"]
+      }
+    },
+    "/rpc/verify_product_voucher": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_space_unit_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_start_time",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_end_time",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_voucher_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) verify_product_voucher"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_end_time": {
+                  "format": "time with time zone",
+                  "type": "string"
+                },
+                "p_space_unit_id": { "format": "uuid", "type": "string" },
+                "p_start_time": {
+                  "format": "time with time zone",
+                  "type": "string"
+                },
+                "p_user_id": { "format": "uuid", "type": "string" },
+                "p_voucher_id": { "format": "uuid", "type": "string" }
+              },
+              "required": [
+                "p_user_id",
+                "p_space_unit_id",
+                "p_start_time",
+                "p_end_time",
+                "p_voucher_id"
+              ],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) verify_product_voucher"]
+      }
+    },
+    "/rpc/get_product_info": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_voucher_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_product_info"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_voucher_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_voucher_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_product_info"]
+      }
+    },
+    "/rpc/get_total_active_points": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_total_active_points"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_user_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_total_active_points"]
+      }
+    },
+    "/rpc/get_space_availability": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_space_unit_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "date",
+            "in": "query",
+            "name": "p_date",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_space_availability"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_date": { "format": "date", "type": "string" },
+                "p_space_unit_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_space_unit_id", "p_date"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_space_availability"]
+      }
+    },
+    "/rpc/reactivate_voucher": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_voucher_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) reactivate_voucher"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_voucher_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_voucher_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) reactivate_voucher"]
+      }
+    },
+    "/rpc/check_booking_status": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_booking_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_booking_status"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_booking_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_booking_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_booking_status"]
+      }
+    },
+    "/rpc/log_cancellation": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_booking_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "text",
+            "in": "query",
+            "name": "p_remarks",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) log_cancellation"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_booking_id": { "format": "uuid", "type": "string" },
+                "p_remarks": { "format": "text", "type": "string" },
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_booking_id", "p_user_id", "p_remarks"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) log_cancellation"]
+      }
+    },
+    "/rpc/generate_voucher_code": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) generate_voucher_code"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": { "type": "object" }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) generate_voucher_code"]
+      }
+    },
+    "/rpc/set_product_voucher_used": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_voucher_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) set_product_voucher_used"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_voucher_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_voucher_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) set_product_voucher_used"]
+      }
+    },
+    "/rpc/check_booking_cancellation_window": {
+      "get": {
+        "parameters": [
+          {
+            "format": "timestamp with time zone",
+            "in": "query",
+            "name": "p_created_at",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_booking_cancellation_window"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_created_at": {
+                  "format": "timestamp with time zone",
+                  "type": "string"
+                }
+              },
+              "required": ["p_created_at"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_booking_cancellation_window"]
+      }
+    },
+    "/rpc/update_booking_status_to_cancelled": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_booking_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) update_booking_status_to_cancelled"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_booking_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_booking_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) update_booking_status_to_cancelled"]
+      }
+    },
+    "/rpc/set_space_unit_status": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_space_unit_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "space_units_status",
+            "in": "query",
+            "name": "p_status",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) set_space_unit_status"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_space_unit_id": { "format": "uuid", "type": "string" },
+                "p_status": { "format": "space_units_status", "type": "string" }
+              },
+              "required": ["p_space_unit_id", "p_status"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) set_space_unit_status"]
+      }
+    },
+    "/rpc/validate_booking": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_booking_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) validate_booking"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_booking_id": { "format": "uuid", "type": "string" },
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_booking_id", "p_user_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) validate_booking"]
+      }
+    },
+    "/rpc/get_user_subscription_type": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_user_subscription_type"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_user_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_user_subscription_type"]
+      }
+    },
+    "/rpc/is_booking_cancellable": {
+      "get": {
+        "parameters": [
+          {
+            "format": "text",
+            "in": "query",
+            "name": "p_status",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) is_booking_cancellable"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_status": { "format": "text", "type": "string" }
+              },
+              "required": ["p_status"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) is_booking_cancellable"]
+      }
+    },
+    "/rpc/is_manager": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) is_manager"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_user": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_user"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) is_manager"]
+      }
+    },
+    "/rpc/refund_voucher": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_voucher_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) refund_voucher"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_voucher_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_voucher_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) refund_voucher"]
+      }
+    },
+    "/rpc/get_total_active_credits": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_total_active_credits"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_user_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_total_active_credits"]
+      }
+    },
+    "/rpc/generate_all_subscription_vouchers": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) generate_all_subscription_vouchers"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": { "type": "object" }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) generate_all_subscription_vouchers"]
+      }
+    },
+    "/rpc/check_booking_overlap": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_space_unit_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "date",
+            "in": "query",
+            "name": "p_date",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_start",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_end",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_booking_overlap"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_date": { "format": "date", "type": "string" },
+                "p_end": { "format": "time with time zone", "type": "string" },
+                "p_space_unit_id": { "format": "uuid", "type": "string" },
+                "p_start": { "format": "time with time zone", "type": "string" }
+              },
+              "required": ["p_space_unit_id", "p_date", "p_start", "p_end"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_booking_overlap"]
+      }
+    },
+    "/rpc/cancel_booking": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_booking_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "text",
+            "in": "query",
+            "name": "p_remarks",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) cancel_booking"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_booking_id": { "format": "uuid", "type": "string" },
+                "p_remarks": { "format": "text", "type": "string" },
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_booking_id", "p_user_id", "p_remarks"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) cancel_booking"]
+      }
+    },
+    "/rpc/get_booking_with_user": {
+      "get": {
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_booking_with_user"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": { "type": "object" }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_booking_with_user"]
+      }
+    },
+    "/rpc/get_voucher_info": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_voucher_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_voucher_info"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_voucher_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_voucher_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) get_voucher_info"]
+      }
+    },
+    "/rpc/check_used": {
+      "get": {
+        "parameters": [
+          {
+            "format": "text",
+            "in": "query",
+            "name": "p_status",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_used"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_status": { "format": "text", "type": "string" }
+              },
+              "required": ["p_status"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_used"]
+      }
+    },
+    "/rpc/validate_voucher_duration": {
+      "get": {
+        "parameters": [
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_start",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_end",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "smallint",
+            "in": "query",
+            "name": "p_duration",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) validate_voucher_duration"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_duration": { "format": "smallint", "type": "integer" },
+                "p_end": { "format": "time with time zone", "type": "string" },
+                "p_start": { "format": "time with time zone", "type": "string" }
+              },
+              "required": ["p_start", "p_end", "p_duration"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) validate_voucher_duration"]
+      }
+    },
+    "/rpc/check_refundable": {
+      "get": {
+        "parameters": [
+          {
+            "format": "boolean",
+            "in": "query",
+            "name": "p_is_refundable",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_refundable"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_is_refundable": { "format": "boolean", "type": "boolean" }
+              },
+              "required": ["p_is_refundable"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) check_refundable"]
+      }
+    },
+    "/rpc/generate_subscription_vouchers": {
+      "get": {
+        "parameters": [
+          {
+            "format": "uuid",
+            "in": "query",
+            "name": "p_user_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) generate_subscription_vouchers"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_user_id": { "format": "uuid", "type": "string" }
+              },
+              "required": ["p_user_id"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) generate_subscription_vouchers"]
+      }
+    },
+    "/rpc/prevent_past_booking": {
+      "get": {
+        "parameters": [
+          {
+            "format": "bookings",
+            "in": "query",
+            "name": "new",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) prevent_past_booking"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "new": { "format": "bookings", "type": "string" }
+              },
+              "required": ["new"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) prevent_past_booking"]
+      }
+    },
+    "/rpc/validate_time_within_bounds": {
+      "get": {
+        "parameters": [
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_start",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_end",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_open",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_close",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) validate_time_within_bounds"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_close": {
+                  "format": "time with time zone",
+                  "type": "string"
+                },
+                "p_end": { "format": "time with time zone", "type": "string" },
+                "p_open": { "format": "time with time zone", "type": "string" },
+                "p_start": { "format": "time with time zone", "type": "string" }
+              },
+              "required": ["p_start", "p_end", "p_open", "p_close"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) validate_time_within_bounds"]
+      }
+    },
+    "/rpc/handle_subscription_and_voucher": {
+      "get": {
+        "parameters": [
+          {
+            "format": "bookings",
+            "in": "query",
+            "name": "new",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) handle_subscription_and_voucher"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "new": { "format": "bookings", "type": "string" }
+              },
+              "required": ["new"],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) handle_subscription_and_voucher"]
+      }
+    },
+    "/rpc/assign_booking_times_by_duration": {
+      "get": {
+        "parameters": [
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_start",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_end",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_open",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "time with time zone",
+            "in": "query",
+            "name": "p_close",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "format": "smallint",
+            "in": "query",
+            "name": "p_duration",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) assign_booking_times_by_duration"]
+      },
+      "post": {
+        "parameters": [
+          {
+            "in": "body",
+            "name": "args",
+            "required": true,
+            "schema": {
+              "properties": {
+                "p_close": {
+                  "format": "time with time zone",
+                  "type": "string"
+                },
+                "p_duration": { "format": "smallint", "type": "integer" },
+                "p_end": { "format": "time with time zone", "type": "string" },
+                "p_open": { "format": "time with time zone", "type": "string" },
+                "p_start": { "format": "time with time zone", "type": "string" }
+              },
+              "required": [
+                "p_start",
+                "p_end",
+                "p_open",
+                "p_close",
+                "p_duration"
+              ],
+              "type": "object"
+            }
+          },
+          { "$ref": "#/parameters/preferParams" }
+        ],
+        "produces": [
+          "application/json",
+          "application/vnd.pgrst.object+json;nulls=stripped",
+          "application/vnd.pgrst.object+json"
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "tags": ["(rpc) assign_booking_times_by_duration"]
+      }
+    }
+  },
+  "definitions": {
+    "referrals": {
+      "required": ["created_at", "id"],
+      "properties": {
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "metadata": { "format": "jsonb" },
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "referred_by": { "format": "uuid", "type": "string" }
+      },
+      "type": "object"
+    },
+    "user_landing_pages": {
+      "required": ["id", "created_at", "user_id", "url"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "user_id": { "format": "uuid", "type": "string" },
+        "url": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "points": {
+      "required": ["created_at", "user_id", "expires_at", "status", "id"],
+      "properties": {
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "user_id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "expires_at": {
+          "default": "(now() + '30 days'::interval)",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": ["active", "used", "expired"],
+          "format": "public.currency_status",
+          "type": "string"
+        },
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "booking_id": {
+          "description": "Note:\nThis is a Foreign Key to `bookings.id`.\u003Cfk table='bookings' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "dead_letters": {
+      "required": ["id", "received_at", "partner_id", "consent"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "received_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "raw_payload": { "format": "jsonb" },
+        "clean_snapshot": { "format": "jsonb" },
+        "lead_email": { "format": "text", "type": "string" },
+        "partner_id": { "format": "bigint", "type": "integer" },
+        "utm": { "format": "jsonb" },
+        "lp_slug": { "format": "text", "type": "string" },
+        "landing_page_url": { "format": "text", "type": "string" },
+        "referrer": { "format": "text", "type": "string" },
+        "first_visit_at": {
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "session_id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "consent": { "default": true, "format": "boolean", "type": "boolean" },
+        "status": { "format": "text", "type": "string" },
+        "odoo_lead_id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "visitor_tx_msg_id": { "format": "text", "type": "string" },
+        "partner_tx_msg_id": { "format": "text", "type": "string" },
+        "request_ip": { "format": "inet", "type": "string" }
+      },
+      "type": "object"
+    },
+    "businesses": {
+      "required": ["id", "created_at", "user_id", "name"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "user_id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "description": { "format": "text", "type": "string" },
+        "website": { "format": "text", "type": "string" },
+        "phone": { "format": "text", "type": "string" },
+        "email": { "format": "text", "type": "string" },
+        "logo_url": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "subscriptions": {
+      "required": [
+        "id",
+        "created_at",
+        "subscriptions_type",
+        "organization_id",
+        "duration"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "subscriptions_type": {
+          "enum": [
+            "business_address_only",
+            "virtual_office_for_solo",
+            "virtual_office_for_team",
+            "lite_access",
+            "executive_plan"
+          ],
+          "format": "public.subscriptions_type",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Note:\nThis is a Foreign Key to `organizations.id`.\u003Cfk table='organizations' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "duration": { "format": "smallint", "type": "integer" }
+      },
+      "type": "object"
+    },
+    "partners": {
+      "required": ["partner_type", "id"],
+      "properties": {
+        "name": { "format": "text", "type": "string" },
+        "partner_type": {
+          "enum": ["individual", "business", "client"],
+          "format": "public.partner_type",
+          "type": "string"
+        },
+        "id": {
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "bigint",
+          "type": "integer"
+        },
+        "email": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "partner_referrals": {
+      "required": ["id", "created_at"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "metadata": { "format": "jsonb" },
+        "partner_id": {
+          "description": "Note:\nThis is a Foreign Key to `partners.id`.\u003Cfk table='partners' column='id'/\u003E",
+          "format": "bigint",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "user_subscriptions": {
+      "required": [
+        "id",
+        "subscription_id",
+        "organization_id",
+        "started_at",
+        "expires_at"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "subscription_id": {
+          "description": "Note:\nThis is a Foreign Key to `subscriptions.id`.\u003Cfk table='subscriptions' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "organization_id": {
+          "description": "Note:\nThis is a Foreign Key to `organizations.id`.\u003Cfk table='organizations' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "started_at": {
+          "default": "(now() AT TIME ZONE 'utc'::text)",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "expires_at": {
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "user_id": { "format": "uuid", "type": "string" }
+      },
+      "type": "object"
+    },
+    "reward_vouchers": {
+      "required": ["id", "created_at", "status", "reward_id", "expiring_at"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "code": { "format": "text", "type": "string" },
+        "user_id": { "format": "uuid", "type": "string" },
+        "status": {
+          "default": "active",
+          "enum": ["used", "active", "expired"],
+          "format": "public.voucher_status",
+          "type": "string"
+        },
+        "reward_id": {
+          "description": "Note:\nThis is a Foreign Key to `rewards.id`.\u003Cfk table='rewards' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "expiring_at": {
+          "default": "(now() + '30 days'::interval)",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "product_vouchers": {
+      "required": [
+        "id",
+        "created_at",
+        "product_id",
+        "expiring_at",
+        "status",
+        "is_refundable"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "code": { "format": "text", "type": "string" },
+        "user_id": {
+          "default": "auth.uid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "product_id": {
+          "description": "Note:\nThis is a Foreign Key to `products.id`.\u003Cfk table='products' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "expiring_at": {
+          "default": "(now() + '30 days'::interval)",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": ["used", "active", "expired"],
+          "format": "public.voucher_status",
+          "type": "string"
+        },
+        "is_refundable": {
+          "default": true,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "updated_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "profiles": {
+      "required": ["id", "created_at", "role"],
+      "properties": {
+        "id": {
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "avatar_url": { "format": "text", "type": "string" },
+        "role": {
+          "default": "client",
+          "enum": ["manager", "client", "superadmin"],
+          "format": "public.roles",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "space_units": {
+      "required": ["id", "created_at", "name", "space_id"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "space_id": {
+          "description": "Note:\nThis is a Foreign Key to `spaces.id`.\u003Cfk table='spaces' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "credits": {
+      "required": ["id", "created_at", "user_id", "expires_at", "status"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "user_id": { "format": "uuid", "type": "string" },
+        "expires_at": {
+          "default": "(now() + '30 days'::interval)",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": ["active", "used", "expired"],
+          "format": "public.currency_status",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "bookings": {
+      "required": [
+        "created_at",
+        "booked_by",
+        "date",
+        "status",
+        "id",
+        "space_unit_id"
+      ],
+      "properties": {
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "booked_by": {
+          "default": "auth.uid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "start_time": { "format": "time with time zone", "type": "string" },
+        "end_time": { "format": "time with time zone", "type": "string" },
+        "date": { "format": "date", "type": "string" },
+        "status": {
+          "default": "booked",
+          "enum": ["booked", "cancelled", "pending", "completed", "no-show"],
+          "format": "public.booking_status",
+          "type": "string"
+        },
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "remarks": { "format": "text", "type": "string" },
+        "product_voucher_id": {
+          "description": "Note:\nThis is a Foreign Key to `product_vouchers.id`.\u003Cfk table='product_vouchers' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "space_unit_id": {
+          "description": "Note:\nThis is a Foreign Key to `space_units.id`.\u003Cfk table='space_units' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "available_spaces": {
+      "properties": {
+        "id": {
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "created_at": {
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "branch_id": {
+          "description": "Note:\nThis is a Foreign Key to `branches.id`.\u003Cfk table='branches' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "rewards": {
+      "required": ["id", "created_at", "name", "price", "organization_id"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "description": { "format": "text", "type": "string" },
+        "price": { "default": 0, "format": "integer", "type": "integer" },
+        "image_path": { "format": "text", "type": "string" },
+        "organization_id": {
+          "description": "Note:\nThis is a Foreign Key to `organizations.id`.\u003Cfk table='organizations' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "branches": {
+      "required": ["created_at", "name", "organization_id", "id"],
+      "properties": {
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "organization_id": {
+          "description": "Note:\nThis is a Foreign Key to `organizations.id`.\u003Cfk table='organizations' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "image_path": { "format": "text", "type": "string" },
+        "location": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "products": {
+      "required": [
+        "id",
+        "created_at",
+        "name",
+        "description",
+        "image_path",
+        "price",
+        "space_id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "description": { "format": "text", "type": "string" },
+        "image_path": { "format": "text", "type": "string" },
+        "price": { "default": 0, "format": "integer", "type": "integer" },
+        "space_id": {
+          "description": "Note:\nThis is a Foreign Key to `spaces.id`.\u003Cfk table='spaces' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "duration": { "format": "smallint", "type": "integer" }
+      },
+      "type": "object"
+    },
+    "available_products": {
+      "properties": {
+        "id": {
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "description": { "format": "text", "type": "string" },
+        "image_path": { "format": "text", "type": "string" },
+        "price": { "format": "integer", "type": "integer" },
+        "duration": { "format": "smallint", "type": "integer" },
+        "space_id": {
+          "description": "Note:\nThis is a Foreign Key to `spaces.id`.\u003Cfk table='spaces' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "space_name": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "user_roles": {
+      "required": ["id", "created_at", "role"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "role": {
+          "enum": ["manager", "client", "superadmin"],
+          "format": "public.roles",
+          "type": "string"
+        },
+        "user_id": { "format": "uuid", "type": "string" }
+      },
+      "type": "object"
+    },
+    "space_availability": {
+      "required": [
+        "id",
+        "created_at",
+        "date",
+        "opening_time",
+        "closing_time",
+        "space_id"
+      ],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "date": { "format": "date", "type": "string" },
+        "opening_time": { "format": "time with time zone", "type": "string" },
+        "closing_time": { "format": "time with time zone", "type": "string" },
+        "space_id": {
+          "description": "Note:\nThis is a Foreign Key to `spaces.id`.\u003Cfk table='spaces' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "booking_cancellations": {
+      "required": ["id", "booking_id", "cancelled_by", "cancelled_at"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "booking_id": {
+          "description": "Note:\nThis is a Foreign Key to `bookings.id`.\u003Cfk table='bookings' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "cancelled_by": { "format": "uuid", "type": "string" },
+        "remarks": { "format": "text", "type": "string" },
+        "cancelled_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "organizations": {
+      "required": ["id", "created_at", "name"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "submissions_audit": {
+      "required": ["id", "received_at", "partner_id", "consent"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "received_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "raw_payload": { "format": "jsonb" },
+        "clean_snapshot": { "format": "jsonb" },
+        "lead_email": { "format": "text", "type": "string" },
+        "partner_id": { "format": "bigint", "type": "integer" },
+        "utm": { "format": "jsonb" },
+        "lp_slug": { "format": "text", "type": "string" },
+        "landing_page_url": { "format": "text", "type": "string" },
+        "referrer": { "format": "text", "type": "string" },
+        "first_visit_at": {
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "session_id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "consent": { "default": true, "format": "boolean", "type": "boolean" },
+        "status": { "format": "text", "type": "string" },
+        "odoo_lead_id": {
+          "default": "gen_random_uuid()",
+          "format": "uuid",
+          "type": "string"
+        },
+        "visitor_tx_msg_id": { "format": "text", "type": "string" },
+        "partner_tx_msg_id": { "format": "text", "type": "string" },
+        "request_ip": { "format": "inet", "type": "string" }
+      },
+      "type": "object"
+    },
+    "subscription_products": {
+      "required": ["id", "frequency"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "subscription_id": {
+          "description": "Note:\nThis is a Foreign Key to `subscriptions.id`.\u003Cfk table='subscriptions' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "product_id": {
+          "description": "Note:\nThis is a Foreign Key to `products.id`.\u003Cfk table='products' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "amount": { "format": "smallint", "type": "integer" },
+        "frequency": {
+          "default": "Weekly",
+          "enum": ["Weekly", "Daily", "Monthly", "Quarterly", "Yearly"],
+          "format": "public.frequency",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "cash_vouchers": {
+      "required": ["id", "partner_id", "code", "amount", "expires_at"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "partner_id": { "format": "bigint", "type": "integer" },
+        "code": { "format": "text", "type": "string" },
+        "amount": { "default": 500, "format": "integer", "type": "integer" },
+        "expires_at": {
+          "default": "(now() + '30 days'::interval)",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "msg_tx_id": { "format": "text", "type": "string" },
+        "status": { "format": "text", "type": "string" }
+      },
+      "type": "object"
+    },
+    "user_organizations": {
+      "required": ["id", "created_at", "user_id", "organization_id"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "user_id": { "format": "uuid", "type": "string" },
+        "organization_id": {
+          "description": "Note:\nThis is a Foreign Key to `organizations.id`.\u003Cfk table='organizations' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "spaces": {
+      "required": ["id", "created_at", "name", "is_available", "branch_id"],
+      "properties": {
+        "id": {
+          "default": "gen_random_uuid()",
+          "description": "Note:\nThis is a Primary Key.\u003Cpk/\u003E",
+          "format": "uuid",
+          "type": "string"
+        },
+        "created_at": {
+          "default": "now()",
+          "format": "timestamp with time zone",
+          "type": "string"
+        },
+        "name": { "format": "text", "type": "string" },
+        "is_available": {
+          "default": true,
+          "format": "boolean",
+          "type": "boolean"
+        },
+        "branch_id": {
+          "description": "Note:\nThis is a Foreign Key to `branches.id`.\u003Cfk table='branches' column='id'/\u003E",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "parameters": {
+    "preferParams": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": ["params=single-object"],
+      "in": "header",
+      "type": "string"
+    },
+    "preferReturn": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": ["return=representation", "return=minimal", "return=none"],
+      "in": "header",
+      "type": "string"
+    },
+    "preferCount": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": ["count=none"],
+      "in": "header",
+      "type": "string"
+    },
+    "preferPost": {
+      "name": "Prefer",
+      "description": "Preference",
+      "required": false,
+      "enum": [
+        "return=representation",
+        "return=minimal",
+        "return=none",
+        "resolution=ignore-duplicates",
+        "resolution=merge-duplicates"
+      ],
+      "in": "header",
+      "type": "string"
+    },
+    "select": {
+      "name": "select",
+      "description": "Filtering Columns",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "on_conflict": {
+      "name": "on_conflict",
+      "description": "On Conflict",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "order": {
+      "name": "order",
+      "description": "Ordering",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "range": {
+      "name": "Range",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "header",
+      "type": "string"
+    },
+    "rangeUnit": {
+      "name": "Range-Unit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "default": "items",
+      "in": "header",
+      "type": "string"
+    },
+    "offset": {
+      "name": "offset",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "limit": {
+      "name": "limit",
+      "description": "Limiting and Pagination",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.referrals": {
+      "name": "referrals",
+      "description": "referrals",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/referrals" }
+    },
+    "rowFilter.referrals.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.referrals.metadata": {
+      "name": "metadata",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.referrals.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.referrals.referred_by": {
+      "name": "referred_by",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.user_landing_pages": {
+      "name": "user_landing_pages",
+      "description": "user_landing_pages",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/user_landing_pages" }
+    },
+    "rowFilter.user_landing_pages.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_landing_pages.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_landing_pages.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_landing_pages.url": {
+      "name": "url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.points": {
+      "name": "points",
+      "description": "points",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/points" }
+    },
+    "rowFilter.points.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.points.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.points.expires_at": {
+      "name": "expires_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.points.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.points.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.points.booking_id": {
+      "name": "booking_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.dead_letters": {
+      "name": "dead_letters",
+      "description": "dead_letters",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/dead_letters" }
+    },
+    "rowFilter.dead_letters.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.received_at": {
+      "name": "received_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.raw_payload": {
+      "name": "raw_payload",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.clean_snapshot": {
+      "name": "clean_snapshot",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.lead_email": {
+      "name": "lead_email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.partner_id": {
+      "name": "partner_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.utm": {
+      "name": "utm",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.lp_slug": {
+      "name": "lp_slug",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.landing_page_url": {
+      "name": "landing_page_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.referrer": {
+      "name": "referrer",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.first_visit_at": {
+      "name": "first_visit_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.session_id": {
+      "name": "session_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.consent": {
+      "name": "consent",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.odoo_lead_id": {
+      "name": "odoo_lead_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.visitor_tx_msg_id": {
+      "name": "visitor_tx_msg_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.partner_tx_msg_id": {
+      "name": "partner_tx_msg_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.dead_letters.request_ip": {
+      "name": "request_ip",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.businesses": {
+      "name": "businesses",
+      "description": "businesses",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/businesses" }
+    },
+    "rowFilter.businesses.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.website": {
+      "name": "website",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.phone": {
+      "name": "phone",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.email": {
+      "name": "email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.businesses.logo_url": {
+      "name": "logo_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.subscriptions": {
+      "name": "subscriptions",
+      "description": "subscriptions",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/subscriptions" }
+    },
+    "rowFilter.subscriptions.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscriptions.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscriptions.subscriptions_type": {
+      "name": "subscriptions_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscriptions.organization_id": {
+      "name": "organization_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscriptions.duration": {
+      "name": "duration",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.partners": {
+      "name": "partners",
+      "description": "partners",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/partners" }
+    },
+    "rowFilter.partners.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.partners.partner_type": {
+      "name": "partner_type",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.partners.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.partners.email": {
+      "name": "email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.partner_referrals": {
+      "name": "partner_referrals",
+      "description": "partner_referrals",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/partner_referrals" }
+    },
+    "rowFilter.partner_referrals.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.partner_referrals.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.partner_referrals.metadata": {
+      "name": "metadata",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.partner_referrals.partner_id": {
+      "name": "partner_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.user_subscriptions": {
+      "name": "user_subscriptions",
+      "description": "user_subscriptions",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/user_subscriptions" }
+    },
+    "rowFilter.user_subscriptions.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_subscriptions.subscription_id": {
+      "name": "subscription_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_subscriptions.organization_id": {
+      "name": "organization_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_subscriptions.started_at": {
+      "name": "started_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_subscriptions.expires_at": {
+      "name": "expires_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_subscriptions.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.reward_vouchers": {
+      "name": "reward_vouchers",
+      "description": "reward_vouchers",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/reward_vouchers" }
+    },
+    "rowFilter.reward_vouchers.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reward_vouchers.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reward_vouchers.code": {
+      "name": "code",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reward_vouchers.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reward_vouchers.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reward_vouchers.reward_id": {
+      "name": "reward_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.reward_vouchers.expiring_at": {
+      "name": "expiring_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.product_vouchers": {
+      "name": "product_vouchers",
+      "description": "product_vouchers",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/product_vouchers" }
+    },
+    "rowFilter.product_vouchers.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.code": {
+      "name": "code",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.product_id": {
+      "name": "product_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.expiring_at": {
+      "name": "expiring_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.is_refundable": {
+      "name": "is_refundable",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.product_vouchers.updated_at": {
+      "name": "updated_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.profiles": {
+      "name": "profiles",
+      "description": "profiles",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/profiles" }
+    },
+    "rowFilter.profiles.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.profiles.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.profiles.avatar_url": {
+      "name": "avatar_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.profiles.role": {
+      "name": "role",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.space_units": {
+      "name": "space_units",
+      "description": "space_units",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/space_units" }
+    },
+    "rowFilter.space_units.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_units.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_units.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_units.space_id": {
+      "name": "space_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.credits": {
+      "name": "credits",
+      "description": "credits",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/credits" }
+    },
+    "rowFilter.credits.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.credits.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.credits.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.credits.expires_at": {
+      "name": "expires_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.credits.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.bookings": {
+      "name": "bookings",
+      "description": "bookings",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/bookings" }
+    },
+    "rowFilter.bookings.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.booked_by": {
+      "name": "booked_by",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.start_time": {
+      "name": "start_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.end_time": {
+      "name": "end_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.date": {
+      "name": "date",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.remarks": {
+      "name": "remarks",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.product_voucher_id": {
+      "name": "product_voucher_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.bookings.space_unit_id": {
+      "name": "space_unit_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.available_spaces": {
+      "name": "available_spaces",
+      "description": "available_spaces",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/available_spaces" }
+    },
+    "rowFilter.available_spaces.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_spaces.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_spaces.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_spaces.branch_id": {
+      "name": "branch_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.rewards": {
+      "name": "rewards",
+      "description": "rewards",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/rewards" }
+    },
+    "rowFilter.rewards.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.rewards.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.rewards.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.rewards.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.rewards.price": {
+      "name": "price",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.rewards.image_path": {
+      "name": "image_path",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.rewards.organization_id": {
+      "name": "organization_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.branches": {
+      "name": "branches",
+      "description": "branches",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/branches" }
+    },
+    "rowFilter.branches.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.branches.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.branches.organization_id": {
+      "name": "organization_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.branches.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.branches.image_path": {
+      "name": "image_path",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.branches.location": {
+      "name": "location",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.products": {
+      "name": "products",
+      "description": "products",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/products" }
+    },
+    "rowFilter.products.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.image_path": {
+      "name": "image_path",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.price": {
+      "name": "price",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.space_id": {
+      "name": "space_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.products.duration": {
+      "name": "duration",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.available_products": {
+      "name": "available_products",
+      "description": "available_products",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/available_products" }
+    },
+    "rowFilter.available_products.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.description": {
+      "name": "description",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.image_path": {
+      "name": "image_path",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.price": {
+      "name": "price",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.duration": {
+      "name": "duration",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.space_id": {
+      "name": "space_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.available_products.space_name": {
+      "name": "space_name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.user_roles": {
+      "name": "user_roles",
+      "description": "user_roles",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/user_roles" }
+    },
+    "rowFilter.user_roles.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_roles.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_roles.role": {
+      "name": "role",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_roles.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.space_availability": {
+      "name": "space_availability",
+      "description": "space_availability",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/space_availability" }
+    },
+    "rowFilter.space_availability.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_availability.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_availability.date": {
+      "name": "date",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_availability.opening_time": {
+      "name": "opening_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_availability.closing_time": {
+      "name": "closing_time",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.space_availability.space_id": {
+      "name": "space_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.booking_cancellations": {
+      "name": "booking_cancellations",
+      "description": "booking_cancellations",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/booking_cancellations" }
+    },
+    "rowFilter.booking_cancellations.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.booking_cancellations.booking_id": {
+      "name": "booking_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.booking_cancellations.cancelled_by": {
+      "name": "cancelled_by",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.booking_cancellations.remarks": {
+      "name": "remarks",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.booking_cancellations.cancelled_at": {
+      "name": "cancelled_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.organizations": {
+      "name": "organizations",
+      "description": "organizations",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/organizations" }
+    },
+    "rowFilter.organizations.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.organizations.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.organizations.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.submissions_audit": {
+      "name": "submissions_audit",
+      "description": "submissions_audit",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/submissions_audit" }
+    },
+    "rowFilter.submissions_audit.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.received_at": {
+      "name": "received_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.raw_payload": {
+      "name": "raw_payload",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.clean_snapshot": {
+      "name": "clean_snapshot",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.lead_email": {
+      "name": "lead_email",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.partner_id": {
+      "name": "partner_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.utm": {
+      "name": "utm",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.lp_slug": {
+      "name": "lp_slug",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.landing_page_url": {
+      "name": "landing_page_url",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.referrer": {
+      "name": "referrer",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.first_visit_at": {
+      "name": "first_visit_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.session_id": {
+      "name": "session_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.consent": {
+      "name": "consent",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.odoo_lead_id": {
+      "name": "odoo_lead_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.visitor_tx_msg_id": {
+      "name": "visitor_tx_msg_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.partner_tx_msg_id": {
+      "name": "partner_tx_msg_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.submissions_audit.request_ip": {
+      "name": "request_ip",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.subscription_products": {
+      "name": "subscription_products",
+      "description": "subscription_products",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/subscription_products" }
+    },
+    "rowFilter.subscription_products.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscription_products.subscription_id": {
+      "name": "subscription_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscription_products.product_id": {
+      "name": "product_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscription_products.amount": {
+      "name": "amount",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.subscription_products.frequency": {
+      "name": "frequency",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.cash_vouchers": {
+      "name": "cash_vouchers",
+      "description": "cash_vouchers",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/cash_vouchers" }
+    },
+    "rowFilter.cash_vouchers.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.partner_id": {
+      "name": "partner_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.code": {
+      "name": "code",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.amount": {
+      "name": "amount",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.expires_at": {
+      "name": "expires_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.msg_tx_id": {
+      "name": "msg_tx_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.cash_vouchers.status": {
+      "name": "status",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.user_organizations": {
+      "name": "user_organizations",
+      "description": "user_organizations",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/user_organizations" }
+    },
+    "rowFilter.user_organizations.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_organizations.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_organizations.user_id": {
+      "name": "user_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.user_organizations.organization_id": {
+      "name": "organization_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "body.spaces": {
+      "name": "spaces",
+      "description": "spaces",
+      "required": false,
+      "in": "body",
+      "schema": { "$ref": "#/definitions/spaces" }
+    },
+    "rowFilter.spaces.id": {
+      "name": "id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.spaces.created_at": {
+      "name": "created_at",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.spaces.name": {
+      "name": "name",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.spaces.is_available": {
+      "name": "is_available",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    },
+    "rowFilter.spaces.branch_id": {
+      "name": "branch_id",
+      "required": false,
+      "in": "query",
+      "type": "string"
+    }
+  },
+  "externalDocs": {
+    "description": "PostgREST Documentation",
+    "url": "https://postgrest.org/en/v12/references/api.html"
+  }
+}

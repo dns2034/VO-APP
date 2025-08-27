@@ -1,0 +1,54 @@
+@startuml
+!theme plain
+hide methods
+hide stereotypes
+skinparam linetype ortho
+left to right direction
+skinparam ranksep 240
+skinparam nodesep 50
+
+entity "user_roles" as ur {
+  user_id: uuid
+  role: roles  ' includes fan, partner, staff, admin
+}
+
+entity "referrals" as rf {
+  *id: uuid
+  ref_code: text
+  referred_email: text
+  referred_name: text
+  status: text
+  created_by: uuid  ' links to auth.users.id
+}
+
+entity "cash_vouchers" as cv {
+  *id: uuid
+  referral_id: uuid
+  lead_id: text
+  lead_email: text
+  partner_name: text
+  partner_email: text
+  sent_at: timestamptz
+  claimed_at: timestamptz
+  paid_at: timestamptz
+  paid_via: text
+  notes: text
+  listmonk_msg_id: text
+  ap_run_id: text
+}
+
+entity "logs" as lg {
+  *id: uuid
+  created_at: timestamptz
+  source: text
+  event_type: text
+  ref_id: text
+  payload: jsonb
+}
+
+' Relationships with spacing
+ur ||--o{ rf : "  creates referral  "
+rf ||--o{ cv : "  triggers voucher  "
+rf ||--o{ lg : "  logged in  "
+cv ||--o{ lg : "  logged in  "
+@enduml

@@ -52,7 +52,7 @@ This folder contains all Supabase backend configuration, migrations, and databas
 **Pull schema from production database**
 
 ```sh
-npx supabase db pull --db-url postgresql://postgres:73R9yNL86b3dZxI8MPrmLMPIOQrBKxHt@api.virtualoffice.incub8.space:54324/postgres
+npx supabase db pull --db-url postgresql://postgres:E8vfli1DcPtJ73etVXtqKBNh3COIiWOx@api.virtualoffice.incub8.space:54324/postgres
 ```
 
 **Push local migrations to production**

@@ -1,3 +1,6 @@
+-- ===============================
+-- STEP 1: DROP OLD POLICIES
+-- ===============================
 -- Bookings
 DROP POLICY IF EXISTS "Managers can insert bookings for clients in the same orgs" ON public.bookings;
 DROP POLICY IF EXISTS "Managers can update bookings under their organization" ON public.bookings;
@@ -88,41 +91,47 @@ DROP POLICY IF EXISTS "Managers can manage user landing pages within their org" 
 -- User Roles
 DROP POLICY IF EXISTS "Managers can view user roles under their organization" ON public.user_roles;
 
+-- ===============================
+-- STEP 2: DROP FUNCTIONS/TRIGGERS
+-- ===============================
 DROP TRIGGER IF EXISTS trigger_submit_booking ON public.bookings;
 DROP FUNCTION IF EXISTS public.is_manager(uuid);
 DROP FUNCTION IF EXISTS public.get_booking_with_user();
 DROP FUNCTION IF EXISTS public.submit_booking();
 DROP FUNCTION IF EXISTS public.set_space_unit_status(uuid, public.space_units_status);
-ALTER TABLE public.profiles DROP COLUMN IF EXISTS role;
 
--- 3. Drop the old column (removes dependencies tied to old enum)
+-- ===============================
+-- STEP 3: ALTER TABLES & TYPES
+-- ===============================
+ALTER TABLE public.profiles DROP COLUMN IF EXISTS role;
 ALTER TABLE public.user_roles DROP COLUMN role;
 
--- 1. Rename old type so we can define the new one
+-- Enum surgery
 ALTER TYPE public.roles RENAME TO roles__old_version_to_be_dropped;
-
--- 2. Create the new roles enum
 CREATE TYPE public.roles AS ENUM ('manager', 'client', 'superadmin', 'participant');
-
--- 5. Drop the old type (safe now, no dependencies remain)
 DROP TYPE public.roles__old_version_to_be_dropped;
 
--- 4. Re-add the column with the new enum
+-- Restore column with new type
 ALTER TABLE public.user_roles ADD COLUMN role public.roles;
 
-
+-- Cash vouchers refactor
 ALTER TABLE public.cash_vouchers DROP COLUMN IF EXISTS partner_id;
 ALTER TABLE public.cash_vouchers ADD COLUMN user_id uuid;
 
+-- Profiles.role with new enum
+ALTER TABLE public.profiles ADD COLUMN role public.roles;
 
-ALTER TABLE public.profiles ADD COLUMN role roles;
-
+-- User roles column relax
 ALTER TABLE public.user_roles ALTER COLUMN role DROP NOT NULL;
 
+-- Cash vouchers FK
 ALTER TABLE public.cash_vouchers 
   ADD CONSTRAINT cash_vouchers_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) NOT VALID;
 ALTER TABLE public.cash_vouchers VALIDATE CONSTRAINT cash_vouchers_user_id_fkey;
 
+-- ===============================
+-- STEP 4: RECREATE FUNCTIONS
+-- ===============================
 CREATE OR REPLACE FUNCTION public.is_manager(p_user uuid)
  RETURNS boolean
  LANGUAGE sql
@@ -136,7 +145,6 @@ AS $function$
   );
 $function$;
 
--- 1. Fix get_booking_with_user
 CREATE OR REPLACE FUNCTION public.get_booking_with_user()
  RETURNS TABLE(
    booking_id uuid,
@@ -172,7 +180,6 @@ AS $function$
   where b.booked_by = auth.uid();
 $function$;
 
--- 2. submit_booking function
 CREATE OR REPLACE FUNCTION public.submit_booking()
   RETURNS trigger
   LANGUAGE plpgsql
@@ -186,7 +193,7 @@ declare
     v_user_role public.roles;
     v_is_manager boolean;
 begin
-    -- Step 0: Access control check
+    -- Step 0: Access control
     IF NEW.booked_by = auth.uid() THEN
       NULL; 
     ELSE
@@ -208,13 +215,13 @@ begin
       END IF;
     END IF;
 
-    --  Step 1: Prevent booking past date/time
+    -- Prevent past booking
     NEW := prevent_past_booking(NEW);
 
-    --  Step 2: Validate subscription rules & voucher
+    -- Validate subscription rules & voucher
     NEW := handle_subscription_and_voucher(NEW);
 
-    --  Step 3: Voucher flow
+    -- Voucher flow
     IF NEW.product_voucher_id IS NOT NULL THEN
       SELECT * INTO v_product_id, v_product_duration
       FROM get_product_info(NEW.product_voucher_id);
@@ -278,13 +285,19 @@ begin
 end;
 $function$;
 
--- 3. Trigger
-DROP TRIGGER IF EXISTS trigger_submit_booking ON public.bookings;
-
+-- ===============================
+-- STEP 5: RECREATE TRIGGERS
+-- ===============================
 CREATE TRIGGER trigger_submit_booking
 BEFORE INSERT ON public.bookings
 FOR EACH ROW
 EXECUTE FUNCTION public.submit_booking();
+
+-- ===============================
+-- STEP 6: RECREATE POLICIES
+-- ===============================
+-- [All your CREATE POLICY statements here, in the order you listed them]
+-- … (I won’t repeat them here; they’re already valid)
 
 
   create policy "Managers can insert bookings for clients in their organization"

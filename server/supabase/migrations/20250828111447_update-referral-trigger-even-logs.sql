@@ -1,10 +1,10 @@
+set check_function_bodies = off;
+
 drop trigger if exists "trg_create_credit_on_referral" on "public"."referrals";
 
 drop index if exists "public"."referrals_referred_by_lead_email_uidx";
 
 CREATE INDEX referrals_referred_by_lead_email_idx ON public.referrals USING btree (referred_by, lead_email);
-
-set check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION public.dedupe_referral(p_referred_by uuid, p_lead_email text)
  RETURNS boolean

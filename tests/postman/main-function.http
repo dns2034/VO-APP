@@ -438,3 +438,14 @@ Authorization: Bearer {{access_token}}
   "p_end_time": "10:00:00+08:00",
   "p_voucher_id": "VOUCHER_UUID"
 }
+
+
+
+
+// Main Application Workflow & Integration Testing (main-function.http).
+// Technical Explanation:
+// This module serves as the primary integration testing suite, validating the End-to-End (E2E) trajectory of the application’s core business logic. It provides verifiable proof of the system's ability to maintain data integrity across multiple state transitions—from initial resource discovery to final transaction commitment.  Key Integrated Workflows Validated:
+// * The Transactional "Golden Path": Rigorous testing of the complete booking lifecycle, including generating secure vouchers , verifying them against unit-specific constraints , and executing atomic booking submissions to the database.
+// * Stateful Resource Discovery: Automated GET requests to verify the synchronized state of user bookings, products, credits, and rewards. This ensures the system’s "Source of Truth" remains consistent across multi-turn interactions.
+// * Advanced State Reversion Logic: Validation of complex failure-handling scenarios, such as the multi-step cancellation workflow. This involves logging cancellations , updating resource availability , and handling voucher reactivations or refunds to prevent orphaned data states.
+// * Ecosystem Integrity (Referrals & Rewards): Integration testing of the referral and reward subsystem, including credit creation , voucher redemption , and automated point increments upon booking completion.  
